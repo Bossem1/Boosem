@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Export_boosem.iml" filepath="$PROJECT_DIR$/.idea/modules/Export_boosem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/launcher/Export_boosem.launcher.iml" filepath="$PROJECT_DIR$/.idea/modules/launcher/Export_boosem.launcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unityLibrary/Export_boosem.unityLibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/unityLibrary/Export_boosem.unityLibrary.iml" />
+    </modules>
+  </component>
+</project>

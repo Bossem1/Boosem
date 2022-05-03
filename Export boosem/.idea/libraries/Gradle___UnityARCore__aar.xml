@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: :UnityARCore:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a5caaa46eab95c35d91a5618b162189a/transformed/UnityARCore/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5caaa46eab95c35d91a5618b162189a/transformed/UnityARCore/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5caaa46eab95c35d91a5618b162189a/transformed/UnityARCore/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
