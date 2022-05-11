@@ -9,7 +9,7 @@ public class VoiceTest : MonoBehaviour {
     public Text uiText;
 
     VoiceController voiceController;
-    public PlayerController playerController;
+    public PlayerAnimation playerController;
 
     public void GetSpeech() {
         voiceController.GetSpeech();
@@ -19,7 +19,7 @@ public class VoiceTest : MonoBehaviour {
         voiceController = GetComponent<VoiceController>();
        
     }
-    void Updte()
+    void Update()
     {
         
     }
@@ -37,27 +37,33 @@ public class VoiceTest : MonoBehaviour {
         if(uiText.text == "Up" || uiText.text == "up")
         {
 
-            playerController.Up();
+            playerController.Jump();
         }
 
             
-        else if(uiText.text == "Left" || uiText.text == "left")
+        else if(uiText.text == "Walk" || uiText.text == "walk")
         {
 
-            playerController.Left();
+            playerController.Walk();
         }
 
-        else if(uiText.text == "Down" || uiText.text == "down")
+        else if(uiText.text == "Run" || uiText.text == "run")
         {
 
-            playerController.Down();
+            playerController.Run();
         }
 
-        else if(uiText.text == "Right" || uiText.text == "right")
+        else if (uiText.text == "Kick" || uiText.text == "kick")
+        {
+
+            playerController.Kick();
+        }
+
+        else if(uiText.text == "Stop" || uiText.text == "stop")
 
         {
 
-            playerController.Right();
+            playerController.Stop();
         }
 
 

@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scene/Occlusions/Occlusions.unity
-    guid: 4162d784191dd82429dd4648efc2df14
+    path: Assets/SpeechRecognition/SampleScene.unity
+    guid: 9f11a9ed457f9430e9817403afce0433
   m_configObjects:
     com.unity.xr.arcore.PlayerSettings: {fileID: 11400000, guid: 5d38010ec6a3e95479b5f8f53fd625c1,
       type: 2}
