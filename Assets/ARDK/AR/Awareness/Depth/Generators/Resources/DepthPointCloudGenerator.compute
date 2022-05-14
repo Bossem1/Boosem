@@ -6,7 +6,6 @@ static const uint3 NumThreads = {8, 8, 1};
 
 uint DepthBufferWidth;
 uint DepthBufferHeight;
-float VerticalOffsetPerMeter;
 float4 Intrinsics;
 float4x4 CameraToWorld;
 
@@ -60,13 +59,10 @@ void Generate(uint3 id : SV_DispatchThreadID)
         return;
     }
     float depth = Depth[index];
-    
-    // calculate the vertical fixup based on the distance from the camera
-    float3 verticalFixup = float3(0,VerticalOffsetPerMeter * depth,0);
 
     // Unproject
     float3 position = UnProject(float2(id.x, id.y), depth);
     
     // apply the vertial fixup and save the value into the point cloud buffer
-    PointCloud[index] = position + verticalFixup;
+    PointCloud[index] = position;
 }

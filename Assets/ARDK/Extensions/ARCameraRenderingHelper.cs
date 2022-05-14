@@ -104,14 +104,11 @@ namespace Niantic.ARDK.Extensions
         return;
       }
 
-      // Add a warning if the cullingMask is not set to Everything.
-      if (Camera.cullingMask != -1)
-      {
-        var warning = "The ARSceneCamera's culling mask is not set to everything. Some " +
-                      "objects may not be rendered.";
-
-        ARLog._Warn(warning);
-      }
+#if UNITY_EDITOR
+      // Attempt to disable the layer all mock objects are on so "real" objects aren't doubly
+      // rendered by mock device camera and the scene camera.
+      _MockFrameBufferProvider.RemoveMockFromCullingMask(Camera);
+#endif
 
       ARSessionFactory.SessionInitialized += OnSessionInitialized;
     }
@@ -172,13 +169,6 @@ namespace Niantic.ARDK.Extensions
           Camera.cullingMask,
           Camera
         );
-
-      // If it is a mock session, attempt to disable the layer all mock objects are on so "real"
-      // objects aren't doubly rendered by mock device camera and the scene camera.
-      if (_arSession.RuntimeEnvironment == RuntimeEnvironment.Mock)
-      {
-        _MockFrameBufferProvider.RemoveLayerFromCamera(Camera, _MockFrameBufferProvider.MOCK_LAYER_NAME);
-      }
 
       SetupCameraFeed();
 

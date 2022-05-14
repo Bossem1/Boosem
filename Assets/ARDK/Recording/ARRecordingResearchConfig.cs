@@ -1,5 +1,6 @@
 // Copyright 2021 Niantic, Inc. All Rights Reserved.
 
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -10,6 +11,7 @@ namespace Niantic.ARDK.Recording
   /// <summary>
   /// Research config for recording AR Data and video
   /// </summary>
+  [Obsolete("This will be removed in a future release, use ARCapture classes instead")]
   [StructLayout(LayoutKind.Sequential)]
   public struct ARRecordingResearchConfig
   {

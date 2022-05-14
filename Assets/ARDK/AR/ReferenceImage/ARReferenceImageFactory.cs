@@ -9,6 +9,8 @@ using Niantic.ARDK.Internals;
 using Niantic.ARDK.Utilities;
 using Niantic.ARDK.Utilities.Logging;
 
+using UnityEngine;
+
 namespace Niantic.ARDK.AR.ReferenceImage
 {
   /// <summary>
@@ -24,9 +26,12 @@ namespace Niantic.ARDK.AR.ReferenceImage
     /// @param height The height of the image in pixels
     /// @param byteOrderInfo The endianness of each pixel (See ByteOrderInfo)
     /// @param alphaInfo The location of the alpha channel in each pixel (See AlphaInfo)
-    /// @param physicalWidth The physical width of the image in meters.
-    /// @param orientation The orientation of the provided image. (See Orientation for more
-    ///   information)
+    /// @param physicalWidth
+    ///   The physical width of the image in meters. Be as accurate as possible, entering an
+    ///   incorrect physical size will result in detecting an anchor that’s the wrong distance
+    ///   from the camera.
+    /// @param orientation
+    ///   The orientation of the provided image. (See Orientation for more information)
     /// @note Not supported in Editor.
     /// @note The ARReferenceImage will contain the full image buffer until it is destroyed.
     ///   Unless reuse of the constructed ARReferenceImage is required in the near future, it is
@@ -75,7 +80,7 @@ namespace Niantic.ARDK.AR.ReferenceImage
       #pragma warning disable 0162
       else
       {
-        throw new InvalidOperationException("This operation is not supported on this platform.");
+        return new _SerializableARReferenceImage(name, Vector2.zero);
       }
       #pragma warning restore 0162
     }
@@ -84,7 +89,10 @@ namespace Niantic.ARDK.AR.ReferenceImage
     ///   physical size, and orientation.
     /// @param name The name of the image (for identifying unique images upon detection)
     /// @param rawBytes The JPG image from which to create the reference image
-    /// @param physicalWidth The physical width of the image in meters.
+    /// @param physicalWidth
+    ///   The physical width of the image in meters. Be as accurate as possible, entering an
+    ///   incorrect physical size will result in detecting an anchor that’s the wrong distance
+    ///   from the camera.
     /// @param orientation The orientation of the image (Currently only Up is supported)
     /// @note Not supported in Editor.
     /// @note The ARReferenceImage will contain the full image buffer until it is destroyed.
@@ -126,7 +134,7 @@ namespace Niantic.ARDK.AR.ReferenceImage
       #pragma warning disable 0162
       else
       {
-        throw new InvalidOperationException("This operation is not supported on this platform.");
+        return new _SerializableARReferenceImage(name, Vector2.zero);
       }
       #pragma warning restore 0162
     }
@@ -176,7 +184,7 @@ namespace Niantic.ARDK.AR.ReferenceImage
       #pragma warning disable 0162
       else
       {
-        throw new InvalidOperationException("This operation is not supported on this platform.");
+        return new _SerializableARReferenceImage(name, Vector2.zero);
       }
       #pragma warning restore 0162
     }
@@ -238,7 +246,8 @@ namespace Niantic.ARDK.AR.ReferenceImage
       #pragma warning disable 0162
       else
       {
-        throw new InvalidOperationException("This operation is not supported on this platform.");
+        var image = new _SerializableARReferenceImage(name, Vector2.zero);
+        completionHandler(image);
       }
       #pragma warning restore 0162
     }
@@ -285,7 +294,8 @@ namespace Niantic.ARDK.AR.ReferenceImage
       #pragma warning disable 0162
       else
       {
-        throw new InvalidOperationException("This operation is not supported on this platform.");
+        var image = new _SerializableARReferenceImage(name, Vector2.zero);
+        completionHandler.Invoke(image);
       }
       #pragma warning restore 0162
     }
@@ -330,7 +340,8 @@ namespace Niantic.ARDK.AR.ReferenceImage
       #pragma warning disable 0162
       else
       {
-        throw new InvalidOperationException("This operation is not supported on this platform.");
+        var image = new _SerializableARReferenceImage(name, Vector2.zero);
+        completionHandler.Invoke(image);
       }
       #pragma warning restore 0162
     }
@@ -377,7 +388,7 @@ namespace Niantic.ARDK.AR.ReferenceImage
       throw new NotSupportedException("The current platform is not supported.");
 #endif
     }
-    
+
     [MonoPInvokeCallback(typeof(_NARReferenceImage_CreateAsync_Callback))]
     private static void ARReferenceImageCreateAsyncCallback
     (

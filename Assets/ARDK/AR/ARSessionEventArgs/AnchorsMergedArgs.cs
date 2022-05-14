@@ -17,7 +17,7 @@ namespace Niantic.ARDK.AR.ARSessionEventArgs
       Children = new ReadOnlyCollection<IARAnchor>(children);
     }
 
-    public IARAnchor Parent { get; private set; }
-    public ReadOnlyCollection<IARAnchor> Children { get; private set; }
+    public IARAnchor Parent { get; }
+    public ReadOnlyCollection<IARAnchor> Children { get; }
   }
 }

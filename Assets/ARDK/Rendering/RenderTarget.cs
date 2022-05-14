@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -25,8 +24,6 @@ namespace Niantic.ARDK.Rendering
     // Whether the target is a RenderTexture
     public readonly bool IsTargetingTexture;
 
-    private readonly ScreenOrientation _defaultOrientation;
-
     /// Creates a render target from the specified camera.
     public RenderTarget(Camera cam)
     {
@@ -39,8 +36,6 @@ namespace Niantic.ARDK.Rendering
       Identifier = Camera.targetTexture == null
         ? BuiltinRenderTextureType.CurrentActive  // TODO: what if this is a secondary camera?
         : BuiltinRenderTextureType.CameraTarget;
-
-      _defaultOrientation = Screen.orientation;
     }
 
     /// Creates a render target from the specified texture.
@@ -53,68 +48,43 @@ namespace Niantic.ARDK.Rendering
       IsTargetingTexture = true;
 
       Identifier = new RenderTargetIdentifier(texture);
-      
-      _defaultOrientation = RenderTexture.width > RenderTexture.height
-        ? ScreenOrientation.Landscape
-        : ScreenOrientation.Portrait;
     }
 
     /// Returns a the resolution of the target, in the function of
     /// the specified screen orientation.
     public Resolution GetResolution(ScreenOrientation forOrientation)
     {
+      int longer, shorter;
+
       if (IsTargetingCamera)
       {
-        // The camera's resolution is automatically being rotated by Unity,
-        // therefore we only need to swap the params if the requested
-        // orientation is different than the screen orientation.
-#if UNITY_EDITOR
-        return new Resolution
-        {
-          width = Camera.pixelWidth, height = Camera.pixelHeight
-        };
-#else
-        var shouldRotate = !UIOrientationsEqual(forOrientation, Screen.orientation);
-        return new Resolution
-        {
-          width = shouldRotate ? Camera.pixelHeight : Camera.pixelWidth,
-          height = shouldRotate ? Camera.pixelWidth : Camera.pixelHeight
-        };
-#endif
+        longer = Camera.pixelWidth > Camera.pixelHeight
+          ? Camera.pixelWidth
+          : Camera.pixelHeight;
+
+        shorter = Camera.pixelWidth < Camera.pixelHeight
+          ? Camera.pixelWidth
+          : Camera.pixelHeight;
       }
       else
       {
-        // If the target is a texture, the resolution params need to be swapped
-        // if the specified orientation is different from the texture's native
-        // orientation.
-        var shouldRotate = !UIOrientationsEqual(forOrientation, _defaultOrientation);
-        return new Resolution
-        {
-          width = shouldRotate ? RenderTexture.height : RenderTexture.width,
-          height = shouldRotate ? RenderTexture.width : RenderTexture.height
-        };
+        longer = RenderTexture.width > RenderTexture.height
+          ? RenderTexture.width
+          : RenderTexture.height;
+
+        shorter = RenderTexture.width < RenderTexture.height
+          ? RenderTexture.width
+          : RenderTexture.height;
       }
-    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool UIOrientationsEqual(ScreenOrientation a, ScreenOrientation b)
-    {
-      if (a == b)
-        return true;
+      var needsLandscape = forOrientation == ScreenOrientation.LandscapeLeft ||
+        forOrientation == ScreenOrientation.LandscapeRight;
 
-      switch (a)
-      {
-        case ScreenOrientation.Portrait:
-        case ScreenOrientation.PortraitUpsideDown:
-          return b == ScreenOrientation.Portrait || b == ScreenOrientation.PortraitUpsideDown;
-
-        case ScreenOrientation.LandscapeLeft:
-        case ScreenOrientation.LandscapeRight:
-          return b == ScreenOrientation.LandscapeLeft || b == ScreenOrientation.LandscapeRight;
-
-        default:
-          return false;
-      }
+      return needsLandscape
+        // Landscape
+        ? new Resolution { width = longer, height = shorter }
+        // Portrait
+        : new Resolution { width = shorter, height = longer };
     }
     
     public static implicit operator RenderTarget(Camera cam)

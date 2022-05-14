@@ -40,7 +40,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
       // Check every frame to see if anything has changed in this anchor's transform.
 

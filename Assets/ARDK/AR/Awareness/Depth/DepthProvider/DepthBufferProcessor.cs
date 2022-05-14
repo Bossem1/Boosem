@@ -60,7 +60,7 @@ namespace Niantic.ARDK.AR.Awareness.Depth
 
       var x = viewportX + 0.5f;
       var y = viewportY + 0.5f;
-      var resolution = _viewport.GetResolution(Screen.orientation);
+      var resolution = _viewport.GetResolution(RenderTarget.ScreenOrientation);
       var uv = new Vector4(x / resolution.width, y / resolution.height, 1.0f, 1.0f);
 
       // Sample the depth buffer
@@ -76,7 +76,7 @@ namespace Niantic.ARDK.AR.Awareness.Depth
 
       var x = viewportX + 0.5f;
       var y = viewportY + 0.5f;
-      var resolution = _viewport.GetResolution(Screen.orientation);
+      var resolution = _viewport.GetResolution(RenderTarget.ScreenOrientation);
       var uv = new Vector4(x / resolution.width, y / resolution.height, 1.0f, 1.0f);
 
       // Sample the depth buffer
@@ -98,7 +98,7 @@ namespace Niantic.ARDK.AR.Awareness.Depth
 
       var x = viewportX + 0.5f;
       var y = viewportY + 0.5f;
-      var resolution = _viewport.GetResolution(Screen.orientation);
+      var resolution = _viewport.GetResolution(RenderTarget.ScreenOrientation);
       var uv = new Vector4(x / resolution.width, y / resolution.height, 1.0f, 1.0f);
 
       // Sample the depth buffer
@@ -120,7 +120,7 @@ namespace Niantic.ARDK.AR.Awareness.Depth
       if (depthBuffer == null)
         return Vector3.up;
 
-      var resolution = _viewport.GetResolution(Screen.orientation);
+      var resolution = _viewport.GetResolution(RenderTarget.ScreenOrientation);
       var viewportMax = Mathf.Max(resolution.width, resolution.height);
       var bufferMax = Mathf.Max((int)depthBuffer.Width, (int)depthBuffer.Height);
       var viewportDelta = Mathf.CeilToInt((float)viewportMax / bufferMax) + 1;
@@ -212,18 +212,12 @@ namespace Niantic.ARDK.AR.Awareness.Depth
       if (frame == null)
         return;
 
-#if UNITY_EDITOR 
-      var orientation = Screen.width > Screen.height
-        ? ScreenOrientation.Landscape
-        : ScreenOrientation.Portrait;
-#else
-      var orientation = Screen.orientation;
-#endif
+      var orientation = RenderTarget.ScreenOrientation;
       
       ProcessFrame
       (
+        frame,
         buffer: frame.Depth,
-        arCamera: frame.Camera,
         targetResolution: _viewport.GetResolution(forOrientation: orientation),
         targetOrientation: orientation
       );

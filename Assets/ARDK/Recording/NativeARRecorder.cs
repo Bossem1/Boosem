@@ -22,6 +22,7 @@ namespace Niantic.ARDK.Recording
   /// <summary>
   /// A native implementation of the <see cref="IARRecorder"/>
   /// </summary>
+  [Obsolete("This will be removed in a future release, use ARCapture classes instead")]
   public sealed class NativeARRecorder:
     IARRecorder,
     IDisposable

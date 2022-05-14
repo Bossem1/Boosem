@@ -99,12 +99,10 @@ namespace Niantic.ARDKExamples
           detectedChannels = channelsForPixel.Aggregate
           (
             detectedChannels,
-            (
-              current,
-              channelName
-            ) => string.IsNullOrEmpty(current)
-              ? (current + channelName)
-              : (current + ", " + channelName)
+            (current, channelName) =>
+              string.IsNullOrEmpty(current)
+                ? (current + channelName)
+                : (current + ", " + channelName)
           );
         }
 
@@ -135,6 +133,9 @@ namespace Niantic.ARDKExamples
 
     public void ChangeFeatureChannel()
     {
+      // The exact channel names and the order they are returned in may change with
+      // new versions of ARDK, so you should avoid caching information about channels in your app.
+      // Instead, get the list of channel indices and names at runtime.
       var channelNames = _semanticSegmentationManager.SemanticBufferProcessor.Channels;
 
       // If the channels aren't yet known, we can't change off the initial default channel.

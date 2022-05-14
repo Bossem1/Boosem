@@ -16,6 +16,6 @@ namespace Niantic.ARDK.AR.ARSessionEventArgs
       Anchors = new ReadOnlyCollection<IARAnchor>(anchors);
     }
 
-    public ReadOnlyCollection<IARAnchor> Anchors { get; private set; }    
+    public ReadOnlyCollection<IARAnchor> Anchors { get; }    
   }
 }

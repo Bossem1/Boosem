@@ -14,10 +14,10 @@ namespace Niantic.ARDK.AR.ReferenceImage
       Name = name;
       PhysicalSize = physicalSize;
     }
-    
+
     public string Name { get; set; }
-    public Vector2 PhysicalSize { get; private set; }
-    
+    public Vector2 PhysicalSize { get; set; }
+
     void IDisposable.Dispose()
     {
       // Do nothing. This implementation of IARReferenceImage is fully managed.

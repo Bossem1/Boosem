@@ -9,13 +9,14 @@ using UnityEngine;
 namespace ARDK.Editor.Extensions.Depth
 {
   [CustomEditor(typeof(ARDepthManager))]
-  public class ARDepthManagerInspector : UnityEditor.Editor
+  public class ARDepthManagerInspector
+    : UnityEditor.Editor
   {
     private SerializedProperty _occlusionModeProperty;
     private SerializedProperty _textureFilterModeProperty;
     private SerializedProperty _interpolationProperty;
     private SerializedProperty _interpolationPreferenceProperty;
-    
+
 
     private void OnEnable()
     {
@@ -54,7 +55,7 @@ namespace ARDK.Editor.Extensions.Depth
 
       var isInterpolationAdapterPresentAndEnabled =
         interpolationAdapter != null && interpolationAdapter.enabled;
-      
+
       if (_interpolationProperty.enumValueIndex > 0)
       {
         if (!isInterpolationAdapterPresentAndEnabled)
@@ -72,7 +73,7 @@ namespace ARDK.Editor.Extensions.Depth
         else
           EditorGUILayout.HelpBox("Using interpolation preference adapter.", MessageType.None);
       }
-      
+
       serializedObject.ApplyModifiedProperties();
 
       var isRenderingManagerPresent =

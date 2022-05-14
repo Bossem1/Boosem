@@ -11,6 +11,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
 {
   /// Add this to any mesh in the Editor in order to have it semantically
   /// segmented as a certain channel.
+  [RequireComponent(typeof(MeshRenderer))]
   public class MockSemanticLabel: MonoBehaviour
   {
     public enum ChannelName
@@ -30,7 +31,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       materialPropertyBlock = new MaterialPropertyBlock();
       materialPropertyBlock.SetColor("PackedColor", color);
       materialPropertyBlock.SetColor("DebugColor", _debugColors[(int)Channel]);
-      GetComponent<Renderer>().SetPropertyBlock(materialPropertyBlock);
+      GetComponent<MeshRenderer>().SetPropertyBlock(materialPropertyBlock);
 
       ARLog._DebugFormat("GameObject: {0} - Channel: {1} - Bits: {2}", false, gameObject.name, Channel, ToBinaryString(bits));
     }

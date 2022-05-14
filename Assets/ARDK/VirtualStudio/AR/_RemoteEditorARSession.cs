@@ -78,7 +78,8 @@ namespace Niantic.ARDK.VirtualStudio.AR
           ImageCompressionQuality = _RemoteBufferConfiguration.ImageCompression,
 #endif
           TargetImageFramerate = _RemoteBufferConfiguration.ImageFramerate,
-          TargetBufferFramerate = _RemoteBufferConfiguration.AwarenessFramerate
+          TargetBufferFramerate = _RemoteBufferConfiguration.AwarenessFramerate,
+          TargetFeaturePointFramerate = _RemoteBufferConfiguration.FeaturePointFramerate,
         },
         TransportType.ReliableOrdered
       );
@@ -147,13 +148,13 @@ namespace Niantic.ARDK.VirtualStudio.AR
       get => _localizer ?? (_localizer = new _MockLocalizer(this));
     }
 
-    public Guid StageIdentifier { get; private set; }
+    public Guid StageIdentifier { get; }
 
     private IARFrame _currentFrame;
     /// <inheritdoc />
     public IARFrame CurrentFrame
     {
-      get { return _currentFrame; }
+      get => _currentFrame;
       internal set
       {
         _SessionFrameSharedLogic._MakeSessionFrameBecomeNonCurrent(this);
@@ -169,7 +170,7 @@ namespace Niantic.ARDK.VirtualStudio.AR
     private float _worldScale = 1.0f;
     public float WorldScale
     {
-      get { return _worldScale; }
+      get => _worldScale;
       set
       {
         _EasyConnection.Send

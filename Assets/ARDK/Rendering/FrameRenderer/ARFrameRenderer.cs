@@ -194,7 +194,7 @@ namespace Niantic.ARDK.Rendering
     ///               automatically get updated for each frame.
     protected ARFrameRenderer(RenderTarget target)
     {
-      _originalOrientation = Screen.orientation;
+      _originalOrientation = RenderTarget.ScreenOrientation;
       
       Target = target;
       Resolution = target.GetResolution(_originalOrientation);
@@ -216,7 +216,7 @@ namespace Niantic.ARDK.Rendering
     /// @param far The distance of the far clipping plane.
     protected ARFrameRenderer(RenderTarget target, float near, float far)
     {
-      _originalOrientation = Screen.orientation;
+      _originalOrientation = RenderTarget.ScreenOrientation;
       
       Target = target;
       Resolution = target.GetResolution(_originalOrientation);
@@ -500,44 +500,33 @@ namespace Niantic.ARDK.Rendering
 
     private void UpdateCameraMatrices(IARFrame frame)
     {
-      var shouldInvertResolutionParams = !IsOrientationLocked && ShouldInvertResolutionParams();
-      var orientedWidth = shouldInvertResolutionParams ? Resolution.height : Resolution.width;
-      var orientedHeight = shouldInvertResolutionParams ? Resolution.width : Resolution.height;
+      // Determine target orientation
+      var targetOrientation = IsOrientationLocked
+        ? _originalOrientation
+        : RenderTarget.ScreenOrientation;
+      
+      // Calculate the target resolution according to the orientation
+      var targetResolution = Target.GetResolution(targetOrientation);
 
+      // Update the projection matrix
       ProjectionTransform = frame.Camera.CalculateProjectionMatrix
       (
-        !IsOrientationLocked ? Screen.orientation : _originalOrientation,
-        orientedWidth,
-        orientedHeight,
+        targetOrientation,
+        targetResolution.width,
+        targetResolution.height,
         _nearClipPlane,
         _farClipPlane
       );
 
+      // Update the display transform matrix
       DisplayTransform = frame.CalculateDisplayTransform
-        (Screen.orientation, orientedWidth, orientedHeight);
+      (
+        targetOrientation,
+        targetResolution.width,
+        targetResolution.height
+      );
     }
-
-    private bool ShouldInvertResolutionParams()
-    {
-      var orientation = Screen.orientation;
-      if (orientation == ScreenOrientation.AutoRotation)
-        return false;
-
-      var isOrientationPortrait =
-        (orientation == ScreenOrientation.Portrait ||
-          orientation == ScreenOrientation.PortraitUpsideDown);
-
-      if (isOrientationPortrait)
-      {
-        return
-          _originalOrientation == ScreenOrientation.LandscapeLeft ||
-          _originalOrientation == ScreenOrientation.LandscapeRight;
-      }
-
-      return
-        _originalOrientation == ScreenOrientation.Portrait ||
-        _originalOrientation == ScreenOrientation.PortraitUpsideDown;
-    }
-#endregion
+    
+    #endregion
   }
 }

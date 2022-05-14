@@ -5,8 +5,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 
 using Niantic.ARDK.Utilities;
-using Niantic.ARDK.AR.Awareness;
-using Niantic.ARDK.AR.Awareness.Depth;
+using Niantic.ARDK.Rendering;
 using Niantic.ARDK.Utilities.Logging;
 
 using UnityEngine;
@@ -44,9 +43,6 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
     private static readonly int DEPTH_HANDLE =
       Shader.PropertyToID("Depth");
 
-    private static readonly int VERTICAL_OFFSET_HANDLE =
-      Shader.PropertyToID("VerticalOffsetPerMeter");
-
 #endregion
 
     [Serializable]
@@ -58,21 +54,27 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
       /// from the camera's position. At the present it is necessary to compensate for the fact that
       /// current models believe the floor to be a large bowl, with you standing in the centermost,
       /// deepest part.
+      [Obsolete]
       public float VerticalOffsetPerMeter = -0.025f;
 
       /// If true, the cloud will be fit to the specified target pixel width and height
+      [Obsolete]
       public bool FitToViewport;
 
       /// The pixel width of the target display that this generator should create points for
+      [Obsolete]
       public int TargetWidth;
 
       /// The pixel height of the target display that this generator should create points for
+      [Obsolete]
       public int TargetHeight;
 
       /// If true, the depth cloud will be interpolated to match the current ARFrame
+      [Obsolete]
       public bool Interpolate;
 
       /// Value passed into IDepthBuffer.Interpolation calls. See IDepthBuffer documentation
+      [Obsolete]
       public float BackProjectionDistance = AwarenessParameters.DefaultBackProjectionDistance;
 
       public Settings Copy()
@@ -80,8 +82,7 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
         return
           new Settings
           {
-            IsEnabled = this.IsEnabled,
-            VerticalOffsetPerMeter = this.VerticalOffsetPerMeter
+            IsEnabled = IsEnabled,
           };
       }
     }
@@ -129,17 +130,12 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
       _settings = settings;
       _kernel = _pointCloudShader.FindKernel(KERNEL_NAME);
 
-      // Constant value
-      _pointCloudShader.SetFloat(VERTICAL_OFFSET_HANDLE, _settings.VerticalOffsetPerMeter);
-
-      uint kernelThreadsZ;
       _pointCloudShader.GetKernelThreadGroupSizes(
           _kernel,
           out _kernelThreadsX,
           out _kernelThreadsY,
-          out kernelThreadsZ
+          out uint _
         );
-
     }
 
     ~DepthPointCloudGenerator()
@@ -173,62 +169,26 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
     /// </summary>
     /// @param depthBuffer A depth buffer with which to generate a point cloud
     /// @returns A point cloud based on the depth buffer
-    public IDepthPointCloud GeneratePointCloud(IDepthBuffer rawDepthBuffer, IARCamera camera)
+    public IDepthPointCloud GeneratePointCloud(IDepthBuffer depthBuffer, IARCamera camera)
     {
-      // Handle buffer manipulation
-      var depthBuffer = rawDepthBuffer.RotateToScreenOrientation();
-
-      IDepthBuffer interpolated = null, fit = null;
-      if (_settings.Interpolate)
-      {
-        interpolated =
-          depthBuffer.Interpolate
-          (
-            camera,
-            _settings.TargetWidth,
-            _settings.TargetHeight,
-            _settings.BackProjectionDistance
-          );
-
-        depthBuffer.Dispose();
-        depthBuffer = interpolated;
-      }
-
-      if (_settings.FitToViewport)
-      {
-        fit =
-          depthBuffer.FitToViewport
-          (
-            _settings.TargetWidth,
-            _settings.TargetHeight
-          );
-
-        depthBuffer.Dispose();
-        interpolated?.Dispose();
-
-        depthBuffer = fit;
-      }
-
       int size = (int)(depthBuffer.Width * depthBuffer.Height);
       if(_size != size ){
 
         // Setting up input data buffer
-        _depthComputeBuffer =
-          new ComputeBuffer
-          (
-            (int)(depthBuffer.Width * depthBuffer.Height),
-            Marshal.SizeOf(typeof(float))
-          );
+        _depthComputeBuffer = new ComputeBuffer
+        (
+          (int)(depthBuffer.Width * depthBuffer.Height),
+          Marshal.SizeOf(typeof(float))
+        );
 
         _pointCloudShader.SetBuffer(_kernel, DEPTH_HANDLE, _depthComputeBuffer);
 
         // Setting up output data buffer
-        _pointCloudBuffer =
-          new ComputeBuffer
-          (
-            (int)(depthBuffer.Width * depthBuffer.Height),
-            Marshal.SizeOf(typeof(Vector3))
-          );
+        _pointCloudBuffer = new ComputeBuffer
+        (
+          (int)(depthBuffer.Width * depthBuffer.Height),
+          Marshal.SizeOf(typeof(Vector3))
+        );
 
         _pointCloud = new Vector3[depthBuffer.Width * depthBuffer.Height];
         _pointCloudBuffer.SetData(_pointCloud);
@@ -236,10 +196,19 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
         _size = size;
       }
 
+      var cameraToWorld =
+        (
+          MathUtils.CalculateScreenRotation
+          (
+            from: ScreenOrientation.Landscape,
+            to: RenderTarget.ScreenOrientation
+          ) * depthBuffer.ViewMatrix
+        ).inverse;
+
       _pointCloudShader.SetInt(DEPTH_BUFFER_WIDTH_HANDLE, (int)depthBuffer.Width);
       _pointCloudShader.SetInt(DEPTH_BUFFER_HEIGHT_HANDLE, (int)depthBuffer.Height);
       _pointCloudShader.SetVector(INTRINSICS_HANDLE, depthBuffer.Intrinsics);
-      _pointCloudShader.SetMatrix(POSE_HANDLE, depthBuffer.ViewMatrix.inverse);
+      _pointCloudShader.SetMatrix(POSE_HANDLE, cameraToWorld);
 
       // update the depth image
       _depthComputeBuffer.SetData(depthBuffer.Data);
@@ -266,7 +235,6 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
           depthBuffer.Height
         );
 
-      depthBuffer.Dispose();
       return retVal;
     }
   }

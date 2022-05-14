@@ -64,50 +64,46 @@ namespace Niantic.ARDK.Internals
 #endif
     }
 
+    private const string AUTH_DOCS_MSG =
+      "For more information, visit the niantic.dev/docs/authentication.html site.";
+
     private static void SetAuthenticationParameters()
     {
       // We always try to find an api key
       var apiKey = "";
       var authConfigs = Resources.LoadAll<ArdkAuthConfig>("ARDK/ArdkAuthConfig");
-      bool haveSetNewApiKey = false;
-      foreach (var authConfig in authConfigs)
-      {
-        if (haveSetNewApiKey)
-        {
-          Resources.UnloadAsset(authConfig);
-          continue;
-        }
-
-        apiKey = authConfig.ApiKey;
-        if (!string.IsNullOrEmpty(apiKey))
-        {
-          ArdkGlobalConfig.SetApiKey(apiKey);
-          haveSetNewApiKey = true;
-        }
-
-        Resources.UnloadAsset(authConfig);
-      }
 
       if (authConfigs.Length > 1)
       {
         var errorMessage = "There are multiple ArdkAuthConfigs in Resources/ARDK/ " +
                            "directories, loading the first API key found. Remove extra" +
-                           " ArdkAuthConfigs to prevent API key problems";
+                           " ArdkAuthConfigs to prevent API key problems. " + AUTH_DOCS_MSG;
         ARLog._Error(errorMessage);
       }
       else if (authConfigs.Length == 0)
       {
         ARLog._Error
         (
-          "Could not load an ArdkAuthConfig, please add one under Resources/ARDK/"
+          "Could not load an ArdkAuthConfig, please add one in a Resources/ARDK/ directory. " +
+          AUTH_DOCS_MSG
         );
       }
-
-      /// Only continue if needed
-      if (!ServerConfiguration.AuthRequired)
+      else
       {
-        return;
+        var authConfig = authConfigs[0];
+        apiKey = authConfig.ApiKey;
+        if (!string.IsNullOrEmpty(apiKey))
+          ArdkGlobalConfig.SetApiKey(apiKey);
       }
+
+      authConfigs = null;
+      Resources.UnloadUnusedAssets();
+
+       // Only continue if needed
+       if (!ServerConfiguration.AuthRequired)
+       {
+         return;
+       }
 
       if (string.IsNullOrEmpty(ServerConfiguration.ApiKey))
       {
@@ -118,9 +114,15 @@ namespace Niantic.ARDK.Internals
         }
         else
         {
-          ARLog._Error
+          ARLog._ErrorFormat
           (
-            "No API Key was found, please add one to the ArdkAuthConfig in Resources/ARDK/"
+            "No API Key was found. Add it to the {0} file. {1}",
+#if UNITY_EDITOR
+            AssetDatabase.GetAssetPath(authConfigs[0]),
+#else
+            "Resources/ARDK/ArdkAuthConfig.asset",
+#endif
+            AUTH_DOCS_MSG
           );
         }
       }
@@ -146,7 +148,7 @@ namespace Niantic.ARDK.Internals
         }
       }
 #endif
-      
+
     }
 
     // TODO(bpeake): Find a way to shutdown gracefully and add shutdown here.

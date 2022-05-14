@@ -226,6 +226,13 @@ namespace Niantic.ARDK.VirtualStudio.AR
             return false;
 
           break;
+
+        case AnchorType.Image:
+          var imageAnchor = (IARImageAnchor)anchor;
+          if (!_IsImageAnchorDetectable(imageAnchor))
+            return false;
+
+          break;
       }
 
       var anchorCopy = anchor.Copy();
@@ -290,6 +297,20 @@ namespace Niantic.ARDK.VirtualStudio.AR
       var detectedPlanes = ((IARWorldTrackingConfiguration)Configuration).PlaneDetection;
       var thisPlane = (PlaneDetection) planeAnchor.Alignment;
       return (detectedPlanes & thisPlane) != 0;
+    }
+
+    private bool _IsImageAnchorDetectable(IARImageAnchor imageAnchor)
+    {
+      if (!_isWorldTracking)
+        return false;
+
+      foreach (var image in ((IARWorldTrackingConfiguration)Configuration).DetectionImages)
+      {
+        if (image.Name.Equals(imageAnchor.ReferenceImage.Name))
+          return true;
+      }
+
+      return false;
     }
 
     public void RemoveAnchor(IARAnchor anchor)

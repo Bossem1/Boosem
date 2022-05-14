@@ -61,14 +61,6 @@ namespace Niantic.ARDK.AR.Camera
       float farClipPlane
     )
     {
-      #if UNITY_EDITOR
-      // Screen.orientation doesn't work in the editor
-      if (orientation == Screen.orientation)
-        orientation = Screen.width > Screen.height
-          ? ScreenOrientation.Landscape
-          : ScreenOrientation.Portrait;
-      #endif
-      
       return MathUtils.CalculateProjectionMatrix
       (
         this,

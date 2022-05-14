@@ -47,7 +47,7 @@ namespace Niantic.ARDK.AR
     RuntimeEnvironment IARSession.RuntimeEnvironment
     {
       // Maybe Playback will become a different Kind... for now, LiveDevice is the only one available.
-      get { return _playbackEnabled ? RuntimeEnvironment.Playback : RuntimeEnvironment.LiveDevice; }
+      get => _playbackEnabled ? RuntimeEnvironment.Playback : RuntimeEnvironment.LiveDevice;
     }
 
     /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace Niantic.ARDK.AR
     /// <inheritdoc />
     public IARFrame CurrentFrame
     {
-      get { return _currentFrame; }
+      get => _currentFrame;
       internal set
       {
         _CheckThread();
@@ -81,7 +81,7 @@ namespace Niantic.ARDK.AR
     public ARFrameDisposalPolicy DefaultFrameDisposalPolicy { get; set; }
 
 #pragma warning disable 0414
-    private DepthPointCloudGenerator _depthPointCloudGen = null;
+    private DepthPointCloudGenerator _depthPointCloudGen;
 #pragma warning restore 0414
 
     private _NativeLocationServiceAdapter _locationServiceAdapter;
@@ -93,14 +93,14 @@ namespace Niantic.ARDK.AR
     /// <inheritdoc />
     public float WorldScale
     {
-      get { return _worldScale; }
-      set { _worldScale = value; }
+      get => _worldScale;
+      set => _worldScale = value;
     }
 
     public ARSessionRunOptions RunOptions { get; private set; }
 
     /// <inheritdoc />
-    public Guid StageIdentifier { get; private set; }
+    public Guid StageIdentifier { get; }
 
     static _NativeARSession()
     {
@@ -112,7 +112,7 @@ namespace Niantic.ARDK.AR
 
     public IARMesh Mesh
     {
-      get { return _meshDataParser; }
+      get => _meshDataParser;
     }
 
     private _MeshDataParser _meshDataParser = new _MeshDataParser();
@@ -165,7 +165,7 @@ namespace Niantic.ARDK.AR
     {
       _CheckThread();
 
-      ARLog._Debug("Dispose called on _NativeARSession");
+      ARLog._Debug($"Dispose called on {nameof(_NativeARSession)}");
 
       GC.SuppressFinalize(this);
       Dispose(true);
@@ -230,10 +230,7 @@ namespace Niantic.ARDK.AR
 
     public bool IsDestroyed
     {
-      get
-      {
-        return _nativeHandle == IntPtr.Zero;
-      }
+      get => _nativeHandle == IntPtr.Zero;
     }
 
     /// <inheritdoc />
@@ -247,7 +244,7 @@ namespace Niantic.ARDK.AR
 
       if (_nativeHandle == IntPtr.Zero)
       {
-        ARLog._Debug("Session was free'd before Run()");
+        ARLog._Debug("Session was freed before Run()");
         return;
       }
 
@@ -467,21 +464,17 @@ namespace Niantic.ARDK.AR
 
       if (_hasSetupCommandBuffer && _virtualCamera == null)
       {
-        var msg =
-          "Multiple command buffers are being set up to fetch AR updates." +
-          "This is expected on the Android platform, but may not be desired otherwise.";
-        ARLog._Debug(msg);
+        ARLog._Debug("Multiple command buffers are being set up to fetch AR updates." +
+          "This is expected on the Android platform, but may not be desired otherwise.");
       }
 
       if (_virtualCamera != null)
       {
         _virtualCamera.Dispose();
         _virtualCamera = null;
-
-        var msg =
-          "A command buffer was explicitly set up to fetch AR updates, so the virtual " +
-          " camera set up to do so previously has been disposed.";
-        ARLog._Debug(msg);
+        
+        ARLog._Debug("A command buffer was explicitly set up to fetch AR updates, so the virtual " +
+          " camera set up to do so previously has been disposed.");
       }
 
       commandBuffer.IssuePluginEventAndData(GetRenderEventFunc(), 1, _nativeHandle);
@@ -505,10 +498,7 @@ namespace Niantic.ARDK.AR
         if (State == ARSessionState.Running)
           value(new ARSessionRanArgs());
       }
-      remove
-      {
-        _ran -= value;
-      }
+      remove => _ran -= value;
     }
 
     /// <inheritdoc />
@@ -523,10 +513,7 @@ namespace Niantic.ARDK.AR
         if (State == ARSessionState.Paused)
           value(new ARSessionPausedArgs());
       }
-      remove
-      {
-        _paused -= value;
-      }
+      remove => _paused -= value;
     }
 
     private ArdkEventHandler<FrameUpdatedArgs> _frameUpdated;
@@ -542,10 +529,7 @@ namespace Niantic.ARDK.AR
 
         _frameUpdated += value;
       }
-      remove
-      {
-        _frameUpdated -= value;
-      }
+      remove => _frameUpdated -= value;
     }
 
     private ArdkEventHandler<AnchorsArgs> _anchorsAdded;
@@ -561,10 +545,7 @@ namespace Niantic.ARDK.AR
 
         _anchorsAdded += value;
       }
-      remove
-      {
-        _anchorsAdded -= value;
-      }
+      remove => _anchorsAdded -= value;
     }
 
 
@@ -581,10 +562,7 @@ namespace Niantic.ARDK.AR
 
         _anchorsUpdated += value;
       }
-      remove
-      {
-        _anchorsUpdated -= value;
-      }
+      remove => _anchorsUpdated -= value;
     }
 
 
@@ -601,10 +579,7 @@ namespace Niantic.ARDK.AR
 
         _anchorsRemoved += value;
       }
-      remove
-      {
-        _anchorsRemoved -= value;
-      }
+      remove => _anchorsRemoved -= value;
     }
 
     /// <inheritdoc />
@@ -618,10 +593,7 @@ namespace Niantic.ARDK.AR
 
         _anchorsMerged += value;
       }
-      remove
-      {
-        _anchorsMerged -= value;
-      }
+      remove => _anchorsMerged -= value;
     }
 
     private ArdkEventHandler<MapsArgs> _mapsAdded;
@@ -637,10 +609,7 @@ namespace Niantic.ARDK.AR
 
         _mapsAdded += value;
       }
-      remove
-      {
-        _mapsAdded -= value;
-      }
+      remove => _mapsAdded -= value;
     }
 
 
@@ -657,10 +626,7 @@ namespace Niantic.ARDK.AR
 
         _mapsUpdated += value;
       }
-      remove
-      {
-        _mapsUpdated -= value;
-      }
+      remove => _mapsUpdated -= value;
     }
 
     private ArdkEventHandler<CameraTrackingStateChangedArgs> _cameraTrackingStateChanged;
@@ -676,10 +642,7 @@ namespace Niantic.ARDK.AR
 
         _cameraTrackingStateChanged += value;
       }
-      remove
-      {
-        _cameraTrackingStateChanged -= value;
-      }
+      remove => _cameraTrackingStateChanged -= value;
     }
 
     /// <inheritdoc />
@@ -693,10 +656,7 @@ namespace Niantic.ARDK.AR
 
         _sessionInterrupted += value;
       }
-      remove
-      {
-        _sessionInterrupted -= value;
-      }
+      remove => _sessionInterrupted -= value;
     }
 
     /// <inheritdoc />
@@ -710,10 +670,7 @@ namespace Niantic.ARDK.AR
 
         _sessionInterruptionEnded += value;
       }
-      remove
-      {
-        _sessionInterruptionEnded -= value;
-      }
+      remove => _sessionInterruptionEnded -= value;
     }
 
     /// <inheritdoc />
@@ -728,10 +685,7 @@ namespace Niantic.ARDK.AR
 
         _queryingShouldSessionAttemptRelocalization.Add(value);
       }
-      remove
-      {
-        _queryingShouldSessionAttemptRelocalization.Remove(value);
-      }
+      remove => _queryingShouldSessionAttemptRelocalization.Remove(value);
     }
 
     /// <inheritdoc />
@@ -745,10 +699,7 @@ namespace Niantic.ARDK.AR
 
         _sessionFailed += value;
       }
-      remove
-      {
-        _sessionFailed -= value;
-      }
+      remove => _sessionFailed -= value;
     }
 
     /// @}
@@ -1383,6 +1334,10 @@ namespace Niantic.ARDK.AR
 
           foreach (var anchor in anchors)
           {
+            // Anchor could have been removed by the MergeAnchor operation
+            if (anchor.IsDisposed())
+              continue;
+
             var id = anchor.Identifier;
             anchor.Dispose();
             session._cachedAnchors.Remove(id);

@@ -177,7 +177,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
 
       if (!(session is _IMockARSession mockSession))
       {
-        ARLog._Error("Mock objects can only be detected by mock ARSessions.");
+        ARLog._Warn("Mock objects can only be detected by mock ARSessions.");
         return;
       }
 

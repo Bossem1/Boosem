@@ -12,6 +12,7 @@ using Niantic.ARDK.AR.Camera;
 using Niantic.ARDK.AR.HitTest;
 using Niantic.ARDK.AR.Image;
 using Niantic.ARDK.AR.LightEstimate;
+using Niantic.ARDK.AR.PointCloud;
 using Niantic.ARDK.AR.SLAM;
 using Niantic.ARDK.Utilities.Collections;
 using Niantic.ARDK.VirtualStudio.Remote;
@@ -39,7 +40,8 @@ namespace Niantic.ARDK.AR.Frame
       ReadOnlyCollection<IARAnchor> anchors, // Even native ARAnchors are directly serializable.
       _SerializableARMap[] maps,
       float worldScale,
-      Matrix4x4 estimatedDisplayTransform
+      Matrix4x4 estimatedDisplayTransform,
+      _SerializableARPointCloud featurePoints
     )
     {
       CapturedImageBuffer = capturedImageBuffer;
@@ -48,10 +50,10 @@ namespace Niantic.ARDK.AR.Frame
       Camera = camera;
       LightEstimate = lightEstimate;
       WorldScale = worldScale;
-
+      RawFeaturePoints = featurePoints;
       Anchors = anchors;
       Maps = maps.AsNonNullReadOnly<IARMap>();
-
+      
       _estimatedDisplayTransform = estimatedDisplayTransform;
     }
 
@@ -70,15 +72,11 @@ namespace Niantic.ARDK.AR.Frame
     public ReadOnlyCollection<IARAnchor> Anchors { get; set; }
     public ReadOnlyCollection<IARMap> Maps { get; set; }
     public float WorldScale { get; set; }
+    public _SerializableARPointCloud RawFeaturePoints { get; set; }
 
     public IntPtr[] CapturedImageTextures
     {
-      get { return EmptyArray<IntPtr>.Instance; }
-    }
-
-    public IARPointCloud RawFeaturePoints
-    {
-      get { return null; }
+      get => EmptyArray<IntPtr>.Instance;
     }
 
     public abstract ReadOnlyCollection<IARHitTestResult> HitTest
@@ -128,34 +126,47 @@ namespace Niantic.ARDK.AR.Frame
     (
       bool includeImageBuffers = true,
       bool includeAwarenessBuffers = true,
-      int compressionLevel = 70
+      int compressionLevel = 70,
+      bool includeFeaturePoints = false
     )
     {
-      return _Serialize(this, includeImageBuffers, includeAwarenessBuffers, compressionLevel);
+      return _Serialize
+      (
+        this, 
+        includeImageBuffers, 
+        includeAwarenessBuffers, 
+        compressionLevel,
+        includeFeaturePoints
+      );
+    }
+    
+    IARPointCloud IARFrame.RawFeaturePoints
+    {
+      get => RawFeaturePoints;
     }
 
     IImageBuffer IARFrame.CapturedImageBuffer
     {
-      get { return CapturedImageBuffer; }
+      get => CapturedImageBuffer;
     }
     IDepthBuffer IARFrame.Depth
     {
-      get { return DepthBuffer; }
+      get => DepthBuffer;
     }
 
     ISemanticBuffer IARFrame.Semantics
     {
-      get { return SemanticBuffer; }
+      get => SemanticBuffer;
     }
 
     IARCamera IARFrame.Camera
     {
-      get { return Camera; }
+      get => Camera;
     }
 
     IARLightEstimate IARFrame.LightEstimate
     {
-      get { return LightEstimate; }
+      get => LightEstimate;
     }
   }
 }

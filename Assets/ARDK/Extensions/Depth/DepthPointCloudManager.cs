@@ -18,7 +18,6 @@ namespace Niantic.ARDK.Extensions.Depth
 {
   /// This helper can be placed in a scene to help visualize the depth point cloud.
   /// All data is expected to come from ARSession.
-  [RequireComponent(typeof(ARDepthManager))]
   public class DepthPointCloudManager: ARSessionListener
   {
     private const int MAX_SIMULTANEOUS_DRAW = 1023;
@@ -40,17 +39,6 @@ namespace Niantic.ARDK.Extensions.Depth
 
     private Mesh _pointMesh;
     private Material _pointMaterial;
-
-    private ARDepthManager _depthManager;
-
-    protected override void InitializeImpl()
-    {
-      base.InitializeImpl();
-
-      _depthManager = GetComponent<ARDepthManager>();
-      if (_depthManager == null)
-        ARLog._Error("DepthPointCloudManager requires a sibling ARDepthManager component.");
-    }
 
     protected override void ListenToSession()
     {
@@ -77,20 +65,6 @@ namespace Niantic.ARDK.Extensions.Depth
 
         var pointCloudSettings = worldConfig.DepthPointCloudSettings;
         pointCloudSettings.IsEnabled = true;
-
-        // The depth manager will always fit to viewport, so do that as well
-        pointCloudSettings.FitToViewport = true;
-
-        var arCamera = _depthManager._ARCamera;
-        if (arCamera != null)
-        {
-          pointCloudSettings.TargetWidth = arCamera.pixelWidth;
-          pointCloudSettings.TargetHeight = arCamera.pixelHeight;
-        }
-
-        var processor = _depthManager.DepthBufferProcessor;
-        pointCloudSettings.Interpolate = processor.InterpolationMode != InterpolationMode.None;
-        pointCloudSettings.BackProjectionDistance = processor.InterpolationPreference;
       }
     }
 

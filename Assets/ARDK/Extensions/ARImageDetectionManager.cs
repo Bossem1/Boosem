@@ -47,7 +47,7 @@ namespace Niantic.ARDK.Extensions
     }
 
     private readonly HashSet<IARReferenceImage> _runtimeImages = new HashSet<IARReferenceImage>();
-    private readonly ARDKReadOnlyCollection<IARReferenceImage> _readOnlyRuntimeImages;
+    private ARDKReadOnlyCollection<IARReferenceImage> _readOnlyRuntimeImages;
 
     /// Adds an image to RuntimeImages and, if this manager is enabled, request that the session be
     /// re-run.
@@ -73,14 +73,11 @@ namespace Niantic.ARDK.Extensions
       }
     }
 
-    ARImageDetectionManager()
-    {
-      _readOnlyRuntimeImages = _runtimeImages.AsArdkReadOnly();
-    }
-
     protected override void InitializeImpl()
     {
       base.InitializeImpl();
+
+      _readOnlyRuntimeImages = _runtimeImages.AsArdkReadOnly();
 
       if (_images != null)
       {

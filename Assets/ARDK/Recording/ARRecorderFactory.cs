@@ -1,6 +1,7 @@
 // Copyright 2021 Niantic, Inc. All Rights Reserved.
 
 using Niantic.ARDK.AR;
+using System;
 
 namespace Niantic.ARDK.Recording
 {
@@ -8,6 +9,7 @@ namespace Niantic.ARDK.Recording
   /// Factory for creating <see cref="IARRecorder"/> based on the current platform and
   /// <see cref="IARSession"/>.
   /// </summary>
+  [Obsolete("This will be removed in a future release, use ARCapture classes instead")]
   public static class ARRecorderFactory
   {
     /// <summary>

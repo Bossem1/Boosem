@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 using Niantic.ARDK.AR;
 using Niantic.ARDK.AR.Awareness;
@@ -13,11 +12,12 @@ using Niantic.ARDK.Utilities;
 using Niantic.ARDK.Utilities.Logging;
 
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Niantic.ARDK.Extensions
 {
   [DisallowMultipleComponent]
-  public class ARDepthManager: 
+  public class ARDepthManager:
     ARRenderFeatureProvider
   {
     /// Event for when the first depth buffer is received.
@@ -113,10 +113,13 @@ namespace Niantic.ARDK.Extensions
     /// The resulting texture is not display aligned,
     /// and needs to be used with the DepthTransform
     /// property.
-    /// @note May be null, if occlusions are disabled.
     public Texture GPUDepth
     {
-      get => _depthTexture;
+      get
+      {
+        UpdateDepthTexture(fromBuffer: _cpuDepth);
+        return _depthTexture;
+      }
     }
 
     /// Returns a transformation that fits the depth buffer
@@ -171,8 +174,10 @@ namespace Niantic.ARDK.Extensions
     private bool _supportsFloatingPointTextures;
     private bool _supportsZWrite;
     private bool _debugVisualizationEnabled;
+    private int _lastFrameDepthTextureWasUpdated;
+    private int _depthFrameCount;
 
-    private bool IsDepthNormalized
+    public bool IsDepthNormalized
     {
       get => _occlusionMode != OcclusionMode.None && !_supportsFloatingPointTextures;
     }
@@ -198,6 +203,7 @@ namespace Niantic.ARDK.Extensions
       // Check hardware capabilities
       _supportsFloatingPointTextures = SystemInfo.SupportsTextureFormat(TextureFormat.RFloat);
       _supportsZWrite = DoesDeviceSupportWritingToZBuffer();
+      ARLog._Debug("Graphics device: " + SystemInfo.graphicsDeviceType);
 
       // Verify the selected occlusion technique
       VerifyOcclusionTechnique();
@@ -214,7 +220,12 @@ namespace Niantic.ARDK.Extensions
         if (_occlusionMode == OcclusionMode.DepthBuffer && !_supportsZWrite)
           ARLog._Error
           (
-            "Using depth buffer occlusion on a device that does not support Z Buffering"
+            "Occlusion: Using depth buffer technique on a device that does not support Z Buffering"
+          );
+        else
+          ARLog._Debug
+          (
+            "Occlusion: Using " + _occlusionMode + " technique (explicit)."
           );
 
         return;
@@ -224,6 +235,11 @@ namespace Niantic.ARDK.Extensions
       _occlusionMode = _supportsZWrite
         ? OcclusionMode.DepthBuffer
         : OcclusionMode.ScreenSpaceMesh;
+
+      ARLog._Debug
+      (
+        "Occlusion: Using " + _occlusionMode + " technique (auto)."
+      );
     }
 
     protected override void DeinitializeImpl()
@@ -300,26 +316,12 @@ namespace Niantic.ARDK.Extensions
       _cpuDepth = processor.AwarenessBuffer;
       _depthTransform = processor.SamplerTransform;
 
+      // Increment frame counter
+      _depthFrameCount++;
+
       // Only update the depth texture when occlusions are enabled
-      var shouldUpdateTexture = _occlusionMode != OcclusionMode.None && args.IsKeyFrame;
-      if (shouldUpdateTexture)
-      {
-        if (_supportsFloatingPointTextures)
-          // Deliver depth in a floating point texture intact
-          _cpuDepth.CreateOrUpdateTextureRFloat(ref _depthTexture, filterMode: _textureFilterMode);
-        else
-        {
-          // Deliver depth in an ARGB32 (8888) texture normalized
-          float max = _cpuDepth.FarDistance;
-          float min = _cpuDepth.NearDistance;
-          _cpuDepth.CreateOrUpdateTextureARGB32
-          (
-            ref _depthTexture,
-            filterMode: _textureFilterMode,
-            valueConverter: depth => (depth - min) / (max - min)
-          );
-        }
-      }
+      if (_occlusionMode != OcclusionMode.None && args.IsKeyFrame)
+        UpdateDepthTexture(fromBuffer: _cpuDepth);
 
       // Update the screen space mesh occluder
       if (_occlusionMode == OcclusionMode.ScreenSpaceMesh)
@@ -337,7 +339,7 @@ namespace Niantic.ARDK.Extensions
           _meshOccluder.Orientation = Screen.orientation;
         }
       }
-      
+
       // Finally, let users know the manager has finished updating.
       DepthBufferUpdated?.Invoke(args);
     }
@@ -355,6 +357,31 @@ namespace Niantic.ARDK.Extensions
       }
     }
 
+    /// Updates the depth texture
+    private void UpdateDepthTexture(IDepthBuffer fromBuffer)
+    {
+      if (fromBuffer == null || _lastFrameDepthTextureWasUpdated == _depthFrameCount)
+        return;
+
+      _lastFrameDepthTextureWasUpdated = _depthFrameCount;
+
+      if (_supportsFloatingPointTextures)
+        // Deliver depth in a floating point texture intact
+        fromBuffer.CreateOrUpdateTextureRFloat(ref _depthTexture, filterMode: _textureFilterMode);
+      else
+      {
+        // Deliver depth in an ARGB32 (8888) texture normalized
+        float max = fromBuffer.FarDistance;
+        float min = fromBuffer.NearDistance;
+        fromBuffer.CreateOrUpdateTextureARGB32
+        (
+          ref _depthTexture,
+          filterMode: _textureFilterMode,
+          valueConverter: depth => (depth - min) / (max - min)
+        );
+      }
+    }
+
     /// Attempts to allocate and initialize a new mesh occluder.
     /// @note This method does nothing if the depth texture is
     ///   not available or the mesh occluder is already present.
@@ -363,7 +390,7 @@ namespace Niantic.ARDK.Extensions
       // The mesh occluder instance already exists
       if (_meshOccluder != null)
         return;
-      
+
       // Depth texture is not ready
       if (_depthTexture == null)
         return;
@@ -491,9 +518,20 @@ namespace Niantic.ARDK.Extensions
 
     private static bool DoesDeviceSupportWritingToZBuffer()
     {
-      var device = SystemInfo.graphicsDeviceVersion.ToLower();
-      var openglExp = new Regex("opengl es [3-9].");
-      return device.Contains("metal") || openglExp.IsMatch(device);
+      var device = SystemInfo.graphicsDeviceType;
+      switch (device)
+      {
+        case GraphicsDeviceType.Direct3D11:
+        case GraphicsDeviceType.Direct3D12:
+        case GraphicsDeviceType.OpenGLES3:
+        case GraphicsDeviceType.OpenGLCore:
+        case GraphicsDeviceType.Metal:
+        case GraphicsDeviceType.Vulkan:
+          return true;
+
+        default:
+          return false;
+      }
     }
   }
 }

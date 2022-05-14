@@ -9,6 +9,7 @@ using Niantic.ARDK.AR.ARSessionEventArgs;
 using Niantic.ARDK.AR.Configuration;
 using Niantic.ARDK.External;
 using Niantic.ARDK.Utilities;
+using Niantic.ARDK.Utilities.Logging;
 
 using UnityEngine;
 
@@ -38,16 +39,13 @@ namespace Niantic.ARDK.Extensions
     /// changed.
     public GameObject PlanePrefab
     {
-      get { return _planePrefab; }
-      set { _planePrefab = value; }
+      get => _planePrefab;
+      set => _planePrefab = value;
     }
 
     public PlaneDetection DetectedPlaneTypes
     {
-      get
-      {
-        return _detectedPlaneTypes;
-      }
+      get => _detectedPlaneTypes;
       set
       {
         if (value != _detectedPlaneTypes)
@@ -99,6 +97,7 @@ namespace Niantic.ARDK.Extensions
       ARSession.AnchorsAdded += OnAnchorsAdded;
       ARSession.AnchorsUpdated += OnAnchorsUpdated;
       ARSession.AnchorsRemoved += OnAnchorsRemoved;
+      ARSession.AnchorsMerged += OnAnchorsMerged;
     }
 
     protected override void StopListeningToSession()
@@ -106,6 +105,25 @@ namespace Niantic.ARDK.Extensions
       ARSession.AnchorsAdded -= OnAnchorsAdded;
       ARSession.AnchorsUpdated -= OnAnchorsUpdated;
       ARSession.AnchorsRemoved -= OnAnchorsRemoved;
+      ARSession.AnchorsMerged -= OnAnchorsMerged;
+    }
+    
+    private void OnAnchorsMerged(AnchorsMergedArgs args)
+    {
+      var anchorsToRemove = args.Children;
+      var anchorToUpdate = args.Parent;
+
+      foreach (var anchor in anchorsToRemove)
+      {
+        RemoveAnchor(anchor);
+      }
+
+      if (!_planeLookup.ContainsKey(anchorToUpdate.Identifier))
+      {
+        ARLog._Error("Anchors merged onto an anchor that does not already exist.");
+        CreateAnchorPrefab(anchorToUpdate as IARPlaneAnchor);
+      }
+      RefreshAnchor(anchorToUpdate as IARPlaneAnchor);
     }
 
     private void OnAnchorsAdded(AnchorsArgs args)
@@ -143,12 +161,18 @@ namespace Niantic.ARDK.Extensions
     {
       foreach (var anchor in args.Anchors)
       {
-        if (anchor.AnchorType != AnchorType.Plane)
+        if (anchor.AnchorType != AnchorType.Plane || 
+            anchor.IsDisposed())
           continue;
 
-        Destroy(_planeLookup[anchor.Identifier]);
-        _planeLookup.Remove(anchor.Identifier);
+        RemoveAnchor(anchor);
       }
+    }
+
+    private void RemoveAnchor(IARAnchor anchor)
+    {
+      Destroy(_planeLookup[anchor.Identifier]);
+      _planeLookup.Remove(anchor.Identifier);
     }
 
     private void RefreshAnchor(IARPlaneAnchor anchor)

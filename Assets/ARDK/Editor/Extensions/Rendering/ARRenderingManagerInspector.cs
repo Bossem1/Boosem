@@ -7,7 +7,8 @@ using UnityEngine;
 namespace ARDK.Editor.Extensions.Rendering
 {
   [CustomEditor(typeof(ARRenderingManager))]
-  public class ARRenderingManagerInspector : UnityEditor.Editor
+  public class ARRenderingManagerInspector
+    : UnityEditor.Editor
   {
     private enum Target
     {
@@ -39,7 +40,7 @@ namespace ARDK.Editor.Extensions.Rendering
       _renderTargetIdProperty.intValue = (int)((Target)EditorGUILayout.EnumPopup
         ((Target)_renderTargetIdProperty.intValue));
       EditorGUILayout.EndHorizontal();
-      
+
       if (_renderTargetIdProperty.intValue == 0)
       {
         _cameraProperty.objectReferenceValue = EditorGUILayout.ObjectField
@@ -54,7 +55,7 @@ namespace ARDK.Editor.Extensions.Rendering
         ? EditorGUILayout.ObjectField
           ("Texture", _textureProperty.objectReferenceValue, typeof(RenderTexture), false)
         : null;
-      
+
       // Only require clipping plane distances when targeting a render texture.
       // Otherwise, these values are copied from the target camera.
       if (_renderTargetIdProperty.intValue > 0)
@@ -62,7 +63,7 @@ namespace ARDK.Editor.Extensions.Rendering
         _nearProperty.floatValue = EditorGUILayout.FloatField("Near Clip Plane", _nearProperty.floatValue);
         _farProperty.floatValue = EditorGUILayout.FloatField("Far Clip Plane", _farProperty.floatValue);
       }
-      
+
       if (_renderTargetIdProperty.intValue > 0 && _textureProperty.objectReferenceValue == null)
       {
         EditorGUILayout.HelpBox

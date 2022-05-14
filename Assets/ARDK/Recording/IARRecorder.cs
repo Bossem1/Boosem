@@ -7,6 +7,7 @@ namespace Niantic.ARDK.Recording
   /// <summary>
   /// Used to record an AR session.
   /// </summary>
+  [Obsolete("This will be removed in a future release, use ARCapture classes instead")]
   public interface IARRecorder
   {
     /// <summary>

@@ -113,7 +113,7 @@ namespace Niantic.ARDK.AR.Frame
     private IntPtr _nativeHandle;
     internal IntPtr _NativeHandle
     {
-      get { return _nativeHandle; }
+      get => _nativeHandle;
     }
 
     public ARFrameDisposalPolicy? DisposalPolicy { get; set; }
@@ -589,41 +589,49 @@ namespace Niantic.ARDK.AR.Frame
     (
       bool includeImageBuffers = true,
       bool includeAwarenessBuffers = true,
-      int compressionLevel = 70
+      int compressionLevel = 70,
+      bool includeFeaturePoints = false
     )
     {
-      return _Serialize(this, includeImageBuffers, includeAwarenessBuffers, compressionLevel);
+      return _Serialize
+      (
+        this, 
+        includeImageBuffers, 
+        includeAwarenessBuffers, 
+        compressionLevel,
+        includeFeaturePoints
+      );
     }
 
     IImageBuffer IARFrame.CapturedImageBuffer
     {
-      get { return CapturedImageBuffer; }
+      get => CapturedImageBuffer;
     }
 
     IDepthBuffer IARFrame.Depth
     {
-      get { return Depth; }
+      get => Depth;
     }
 
     ISemanticBuffer IARFrame.Semantics
     {
-      get { return Semantics; }
+      get => Semantics;
     }
 
 
     IARCamera IARFrame.Camera
     {
-      get { return Camera; }
+      get => Camera;
     }
 
     IARLightEstimate IARFrame.LightEstimate
     {
-      get { return LightEstimate; }
+      get => LightEstimate;
     }
 
     IARPointCloud IARFrame.RawFeaturePoints
     {
-      get { return RawFeaturePoints; }
+      get => RawFeaturePoints;
     }
 
 #region TestingShim

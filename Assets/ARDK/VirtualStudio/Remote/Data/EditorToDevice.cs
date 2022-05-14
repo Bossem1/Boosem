@@ -25,6 +25,7 @@ namespace Niantic.ARDK.VirtualStudio.Remote.Data
     public int ImageCompressionQuality = 30;
     public int TargetImageFramerate = 12;
     public int TargetBufferFramerate = 10;
+    public int TargetFeaturePointFramerate = 12;
   }
 
   [Serializable]

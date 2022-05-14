@@ -13,6 +13,7 @@ using Niantic.ARDK.AR.Awareness.Semantics;
 using Niantic.ARDK.AR.HitTest;
 using Niantic.ARDK.AR.Image;
 using Niantic.ARDK.AR.LightEstimate;
+using Niantic.ARDK.AR.PointCloud;
 using Niantic.ARDK.AR.SLAM;
 using Niantic.ARDK.VirtualStudio.AR;
 using Niantic.ARDK.Utilities;
@@ -46,7 +47,8 @@ namespace Niantic.ARDK.AR.Frame
       ReadOnlyCollection<IARAnchor> anchors, // Even native ARAnchors are directly serializable.
       _SerializableARMap[] maps,
       float worldScale,
-      Matrix4x4 estimatedDisplayTransform
+      Matrix4x4 estimatedDisplayTransform,
+      _SerializableARPointCloud rawFeaturePoints = null
     ):
       base
       (
@@ -58,7 +60,8 @@ namespace Niantic.ARDK.AR.Frame
         anchors,
         maps,
         worldScale,
-        estimatedDisplayTransform
+        estimatedDisplayTransform,
+        rawFeaturePoints
       )
     {
     }

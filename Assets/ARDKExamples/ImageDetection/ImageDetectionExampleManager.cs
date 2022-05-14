@@ -21,7 +21,7 @@ using UnityEngine.UI;
 namespace Niantic.ARDKExamples
 {
   // Image Detection example. Shows how to create and use an ARImageDetectionManager, both through
-  // the inspector and through code. For the manager created through code, shows how to create 
+  // the inspector and through code. For the manager created through code, shows how to create
   // ARReferenceImages both from a byte stream and from a file.
   // Also includes adding and removing an image from a manager at runtime.
   //
@@ -72,12 +72,12 @@ namespace Niantic.ARDKExamples
     [SerializeField]
     private Button _toggleCodeImageManagerButton;
     private Text _toggleCodeImageManagerButtonText;
-    
+
     // A button that will be configured to enable/disable the automatically created ARImageDetectionManager.
     [SerializeField]
     private Button _toggleInspectorImageManagerButton;
     private Text _toggleInspectorImageManagerButtonText;
-    
+
     // A button that will be configured to enable/disable the Yeti image in the _codeImageDetectionManager
     // (which is the byte buffer image).
     [SerializeField]
@@ -93,18 +93,18 @@ namespace Niantic.ARDKExamples
     private void Start()
     {
       ARSessionFactory.SessionInitialized += SetupSession;
-      
+
       _toggleYetiButton.onClick.AddListener(ToggleYetiImage);
       _toggleYetiButtonText = _toggleYetiButton.GetComponentInChildren<Text>();
-      
+
       _toggleInspectorImageManagerButton.onClick.AddListener(ToggleInspectorImageManager);
       _toggleInspectorImageManagerButtonText = _toggleInspectorImageManagerButton.GetComponentInChildren<Text>();
-      
+
       _toggleCodeImageManagerButton.onClick.AddListener(ToggleCodeImageManager);
       _toggleCodeImageManagerButtonText = _toggleCodeImageManagerButton.GetComponentInChildren<Text>();
-      
+
       SetupCodeImageDetectionManager();
-      
+
       UpdateButtonText();
     }
 
@@ -121,7 +121,7 @@ namespace Niantic.ARDKExamples
       _toggleInspectorImageManagerButtonText.text =
         BoolText(_inspectorImageDetectionManager.AreFeaturesEnabled) +
         " Inspector Created Manager";
-      
+
       _toggleCodeImageManagerButtonText.text =
         BoolText(_codeImageDetectionManager.AreFeaturesEnabled) +
         " Code Created Manager";
@@ -187,7 +187,7 @@ namespace Niantic.ARDKExamples
       }
 
       _yetiImageInImageSet = !_yetiImageInImageSet;
-      
+
       UpdateButtonText();
     }
 
@@ -206,7 +206,7 @@ namespace Niantic.ARDKExamples
         }
         _inspectorImageDetectionManager.EnableFeatures();
       }
-      
+
       UpdateButtonText();
     }
 
@@ -225,7 +225,7 @@ namespace Niantic.ARDKExamples
         }
         _codeImageDetectionManager.EnableFeatures();
       }
-      
+
       UpdateButtonText();
     }
 
@@ -240,6 +240,7 @@ namespace Niantic.ARDKExamples
         var imageName = imageAnchor.ReferenceImage.Name;
 
         var newPlane = Instantiate(_plane);
+        newPlane.name = "Image-" + imageName;
         SetPlaneColor(newPlane, imageName);
         _detectedImages[anchor.Identifier] = newPlane;
 
@@ -253,7 +254,7 @@ namespace Niantic.ARDKExamples
       { "filePathImage", Color.green },
       { "crowd", Color.blue },
     };
-    
+
     private void SetPlaneColor(GameObject plane, string imageName)
     {
       var renderer = plane.GetComponentInChildren<MeshRenderer>();

@@ -143,7 +143,8 @@ namespace Niantic.ARDK.AR
     /// <param name="compressionLevel">The quality of the compressed buffers (1 = worst, 100 = best).</param>
     /// <param name="includeImageBuffers">If false, image buffers will not be serialized.</param>
     /// <param name="includeAwarenessBuffers">If false, awareness buffers will not be serialized.</param>
+    /// <param name="includeFeaturePoints">If true, raw feature points will be serialized.</param>
     [Obsolete("This method is deprecated. Please use the ARFrameFactory to serialise the frame.")]
-    IARFrame Serialize(bool includeImageBuffers = true, bool includeAwarenessBuffers = true, int compressionLevel = 70);
+    IARFrame Serialize(bool includeImageBuffers = true, bool includeAwarenessBuffers = true, int compressionLevel = 70, bool includeFeaturePoints = false);
   }
 }

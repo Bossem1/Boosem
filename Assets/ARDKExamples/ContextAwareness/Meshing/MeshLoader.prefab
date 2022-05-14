@@ -39,13 +39,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3667716828834607549}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96df25fcb12f4ab3933cfda2a757d0f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _timeToDiscovery: 2
-  _meshPath: 
+  _meshPath: Assets/ARDKExamples/ContextAwareness/Meshing/MockMeshes/mesh_9.bin
 --- !u!114 &3667716828834607538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53,11 +53,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3667716828834607549}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a973c0ccaf364bfa9f35cafca6d1fb9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _timeToDiscovery: 2
-  _meshSequencePath: 
+  _meshSequencePath: Assets/ARDKExamples/ContextAwareness/Meshing/MockMeshes
   _updateInterval: 1

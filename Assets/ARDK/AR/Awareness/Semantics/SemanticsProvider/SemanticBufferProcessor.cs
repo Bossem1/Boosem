@@ -59,18 +59,12 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
       if (frame == null)
         return;
 
-#if UNITY_EDITOR 
-      var orientation = Screen.width > Screen.height
-        ? ScreenOrientation.Landscape
-        : ScreenOrientation.Portrait;
-#else
-      var orientation = Screen.orientation;
-#endif
-      
+      var orientation = RenderTarget.ScreenOrientation;
+
       ProcessFrame
       (
+        frame,
         buffer: frame.Semantics,
-        arCamera: frame.Camera,
         targetResolution: _viewport.GetResolution(forOrientation: orientation),
         targetOrientation: orientation
       );
@@ -106,7 +100,7 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
       // Get normalized coordinates
       var x = viewportX + 0.5f;
       var y = viewportY + 0.5f;
-      var resolution = _viewport.GetResolution(Screen.orientation);
+      var resolution = _viewport.GetResolution(RenderTarget.ScreenOrientation);
       var uv = new Vector3(x / resolution.width, y / resolution.height, 1.0f);
 
       return AwarenessBuffer.Sample(uv, SamplerTransform);

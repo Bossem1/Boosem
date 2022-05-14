@@ -15,6 +15,9 @@ namespace Niantic.ARDK.Utilities.Logging
 
     private UnityARLogHandler()
     {
+      Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+      Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.Full);
+      Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.Full);
     }
 
     /// <inheritdoc />

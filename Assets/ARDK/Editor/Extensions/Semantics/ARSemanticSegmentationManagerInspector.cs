@@ -9,19 +9,20 @@ using UnityEngine;
 namespace ARDK.Editor.Extensions.Semantics
 {
   [CustomEditor(typeof(ARSemanticSegmentationManager))]
-  public class ARSemanticSegmentationManagerInspector: UnityEditor.Editor
+  public class ARSemanticSegmentationManagerInspector
+    : UnityEditor.Editor
   {
     private SerializedProperty _interpolationProperty;
     private SerializedProperty _interpolationPreferenceProperty;
     private SerializedProperty _suppressionChannelsProperty;
-    
+
     private void OnEnable()
     {
       _interpolationProperty = serializedObject.FindProperty("_interpolation");
       _interpolationPreferenceProperty = serializedObject.FindProperty("_interpolationPreference");
       _suppressionChannelsProperty = serializedObject.FindProperty("_depthSuppressionChannels");
     }
-    
+
     public override void OnInspectorGUI()
     {
       base.OnInspectorGUI();
@@ -51,7 +52,7 @@ namespace ARDK.Editor.Extensions.Semantics
           if (((ARSemanticSegmentationManager)target).GetComponent<ARDepthManager>() == null)
             EditorGUILayout.HelpBox("Please add an AR Depth Manager component to enable this feature.", MessageType.Error);
         }
-        
+
         EditorGUI.indentLevel--;
       }
 
@@ -61,7 +62,7 @@ namespace ARDK.Editor.Extensions.Semantics
       var semanticsManager = (ARSemanticSegmentationManager)target;
       var depthManager = semanticsManager.GetComponent<ARDepthManager>();
       var isDepthManagerPresentAndEnabled = depthManager != null && depthManager.enabled;
-      
+
       if (_interpolationProperty.enumValueIndex > 0)
       {
         if (!isDepthManagerPresentAndEnabled)
@@ -82,9 +83,9 @@ namespace ARDK.Editor.Extensions.Semantics
             ("Interpolation preference is driven by AR Depth Manager.", MessageType.Info);
         }
       }
-      
+
       serializedObject.ApplyModifiedProperties();
-      
+
       var isRenderingManagerPresent = semanticsManager.GetComponent<ARRenderingManager>() != null;
       if (!isRenderingManagerPresent)
       {

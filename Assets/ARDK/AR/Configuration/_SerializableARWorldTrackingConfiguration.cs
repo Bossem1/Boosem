@@ -84,39 +84,17 @@ namespace Niantic.ARDK.AR.Configuration
       }
     }
 
-    private static bool _allowDetectionImagesForTesting = false;
-
-    internal static void SetAllowDetectionImagesForTesting(bool newState)
-    {
-      _allowDetectionImagesForTesting = newState;
-    }
-
     private IReadOnlyCollection<IARReferenceImage> _detectionImages =
       EmptyArdkReadOnlyCollection<IARReferenceImage>.Instance;
     public IReadOnlyCollection<IARReferenceImage> DetectionImages
     {
       get
       {
-        if (_allowDetectionImagesForTesting)
-        {
-          return _detectionImages;
-        }
-        else
-        {
-          ARLog._Warn("DetectionImages property is not supported in the Unity. Returning an empty collection.");
-          return EmptyArdkReadOnlyCollection<IARReferenceImage>.Instance;
-        }
+        return _detectionImages;
       }
       set
       {
-        if (_allowDetectionImagesForTesting)
-        {
-          _detectionImages = value;
-        }
-        else
-        {
-          throw new NotSupportedException();
-        }
+        _detectionImages = value;
       }
     }
 
@@ -126,15 +104,8 @@ namespace Niantic.ARDK.AR.Configuration
       Action completionHandler
     )
     {
-      if (_allowDetectionImagesForTesting)
-      {
-        _detectionImages = detectionImages;
-        completionHandler();
-      }
-      else
-      {
-        throw new NotSupportedException();
-      }
+      _detectionImages = detectionImages;
+      completionHandler();
     }
 
     public override void CopyTo(IARConfiguration target)
