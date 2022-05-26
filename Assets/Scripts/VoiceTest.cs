@@ -10,7 +10,7 @@ public class VoiceTest : MonoBehaviour
     public Text uiText;
 
     VoiceController voiceController;
-    public PlayerAnimation playerController;
+    public PlayerAnimation  playerController;
 
     public void GetSpeech()
     {
