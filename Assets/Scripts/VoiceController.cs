@@ -1,31 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-public class VoiceController : MonoBehaviour
-{
+
+public class VoiceController : MonoBehaviour {
+
     AndroidJavaObject activity;
     AndroidJavaObject plugin;
 
     public delegate void OnResultRecieved(string result);
     public static OnResultRecieved resultRecieved;
 
-    private void Start()
-    {
+    private void Start() {
         InitPlugin();
     }
 
-    void InitPlugin()
-    {
+    void InitPlugin() {
         AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 
         activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-        activity.CallStatic("setLanguage", "en_US");
-        Debug.Log("Language Set");
-
+        
         activity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
-            plugin = new AndroidJavaObject(
-            "com.example.matthew.plugin.VoiceBridge");
+                plugin = new AndroidJavaObject(
+                "com.example.matthew.plugin.VoiceBridge");
         }));
 
         activity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
@@ -37,8 +32,7 @@ public class VoiceController : MonoBehaviour
     /// gets called via SendMessage from the android plugin GameObject must be called "VoiceController"
     /// </summary>
     /// <param name="recognizedText">recognizedText.</param>
-    public void OnVoiceResult(string recognizedText)
-    {
+    public void OnVoiceResult(string recognizedText) {
         Debug.Log(recognizedText);
         resultRecieved?.Invoke(recognizedText);
     }
@@ -47,13 +41,11 @@ public class VoiceController : MonoBehaviour
     /// gets called via SendMessage from the android plugin
     /// </summary>
     /// <param name="error">Error.</param>
-    public void OnErrorResult(string error)
-    {
+    public void OnErrorResult(string error) {
         Debug.Log(error);
     }
 
-    public void GetSpeech()
-    {
+    public void GetSpeech() {
         // Calls the function from the jar file
         activity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
             plugin.Call("StartSpeaking");
