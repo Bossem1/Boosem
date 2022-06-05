@@ -6,7 +6,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    
+    public AudioSource hellosource;
+    public GameObject sheeple;
+    public GameObject hellobutton;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,5 +19,12 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+    public void HelloSound(){
+        if(sheeple.activeSelf)
+            hellosource.Play();
+            hellobutton.SetActive(true);
+        //sheeple.SetActive(true);
+
     }
 }

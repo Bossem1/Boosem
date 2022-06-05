@@ -23,7 +23,7 @@ public class BossemDollar : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        PlayerPrefs.DeleteAll();
+        
     }
     
     //
