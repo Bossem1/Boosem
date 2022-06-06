@@ -23,14 +23,14 @@ public class CircleTransition : MonoBehaviour
 
    private void Update()
    {
-       if(Input.GetKeyDown(KeyCode.Alpha1))
-       {
-           OpenBlankScreen();
-       }
-       else if(Input.GetKeyDown(KeyCode.Alpha2))
-       {
-           CloseBlankScreen();
-       }
+    //    if(Input.GetKeyDown(KeyCode.Alpha1))
+    //    {
+    //        OpenBlankScreen();
+    //    }
+    //    else if(Input.GetKeyDown(KeyCode.Alpha2))
+    //    {
+    //        CloseBlankScreen();
+    //    }
    }
 
    public void OpenBlankScreen()
