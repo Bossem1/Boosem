@@ -46,8 +46,8 @@ public class CircleTransition : MonoBehaviour
    private void DrawBlankScreen()
    {
        var canvasRect = _canvas.GetComponent<RectTransform>().rect;
-       var canvasWidth = canvasRect.width;
-       var canvasHeight = canvasRect.height * 2;
+       var canvasWidth = canvasRect.width * 2;
+       var canvasHeight = canvasRect.height * 3;
 
        var squareValue = 0f;
        if(canvasWidth > canvasHeight)
