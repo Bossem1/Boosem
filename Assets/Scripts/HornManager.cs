@@ -6,6 +6,8 @@ public class HornManager : MonoBehaviour
 {
     private AudioSource audioSource;
     public AudioClip audioClip;
+    public GameObject hornButton;
+    public AudioObject clipToPlay;
    
     // Start is called before the first frame update
     public void Start()
@@ -26,6 +28,8 @@ public class HornManager : MonoBehaviour
     private IEnumerator PlayAfterSeconds()
     {
         yield return new WaitForSeconds(3);
-        audioSource.PlayOneShot(audioClip);
+        Vocals.instance.Say(clipToPlay);
+        // audioSource.PlayOneShot(audioClip);
+        hornButton.gameObject.SetActive(true);
     }
 }

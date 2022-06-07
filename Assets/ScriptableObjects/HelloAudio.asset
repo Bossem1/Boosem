@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 227135bf1e206054d8f784be144ced4c, type: 3}
-  m_Name: SheepleAudio
+  m_Name: HelloAudio
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: 345693e0c30ae8c41aceac027b4bad98, type: 3}
-  subtitle: 'Hello '
+  subtitle: Hello
