@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class HornManager : MonoBehaviour
 {
-    public AudioSource audiosource;
+    private AudioSource audioSource;
+    public AudioClip audioClip;
    
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();  
     }
 
     // Update is called once per frame
@@ -18,8 +19,13 @@ public class HornManager : MonoBehaviour
         
     }
     public void HornSound(){
-        audiosource.Play();
-        
+        audioSource.Play(); 
+        StartCoroutine(PlayAfterSeconds());
+    }
 
+    private IEnumerator PlayAfterSeconds()
+    {
+        yield return new WaitForSeconds(3);
+        audioSource.PlayOneShot(audioClip);
     }
 }
