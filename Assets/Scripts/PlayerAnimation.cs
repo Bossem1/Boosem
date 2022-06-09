@@ -51,6 +51,7 @@ public class PlayerAnimation : MonoBehaviour
     public void Walk()
     {
         isMoving = true;
+        StartCoroutine(StopWalkAnimation());
     }
     public void Run()
     {
@@ -72,6 +73,15 @@ public class PlayerAnimation : MonoBehaviour
         anim.SetBool("isJumping", false);
         anim.SetBool("isRunning", false);
         anim.SetBool("isKicking", false);
+        anim.SetBool("isWalking", false);
+    }
+
+    private IEnumerator StopWalkAnimation()
+    {
+        yield return new WaitForSeconds(10);
+        transform.Rotate(0f, 90f, 0f);
+        // transform.rotation = Camera.main.transform.rotation;
+        isMoving = false;
         anim.SetBool("isWalking", false);
     }
     
