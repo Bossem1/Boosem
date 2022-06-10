@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
     )
     {
       bool result;
-          
+
       // Convert world positions to coordinates on the grid
       var source = Utils.PositionToGridNode(fromPosition, _model.Settings.TileSize);
       var destination = Utils.PositionToGridNode(toPosition, _model.Settings.TileSize);
@@ -367,7 +367,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
       path = new Path(waypoints, Path.Status.PathPartial);
       return true;
     }
-    
+
     /// Traces a path from a pre-computed PathNode collection.
     /// @param nodesA collection containing parental relationships.
     /// @param traceStart The source node of the trace.

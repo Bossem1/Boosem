@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using Niantic.ARDK.Internals;
 
@@ -191,40 +191,6 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
 #pragma warning restore 0162
     }
 
-    public bool DoesChannelExistAt
-    (
-      Vector2 point,
-      int viewportWidth,
-      int viewportHeight,
-      int channelIndex
-    )
-    {
-      if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-        return _SemanticBuffer_DoesChannelExistAtViewpoint
-          (_nativeHandle, point.x, point.y, viewportWidth, viewportHeight, channelIndex);
-
-#pragma warning disable 0162
-      throw new IncorrectlyUsedNativeClassException();
-#pragma warning restore 0162
-    }
-
-    public bool DoesChannelExistAt
-    (
-      Vector2 point,
-      int viewportWidth,
-      int viewportHeight,
-      string channelName
-    )
-    {
-      if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-        return _SemanticBuffer_DoesChannelExistAtViewpointByName
-          (_nativeHandle, point.x, point.y, viewportWidth, viewportHeight, channelName);
-
-#pragma warning disable 0162
-      throw new IncorrectlyUsedNativeClassException();
-#pragma warning restore 0162
-    }
-
     public bool DoesChannelExist(int channelIndex)
     {
       if (NativeAccess.Mode == NativeAccess.ModeType.Native)
@@ -313,88 +279,7 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
       throw new IncorrectlyUsedNativeClassException();
 #pragma warning restore 0162
     }
-
-    public ISemanticBuffer RotateToScreenOrientation()
-    {
-      if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-      {
-        var newHandle = _SemanticBuffer_RotateToScreenOrientation(_nativeHandle);
-        return new _NativeSemanticBuffer(newHandle, _worldScale, Intrinsics);
-      }
-
-#pragma warning disable 0162
-      throw new IncorrectlyUsedNativeClassException();
-#pragma warning restore 0162
-    }
-
-    public ISemanticBuffer Interpolate
-    (
-      IARCamera arCamera,
-      int viewportWidth,
-      int viewportHeight,
-      float backProjectionDistance = AwarenessParameters.DefaultBackProjectionDistance
-    )
-    {
-      var projectionMatrix =
-        arCamera.CalculateProjectionMatrix
-        (
-          Screen.orientation,
-          viewportWidth,
-          viewportHeight,
-          _SemanticBuffer_GetNearDistance(_nativeHandle),
-          _SemanticBuffer_GetFarDistance(_nativeHandle)
-        );
-
-      var frameViewMatrix = arCamera.GetViewMatrix(Screen.orientation);
-      var nativeProjectionMatrix = _UnityMatrixToNarArray(projectionMatrix);
-      var nativeFrameViewMatrix = _UnityMatrixToNarArray(frameViewMatrix);
-
-      if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-      {
-        var newHandle =
-          _SemanticBuffer_Interpolate
-          (
-            _nativeHandle,
-            nativeProjectionMatrix,
-            nativeFrameViewMatrix,
-            backProjectionDistance
-          );
-
-        return new _NativeSemanticBuffer(newHandle, _worldScale, Intrinsics);
-      }
-      else
-      {
-#pragma warning disable 0162
-        throw new IncorrectlyUsedNativeClassException();
-#pragma warning restore 0162
-      }
-    }
-
-    public ISemanticBuffer FitToViewport
-    (
-      int viewportWidth,
-      int viewportHeight
-    )
-    {
-      if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-      {
-        var newHandle = _SemanticBuffer_FitToViewport
-        (
-          _nativeHandle,
-          viewportWidth,
-          viewportHeight
-        );
-
-        return new _NativeSemanticBuffer(newHandle, _worldScale, Intrinsics);
-      }
-      else
-      {
-#pragma warning disable 0162
-        throw new IncorrectlyUsedNativeClassException();
-#pragma warning restore 0162
-      }
-    }
-
+    
     public UInt32 Sample(Vector2 uv)
     {
       var w = (int)Width;
@@ -599,25 +484,5 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
 
     [DllImport(_ARDKLibrary.libraryName)]
     private static extern IntPtr _SemanticBuffer_GetCopy(IntPtr nativeHandle);
-
-    [DllImport(_ARDKLibrary.libraryName)]
-    private static extern IntPtr _SemanticBuffer_RotateToScreenOrientation(IntPtr nativeHandle);
-
-    [DllImport(_ARDKLibrary.libraryName)]
-    private static extern IntPtr _SemanticBuffer_Interpolate
-    (
-      IntPtr nativeHandle,
-      float[] nativeProjectionMatrix,
-      float[] nativeFrameViewMatrix,
-      float backProjectionDistance
-    );
-
-    [DllImport(_ARDKLibrary.libraryName)]
-    private static extern IntPtr _SemanticBuffer_FitToViewport
-    (
-      IntPtr nativeHandle,
-      int viewportWidth,
-      int viewportHeight
-    );
   }
 }

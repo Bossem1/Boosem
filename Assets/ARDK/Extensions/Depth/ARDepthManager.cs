@@ -1,3 +1,5 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using System;
 using System.Collections.Generic;
 
 using Niantic.ARDK.AR;
@@ -13,6 +15,7 @@ using Niantic.ARDK.Utilities.Logging;
 
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 namespace Niantic.ARDK.Extensions
 {
@@ -42,12 +45,14 @@ namespace Niantic.ARDK.Extensions
       Auto = 3
     }
 
+    [FormerlySerializedAs("_arCamera")]
     [SerializeField]
     [_Autofill]
-    private Camera _arCamera;
+    [Tooltip("The scene camera used to render AR content.")]
+    private Camera _camera;
 
     [SerializeField]
-    [Range(0, 60)]
+    [Range(1, 60)]
     private uint _keyFrameFrequency = 20;
 
     [SerializeField]
@@ -59,10 +64,11 @@ namespace Niantic.ARDK.Extensions
     [HideInInspector]
     [Range(0.0f, 1.0f)]
     [Tooltip
-    (
-      "Sets whether to prefer closer or distant objects in the depth buffer to align "
-        + "with color pixels more."
-    )]
+      (
+        "Sets whether to align depth pixels with closer (0.1) or distant (1.0) pixels " +
+        "in the color image (aka the back-projection distance)."
+      )
+    ]
     private float _interpolationPreference = AwarenessParameters.DefaultBackProjectionDistance;
 
     [SerializeField]
@@ -72,6 +78,68 @@ namespace Niantic.ARDK.Extensions
     [HideInInspector]
     private FilterMode _textureFilterMode = FilterMode.Point;
 
+    /// Returns a reference to the scene camera used to render AR content, if present.
+    public Camera Camera
+    {
+      get => _camera;
+      set
+      {
+        if (Initialized)
+          throw new InvalidOperationException("Cannot set this property after this component is initialized.");
+
+        _camera = value;
+      }
+    }
+
+    /// The value specifying how many times the depth generation routine
+    /// should target running per second.
+    public uint KeyFrameFrequency
+    {
+      get => _keyFrameFrequency;
+      set
+      {
+        if (value <= 0 && value > 60)
+          throw new ArgumentOutOfRangeException(nameof(value));
+
+        if (value != _keyFrameFrequency)
+        {
+          _keyFrameFrequency = value;
+          RaiseConfigurationChanged();
+        }
+      }
+    }
+
+    /// The value specifying whether the depth buffer should synchronize with the camera pose.
+    public InterpolationMode Interpolation
+    {
+      get => _interpolation;
+      set
+      {
+        if (Initialized)
+          throw new InvalidOperationException("Cannot set this property after this component is initialized.");
+
+        _interpolation = value;
+      }
+    }
+
+    /// The value specifying whether to align depth pixels with closer (0.1)
+    /// or distant (1.0) pixels in the color image (aka the back-projection distance).
+    public float InterpolationPreference
+    {
+      get => _interpolationPreference;
+      set
+      {
+        if (Initialized)
+          throw new InvalidOperationException("Cannot set this property after this component is initialized.");
+
+        if (value < 0f && value > 1f)
+          throw new ArgumentOutOfRangeException(nameof(value));
+
+        _interpolationPreference = value;
+      }
+    }
+
+    /// The value specifying how to render occlusions.
     public OcclusionMode OcclusionTechnique
     {
       get => _occlusionMode;
@@ -93,26 +161,29 @@ namespace Niantic.ARDK.Extensions
       }
     }
 
+    /// If true, will use bilinear filtering instead of point filtering on the depth texture.
+    public bool PreferSmoothEdges
+    {
+      get => _textureFilterMode != FilterMode.Point;
+      set => _textureFilterMode = value ? FilterMode.Bilinear : FilterMode.Point;
+    }
+
     /// Returns the underlying context awareness processor.
     public IDepthBufferProcessor DepthBufferProcessor
     {
       get => _GetOrCreateProcessor();
     }
 
-    /// Returns the latest depth buffer on CPU memory.
-    /// This buffer is not displayed aligned, and
-    /// needs to be sampled with the DepthTransform
-    /// property.
+    /// Returns the latest depth buffer on CPU memory. This buffer is not displayed aligned, and
+    /// needs to be sampled with the DepthTransform property.
     public IDepthBuffer CPUDepth
     {
       get => _cpuDepth;
     }
     private IDepthBuffer _cpuDepth;
 
-    /// Returns the latest depth buffer on GPU memory.
-    /// The resulting texture is not display aligned,
-    /// and needs to be used with the DepthTransform
-    /// property.
+    /// Returns the latest depth buffer on GPU memory. The resulting texture is not display aligned,
+    /// and needs to be used with the DepthTransform property.
     public Texture GPUDepth
     {
       get
@@ -122,8 +193,7 @@ namespace Niantic.ARDK.Extensions
       }
     }
 
-    /// Returns a transformation that fits the depth buffer
-    /// to the target viewport.
+    /// Returns a transformation that fits the depth buffer to the target viewport.
     public Matrix4x4 DepthTransform
     {
       get => _depthTransform;
@@ -137,7 +207,7 @@ namespace Niantic.ARDK.Extensions
     {
       if (_depthBufferProcessor == null)
       {
-        _depthBufferProcessor = new DepthBufferProcessor(_arCamera)
+        _depthBufferProcessor = new DepthBufferProcessor(_camera)
         {
           InterpolationMode = _interpolation,
           InterpolationPreference = _interpolationPreference
@@ -182,20 +252,16 @@ namespace Niantic.ARDK.Extensions
       get => _occlusionMode != OcclusionMode.None && !_supportsFloatingPointTextures;
     }
 
-    internal Camera _ARCamera
-    {
-      get { return _arCamera; }
-    }
-
     protected override void InitializeImpl()
     {
-      if (_arCamera == null)
+      if (_camera == null)
       {
-        var warning = "The Camera field is not set on the ARDepthManager before use, " +
-          "grabbing Unity's Camera.main";
+        var warning =
+          "The Camera field was not set on the ARDepthManager before use. " +
+          "Will default to use Unity's Camera.main";
 
         ARLog._Warn(warning);
-        _arCamera = Camera.main;
+        _camera = Camera.main;
       }
 
       _GetOrCreateProcessor();
@@ -398,12 +464,12 @@ namespace Niantic.ARDK.Extensions
       // Allocate the mesh occluder component
       _meshOccluder = new DepthMeshOccluder
       (
-        targetCamera: _arCamera,
+        targetCamera: _camera,
         depthTexture: _depthTexture,
         meshResolution: _cpuDepth.CalculateDisplayFrame
         (
-          _arCamera.pixelWidth,
-          _arCamera.pixelHeight
+          _camera.pixelWidth,
+          _camera.pixelHeight
         )
       )
       {
@@ -463,7 +529,7 @@ namespace Niantic.ARDK.Extensions
 
     protected override void OnRenderTargetChanged(RenderTarget? target)
     {
-      _GetOrCreateProcessor().AssignViewport(target ?? _arCamera);
+      _GetOrCreateProcessor().AssignViewport(target ?? _camera);
     }
 
     /// Called when it is time to copy the current render state to the main rendering material.

@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Concurrent;
@@ -137,7 +137,7 @@ namespace Niantic.ARDK.Utilities.BinarySerialization
       // those. All the other non-arrays for enums and [Serializable] are registered
       // automatically.
       RegisterItemSerializer(SimpleSerializableSerializer<_SerializableARMap>.Instance);
-      RegisterItemSerializer(SimpleSerializableSerializer<_SerializableARBaseAnchor>.Instance);
+      RegisterItemSerializer(SimpleSerializableSerializer<_SerializableARBasicAnchor>.Instance);
       RegisterItemSerializer(SimpleSerializableSerializer<_SerializableARImageAnchor>.Instance);
       RegisterItemSerializer(SimpleSerializableSerializer<_SerializableARPlaneAnchor>.Instance);
 

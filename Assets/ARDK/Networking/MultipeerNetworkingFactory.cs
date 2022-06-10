@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace Niantic.ARDK.Networking
     public static IMultipeerNetworking Create
     (
       ServerConfiguration serverConfiguration,
-      Guid stageIdentifier = default(Guid)
+      Guid stageIdentifier = default
     )
     {
       return _Create(serverConfiguration, null, stageIdentifier);

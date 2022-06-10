@@ -1,17 +1,21 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using System;
 
 using Niantic.ARDK.AR.Anchors;
 using Niantic.ARDK.AR.ReferenceImage;
 using Niantic.ARDK.Utilities.Logging;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace Niantic.ARDK.VirtualStudio.AR.Mock
 {
-  [RequireComponent(typeof(MeshRenderer))]
-  [RequireComponent(typeof(MeshFilter))]
   [ExecuteInEditMode]
-  public sealed class MockImageAnchor: MockAnchorBase
+  public sealed class MockImageAnchor:
+    MockAnchorBase, ISerializationCallbackReceiver
   {
     [SerializeField]
     private string _name;
@@ -173,12 +177,24 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       return true;
     }
 
+#if UNITY_EDITOR
+    private bool _created;
     private void Reset()
     {
+      if (!_created)
+      {
+        if (!CreateDialog())
+          return;
+      }
+
+      _created = true;
+      _vertices = null;
       Build();
+
       _orientation = Orientation.Up;
 
       var parent = transform.parent;
+      transform.localRotation = Quaternion.Euler(-90, 0, 0);
 
       // Unparent from everything to set scale to [1, 1, 1]
       transform.SetParent(null, true);
@@ -187,8 +203,64 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       // Reparent while keeping the scale the same.
       if (parent != null)
         transform.SetParent(parent, true);
+    }
 
-      transform.localRotation = Quaternion.Euler(-90, 0, 0);
+    private bool CreateDialog()
+    {
+      var numComponents = GetComponents<Component>().Length;
+      var hasMeshFilter = GetComponent<MeshFilter>() != null;
+      var hasMeshRenderer = GetComponent<MeshRenderer>() != null;
+
+      if (hasMeshFilter || hasMeshRenderer || numComponents > 2)
+      {
+        var goName = gameObject.name;
+
+        string msg;
+        if (hasMeshFilter || hasMeshRenderer)
+        {
+          msg =
+            "A MeshFilter or MeshRenderer component already exists on this GameObject. Adding a " +
+            "MockImageAnchor will alter their properties.";
+        }
+        else
+        {
+          msg = "Adding a MockImageAnchor will alter this GameObject's transform.";
+        }
+
+        var option = EditorUtility.DisplayDialogComplex
+        (
+          $"Create MockImageAnchor on {goName}?",
+          msg,
+          "Create",
+          "Cancel",
+          "Create on new child GameObject"
+        );
+
+        switch (option)
+        {
+          // Create
+          case 0:
+            return true;
+
+          // Cancel
+          case 1:
+            DestroyImmediate(this);
+            return false;
+
+          // Create on new child
+          case 2:
+            var child = new GameObject();
+            child.transform.SetParent(transform, false);
+            DestroyImmediate(this);
+            child.AddComponent<MockImageAnchor>();
+
+            Undo.RegisterCreatedObjectUndo(child, "Create MockImageAnchor");
+            Selection.activeObject = child;
+            return false;
+        }
+      }
+
+      return true;
     }
 
     private void OnValidate()
@@ -196,11 +268,28 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       if (_image != _currImage)
         _imageDirty = true;
     }
+#endif
+
+    // OnBeforeSerialize is called often while in Edit Mode, essentially whenever it's
+    // open in the Inspector view, but it's also only called after Reset when a component
+    // is first added to a GameObject. That makes it perfect to use to check if Reset is being
+    // invoked from a a pre-existing or new component.
+    public void OnBeforeSerialize()
+    {
+#if UNITY_EDITOR
+      _created = true;
+#endif
+    }
+
+    public void OnAfterDeserialize()
+    {
+    }
 
     [ContextMenu("Update Display")]
     private void UpdateImageDisplay()
     {
       _currImage = _image;
+
       if (_currImage == null)
       {
         UpdateVertices(0.5f, 0.5f);
@@ -216,19 +305,25 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
 
       var mockWidth = 1f;
       var mockHeight = 1f;
+
       if (width > height)
         mockHeight = height / width;
       else if (width < height)
         mockWidth = width / height;
 
       UpdateVertices(mockWidth, mockHeight);
+
       _imageDirty = false;
     }
 
     private void Build()
     {
       var mesh = new Mesh();
-      GetComponent<MeshFilter>().mesh = mesh;
+
+      if (_MeshFilter == null)
+        gameObject.AddComponent<MeshFilter>();
+
+      _MeshFilter.mesh = mesh;
 
       mesh.vertices = (_vertices == null || _vertices.Length == 0) ? _defaultVertices : _vertices;
       mesh.uv = _uv;
@@ -236,6 +331,10 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
 
       mesh.RecalculateNormals();
       mesh.RecalculateBounds();
+
+
+      if (_MeshRenderer == null)
+        gameObject.AddComponent<MeshRenderer>();
 
       _MeshRenderer.material = new Material(Shader.Find("Unlit/Texture"));
     }

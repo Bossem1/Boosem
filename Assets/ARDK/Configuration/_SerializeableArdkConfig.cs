@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -14,12 +14,19 @@ namespace Niantic.ARDK.Configuration
     private string _apiKey;
     private string _contextAwarenessUrl = "";
     private string _authenticationUrl = "";
+    internal static string _userId;
 
     public _SerializeableArdkConfig()
     {
       ARLog._Debug($"Using config: {nameof(_SerializeableArdkConfig)}");
     }
-    
+
+    public bool SetUserIdOnLogin(string userId)
+    {
+      _userId = userId;
+      return true;
+    }
+
     public bool SetDbowUrl(string url)
     {
       _dbowUrl = url;
@@ -61,7 +68,7 @@ namespace Niantic.ARDK.Configuration
       return true;
     }
 
-    public NetworkingErrorCode VerifyApiKeyWithFeature(string feature)
+    public NetworkingErrorCode VerifyApiKeyWithFeature(string feature, bool isAsync)
     {
       if (String.IsNullOrEmpty(_apiKey))
         return NetworkingErrorCode.ApiKeyNotSet;

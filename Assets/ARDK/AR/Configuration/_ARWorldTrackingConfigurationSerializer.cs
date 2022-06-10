@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
 using T = Niantic.ARDK.AR.Configuration._NativeARWorldTrackingConfiguration;
@@ -46,10 +46,6 @@ namespace Niantic.ARDK.AR.Configuration
       BooleanSerializer.Instance.Serialize(serializer, item.IsMeshingEnabled);
       CompressedUInt32Serializer.Instance.Serialize(serializer, item.MeshingTargetFrameRate);
       FloatSerializer.Instance.Serialize(serializer, item.MeshingTargetBlockSize);
-
-      // Mapping
-      EnumSerializer.ForType<MappingRole>().Serialize(serializer, item.MappingRole);
-      serializer.Serialize(item.MapLayerIdentifier);
     }
 
     protected override T DoDeserialize(BinaryDeserializer deserializer)
@@ -77,10 +73,6 @@ namespace Niantic.ARDK.AR.Configuration
       result.IsMeshingEnabled = BooleanSerializer.Instance.Deserialize(deserializer);
       result.MeshingTargetFrameRate = CompressedUInt32Serializer.Instance.Deserialize(deserializer);
       result.MeshingTargetBlockSize = FloatSerializer.Instance.Deserialize(deserializer);
-
-      // Mapping
-      result.MappingRole = EnumSerializer.ForType<MappingRole>().Deserialize(deserializer);
-      result.MapLayerIdentifier = (MapLayerIdentifier) deserializer.Deserialize();
 
       return result;
     }

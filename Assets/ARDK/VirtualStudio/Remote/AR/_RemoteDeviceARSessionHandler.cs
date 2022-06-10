@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace Niantic.ARDK.VirtualStudio.Remote
 
     public IARSession InnerARSession
     {
-      get { return _session; }
+      get => _session;
     }
 
     private readonly int _imageCompressionQuality;
@@ -174,7 +174,7 @@ namespace Niantic.ARDK.VirtualStudio.Remote
       (
         new ARSessionAnchorsAddedMessage
         {
-          Anchors = anchors.BaseAnchors.ToArray(),
+          Anchors = anchors.BasicAnchors.ToArray(),
           PlaneAnchors = anchors.PlaneAnchors.ToArray(),
           ImageAnchors = anchors.ImageAnchors.ToArray(),
         }
@@ -189,7 +189,7 @@ namespace Niantic.ARDK.VirtualStudio.Remote
       (
         new ARSessionAnchorsUpdatedMessage
         {
-          Anchors = anchors.BaseAnchors.ToArray(),
+          Anchors = anchors.BasicAnchors.ToArray(),
           PlaneAnchors = anchors.PlaneAnchors.ToArray(),
           ImageAnchors = anchors.ImageAnchors.ToArray(),
         }
@@ -204,7 +204,7 @@ namespace Niantic.ARDK.VirtualStudio.Remote
       (
         new ARSessionAnchorsRemovedMessage
         {
-          Anchors = anchors.BaseAnchors.ToArray(),
+          Anchors = anchors.BasicAnchors.ToArray(),
           PlaneAnchors = anchors.PlaneAnchors.ToArray(),
           ImageAnchors = anchors.ImageAnchors.ToArray(),
         }

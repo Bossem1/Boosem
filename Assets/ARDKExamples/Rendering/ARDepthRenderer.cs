@@ -1,4 +1,5 @@
-﻿using System;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using System;
 using System.Collections.Generic;
 
 using Niantic.ARDK.AR;
@@ -19,7 +20,6 @@ namespace Niantic.ARDKExamples.Rendering
   /// texture is generated on each keyframe
   public class ARDepthRenderer:
     IRenderFeatureProvider,
-    ITargetableRenderFeatureProvider,
     IDisposable
   {
     private RenderTarget _renderTarget;
@@ -85,7 +85,7 @@ namespace Niantic.ARDKExamples.Rendering
     /// This notifies the ARFrameRenderer which sets the proper shader variables.
     /// @note
     /// This is a no-op until the ARFrameRenderer has been initialized, so it should
-    /// only be called after that happens. 
+    /// only be called after that happens.
     public void SetOcclusionEnabled(bool enabled)
     {
       var enabledFeatures = enabled ? Features : new HashSet<string>();

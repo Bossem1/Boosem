@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using Niantic.ARDK.AR;
 using Niantic.ARDK.AR.Configuration;
@@ -77,6 +77,8 @@ namespace Niantic.ARDK.Extensions.Meshing
     )]
     private Material _invisibleMaterial;
 
+    /// The value specifying the how many times the meshing routine
+    /// should target running per second.
     public uint TargetFrameRate
     {
       get { return _targetFrameRate; }
@@ -90,6 +92,7 @@ namespace Niantic.ARDK.Extensions.Meshing
       }
     }
 
+    /// The value specifying the target size of a mesh block in meters
     public float TargetBlockSize
     {
       get { return _targetBlockSize; }
@@ -103,6 +106,8 @@ namespace Niantic.ARDK.Extensions.Meshing
       }
     }
 
+    /// The value specifying the radius, in meters, of the meshed surface around the player.
+    /// @note A value of 0 represents 'Infinity'
     public float MeshingRadius
     {
       get { return _meshingRadius; }
@@ -122,7 +127,7 @@ namespace Niantic.ARDK.Extensions.Meshing
       }
     }
 
-    /// When true, mesh block GameObjects will not be updated
+    /// When false, mesh block GameObjects will not be updated
     /// (a running ARSession will still surface mesh updates).
     public bool GenerateUnityMeshes
     {
@@ -130,6 +135,11 @@ namespace Niantic.ARDK.Extensions.Meshing
       set { _generateUnityMeshes = value; }
     }
 
+    /// The prefab to instantiate and update for each mesh block.
+    /// @note
+    ///   This GameObject requires a MeshFilter component, and will update a MeshCollider
+    ///   component if able. A MeshRenderer component is optional, but required for the
+    ///   SetUseInvisibleMaterial method.
     public GameObject MeshPrefab
     {
       get { return _meshPrefab; }
@@ -149,6 +159,8 @@ namespace Niantic.ARDK.Extensions.Meshing
       }
     }
 
+    /// Parent of every block (piece of mesh). If empty, this is assigned to this component's
+    /// GameObject when initialized.
     public GameObject MeshRoot
     {
       get { return _meshRoot; }
@@ -270,7 +282,7 @@ namespace Niantic.ARDK.Extensions.Meshing
     protected override void StopListeningToSession()
     {
       ARSession.Mesh.MeshBlocksUpdated -= OnMeshUpdated;
-      
+
       _generator.MeshObjectsUpdated -= OnMeshObjectsUpdated;
       _generator.MeshObjectsCleared -= OnMeshObjectsCleared;
     }

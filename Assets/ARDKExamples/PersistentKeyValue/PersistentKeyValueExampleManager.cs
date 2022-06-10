@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.IO;
@@ -10,6 +10,7 @@ using Niantic.ARDK.Networking.MultipeerNetworkingEventArgs;
 using Niantic.ARDK.Utilities;
 using Niantic.ARDK.Utilities.BinarySerialization;
 using Niantic.ARDK.Utilities.BinarySerialization.ItemSerializers;
+using Niantic.ARDK.Utilities.Input.Legacy;
 
 using UnityEngine;
 using UnityEngine.UI;

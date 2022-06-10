@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -36,6 +36,7 @@ using UnityEditor;
 
 namespace Niantic.ARDK.VirtualStudio.AR.Mock
 {
+  using Camera = UnityEngine.Camera;
   internal sealed class _MockFrameBufferProvider:
     IDisposable
   {
@@ -513,7 +514,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       (
         _ModelWidth,
         _ModelHeight,
-        true,
+        isKeyframe:true,
         GetMockViewMatrix(_imageCamera),
         depthData,
         _ModelNearDistance,
@@ -560,7 +561,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       (
         _ModelWidth,
         _ModelHeight,
-        true,
+        isKeyframe:true,
         GetMockViewMatrix(_imageCamera),
         data,
         _channelNames,
@@ -579,12 +580,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       // get the input layer name's index, which should range from 0 to Unity's max # of layers minus 1
       int layerIndex = LayerMask.NameToLayer(MOCK_LAYER_NAME);
 
-      if (layerIndex < 0)
-      {
-        if (!CreateLayer(MOCK_LAYER_NAME, out layerIndex))
-          return;
-      }
-      if (layerIndex > -1)
+      if (layerIndex >= 0 || CreateLayer(MOCK_LAYER_NAME, out layerIndex))
       {
         // perform a guardrail check to see if the mock layer
         // is included in the ar camera's culling mask
@@ -601,7 +597,7 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
       layerIndex = -1;
       if (LayerMask.NameToLayer(layerName) >= 0)
       {
-        ARLog._ErrorFormat("Layer: {0} already exists in TagManager.", layerName);
+        ARLog._WarnFormat("Layer: {0} already exists in TagManager.", false, layerName);
         return false;
       }
 

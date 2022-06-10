@@ -1,4 +1,5 @@
-﻿using System;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using System;
 
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace Niantic.ARDK.AR.Awareness
       var viewport = processor.CurrentViewportResolution;
       var viewWidth = viewport.x;
       var viewHeight = viewport.y;
-      
+
       // The sampler transform takes from viewport to buffer,
       // so we need to invert it to go the other way around
       var transform = processor.SamplerTransform.inverse;

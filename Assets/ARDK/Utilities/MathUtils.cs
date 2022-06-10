@@ -1,4 +1,5 @@
-﻿using System;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -40,7 +41,7 @@ namespace Niantic.ARDK.Utilities
         viewportOrientation
       );
     }
-    
+
     /// Returns an affine transform for converting between
     /// normalized image coordinates and a coordinate space
     /// appropriate for rendering the camera image onscreen.
@@ -70,7 +71,7 @@ namespace Niantic.ARDK.Utilities
       // We invert the y coordinate because Unity's 2D coordinate system is
       // upside-down compared to the native systems.
       var invert = invertVertically ? AffineInvertVertical() : Matrix4x4.identity;
-      
+
       return invert *
         AffineFit
         (
@@ -82,7 +83,7 @@ namespace Niantic.ARDK.Utilities
           viewportOrientation
         );
     }
-    
+
     /// Returns a view matrix for the specified screen orientation using the native convention.
     /// @param camera The camera to convert world space coordinates to.
     /// @param orientation The orientation of the viewport.
@@ -102,17 +103,17 @@ namespace Niantic.ARDK.Utilities
 
       // Get the view matrix for the current orientation in nar convention
       var viewMatrixForCurrentOrientation = camera.GetViewMatrix(currentOrientation);
-      
+
       // Calculate the required rotation for the target orientation
       var rotation = CalculateViewRotation
       (
         from: currentOrientation,
         to: orientation
       );
-      
+
       return rotation * viewMatrixForCurrentOrientation;
     }
-    
+
     /// Returns a view matrix for the specified screen orientation using the native convention.
     /// @param camera The camera to convert world space coordinates to.
     /// @param orientation The orientation of the viewport.
@@ -121,7 +122,7 @@ namespace Niantic.ARDK.Utilities
       Camera camera,
       ScreenOrientation orientation
     )
-    { 
+    {
 #if UNITY_EDITOR
       var currentOrientation = Screen.width > Screen.height
         ? ScreenOrientation.LandscapeLeft
@@ -165,7 +166,7 @@ namespace Niantic.ARDK.Utilities
 
       // Get the view matrix for the current orientation in nar convention
       var viewMatrixForCurrentOrientation = camera.GetViewMatrix(currentOrientation);
-      
+
       // Calculate the required rotation for the target orientation
       var rotation = CalculateViewRotation
       (
@@ -175,7 +176,7 @@ namespace Niantic.ARDK.Utilities
 
       // Rotate the view
       var rotatedView = rotation * viewMatrixForCurrentOrientation;
-      
+
       // Flip the forward axis to conform with unity
       return rotatedView.ConvertViewMatrixBetweenNarAndUnity();
     }
@@ -186,12 +187,12 @@ namespace Niantic.ARDK.Utilities
     internal static Matrix4x4 ConvertViewMatrixBetweenNarAndUnity(this Matrix4x4 view)
     {
       var result = view;
-      
+
       result.m20 *= -1.0f;
       result.m21 *= -1.0f;
       result.m22 *= -1.0f;
       result.m23 *= -1.0f;
-      
+
       return result;
     }
 
@@ -202,7 +203,7 @@ namespace Niantic.ARDK.Utilities
       var p = new Vector2(camera.pixelWidth / 2f, camera.pixelHeight / 2f);
       return new CameraIntrinsics(f, f, p.x, p.y);
     }
-    
+
     /// Calculates camera intrinsics from the specified properties.
     /// @param imageWidth Width of the captured image.
     /// @param imageHeight Height of the captured image.
@@ -289,17 +290,17 @@ namespace Niantic.ARDK.Utilities
 
       // Calculate scaling
       var scale = viewportHeightLandscape / (viewportWidthLandscape / imageWidth * imageHeight);
-      
+
       // Calculate the cropped resolution of the image in landscapess
       var croppedFrame = new Vector2
       (
         // The image fills the longer axis of the viewport
-        x: imageWidth,  
-        
+        x: imageWidth,
+
         // The image is cropped on the shorter axis of the viewport
         y: imageHeight * scale
       );
-      
+
       // Get the corners of the captured image
       var right = useOpenGLConvention ? imageWidth : imageWidth - 1;
       var top = useOpenGLConvention ? imageHeight : imageHeight - 1;
@@ -318,7 +319,7 @@ namespace Niantic.ARDK.Utilities
 
       // Fx and Fy are identical for square pixels
       var focalLength = intrinsics.FocalLength.x;
-      
+
       Vector2 f = new Vector2
       (
         x: 1.0f / (croppedFrame.x * 0.5f / focalLength),
@@ -351,7 +352,7 @@ namespace Niantic.ARDK.Utilities
       else
       {
         projection[2, 2] = far / (near - far);
-        projection[2, 3] = far * near / (near - far);  
+        projection[2, 3] = far * near / (near - far);
       }
 
       return projection;
@@ -408,7 +409,7 @@ namespace Niantic.ARDK.Utilities
         new Vector4(0, 0, 0, 1)
       ).inverse;
     }
-    
+
     // Returns an affine transformation such that if multiplied
     // with normalized coordinates of the target coordinate frame,
     // the results are normalized coordinates in the source
@@ -508,7 +509,7 @@ namespace Niantic.ARDK.Utilities
         new Vector4(0, 0, 0, 1)
       );
     }
-    
+
     internal static Resolution CalculateDisplayFrame
     (
       float sourceWidth,
@@ -545,21 +546,21 @@ namespace Niantic.ARDK.Utilities
         width = Mathf.FloorToInt(sourceWidth * s.x), height = Mathf.FloorToInt(sourceHeight * s.y)
       };
     }
-    
+
     /// Calculates a rotation matrix that transforms a view
     /// matrix from one screen orientation to another.
     internal static Matrix4x4 CalculateViewRotation(ScreenOrientation from, ScreenOrientation to)
     {
       // Get the rotation between the screen orientations
       var angle = (float)GetAngle(from, to) * Mathf.Rad2Deg;
-      
+
       return Matrix4x4.Rotate
       (
         // The view rotation the opposite of the UI rotation
         Quaternion.AngleAxis(-angle, Vector3.forward)
       );
     }
-    
+
     /// Calculates an affine rotation matrix that transforms
     /// an image from one screen orientation to another.
     internal static Matrix4x4 CalculateScreenRotation(ScreenOrientation from, ScreenOrientation to)
@@ -637,7 +638,7 @@ namespace Niantic.ARDK.Utilities
     /// Calculates the angle to rotate from one screen orientation to another in radians.
     /// @param from Original orientation.
     /// @param to Target orientation.
-    /// @returns Angle to rotate to get from one orientation to the other. 
+    /// @returns Angle to rotate to get from one orientation to the other.
     private static double GetAngle(ScreenOrientation from, ScreenOrientation to)
     {
       const double rotationUnit = Math.PI / 2.0;
@@ -709,7 +710,7 @@ namespace Niantic.ARDK.Utilities
       float y = vector.y;
       vector.x = cos * x - sin * y;
       vector.y = sin * x + cos * y;
-      
+
       return vector;
     }
   }

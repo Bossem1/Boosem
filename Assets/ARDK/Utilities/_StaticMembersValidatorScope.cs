@@ -1,6 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
-
-#if MUST_VALIDATE_STATIC_MEMBERS
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -15,6 +13,7 @@ namespace Niantic.ARDK.Utilities
   internal sealed class _StaticMembersValidatorScope:
     IDisposable
   {
+#if MUST_VALIDATE_STATIC_MEMBERS
     private static _StaticMembersValidatorScope _currentInstance;
 
     internal static void _ForValidatorOnly_CheckScopeExists()
@@ -42,7 +41,6 @@ namespace Niantic.ARDK.Utilities
 
       _currentInstance = null;
       NetworkSpawner._Deinitialize();
-      ARSessionCameraFeedExtension._Deinitialize();
 
       _VirtualStudioManager._ResetInstance();
       _RemoteConnection.Deinitialize();
@@ -55,7 +53,13 @@ namespace Niantic.ARDK.Utilities
       _MockNetworkingSessionsMediator._CheckActiveCountIsZero();
       _StaticMemberValidator._ForScopeOnly_CheckCleanState();
     }
+#else
+    public void Dispose()
+    {
+    }
+
+#endif
   }
 }
 
-#endif
+

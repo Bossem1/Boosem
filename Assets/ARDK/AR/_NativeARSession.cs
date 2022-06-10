@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,6 @@ using Niantic.ARDK.AR.Camera;
 using Niantic.ARDK.AR.Configuration;
 using Niantic.ARDK.AR.Awareness.Depth.Generators;
 using Niantic.ARDK.AR.Frame;
-using Niantic.ARDK.AR.Localization;
 using Niantic.ARDK.AR.PointCloud;
 using Niantic.ARDK.AR.Mesh;
 using Niantic.ARDK.AR.SLAM;
@@ -38,8 +37,7 @@ namespace Niantic.ARDK.AR
   /// <inheritdoc />
   internal sealed class _NativeARSession:
     _ThreadCheckedObject,
-    _IARSession,
-    ILocalizableARSession
+    _IARSession
   {
     /// Indicates whether this is a playback based session
     private bool _playbackEnabled = false;
@@ -47,8 +45,10 @@ namespace Niantic.ARDK.AR
     RuntimeEnvironment IARSession.RuntimeEnvironment
     {
       // Maybe Playback will become a different Kind... for now, LiveDevice is the only one available.
-      get => _playbackEnabled ? RuntimeEnvironment.Playback : RuntimeEnvironment.LiveDevice;
+      get => RuntimeEnvironment.LiveDevice;
     }
+
+    public bool IsPlayback { get { return _playbackEnabled; } }
 
     /// <inheritdoc />
     public IARConfiguration Configuration { get; private set; }
@@ -67,14 +67,6 @@ namespace Niantic.ARDK.AR
       }
     }
 
-    private ILocalizer _localizer;
-    /// @note This is an experimental feature, and may be changed or removed in a future release.
-    ///   This feature is currently not functional or supported.
-    public ILocalizer Localizer
-    {
-      get => _localizer ?? (_localizer = new _NativeLocalizer(this));
-    }
-
     public ARSessionChangesCollector ARSessionChangesCollector { get; private set; }
 
     /// <inheritdoc />
@@ -88,14 +80,8 @@ namespace Niantic.ARDK.AR
     private bool _hasSetupCommandBuffer;
     private _VirtualCamera _virtualCamera;
 
-    private float _worldScale = 1;
-
     /// <inheritdoc />
-    public float WorldScale
-    {
-      get => _worldScale;
-      set => _worldScale = value;
-    }
+    public float WorldScale { get; set; } = 1;
 
     public ARSessionRunOptions RunOptions { get; private set; }
 
@@ -192,7 +178,6 @@ namespace Niantic.ARDK.AR
           foreach (var anchor in cachedAnchors.Values)
             anchor.Dispose();
         }
-        _localizer?.Dispose();
 
         CurrentFrame?.Dispose();
         CurrentFrame = null;
@@ -472,7 +457,7 @@ namespace Niantic.ARDK.AR
       {
         _virtualCamera.Dispose();
         _virtualCamera = null;
-        
+
         ARLog._Debug("A command buffer was explicitly set up to fetch AR updates, so the virtual " +
           " camera set up to do so previously has been disposed.");
       }
@@ -1101,7 +1086,7 @@ namespace Niantic.ARDK.AR
             return;
           }
 
-          var frame = new _NativeARFrame(newFramePtr, session._worldScale);
+          var frame = new _NativeARFrame(newFramePtr, session.WorldScale);
 
           session.CurrentFrame = frame;
           session.UpdateGenerators(frame);
@@ -1124,8 +1109,7 @@ namespace Niantic.ARDK.AR
       if (!(Configuration is IARWorldTrackingConfiguration worldConfig))
         return;
 
-      var pointCloudsEnabled = worldConfig.DepthPointCloudSettings.IsEnabled;
-      if (!pointCloudsEnabled)
+      if (!worldConfig.IsDepthPointCloudEnabled)
         return;
 
       var depthBuffer = frame.Depth;
@@ -1135,12 +1119,7 @@ namespace Niantic.ARDK.AR
       // Create a generator if needed
       if (_depthPointCloudGen == null)
       {
-        _depthPointCloudGen =
-          new DepthPointCloudGenerator
-          (
-            worldConfig.DepthPointCloudSettings
-          );
-
+        _depthPointCloudGen = new DepthPointCloudGenerator();
         ARLog._Debug("Created new depth point cloud generator");
       }
 
@@ -1149,8 +1128,8 @@ namespace Niantic.ARDK.AR
       ARLog._Debug("Updated depth point cloud generator with new keyframe", true);
 
       // TODO : Add pooling
-      var frameBase = (_ARFrameBase)frame;
-      frameBase.DepthPointCloud = pointCloud;
+      var arFrame = (_IARFrame)frame;
+      arFrame.DepthPointCloud = pointCloud;
     }
 
     private static void DestroyFrame(IntPtr framePtr, float worldScale = 1f)
@@ -1171,8 +1150,6 @@ namespace Niantic.ARDK.AR
       UInt64 anchorsCount
     )
     {
-      ARLog._Debug("Got native did add anchors");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1231,8 +1208,6 @@ namespace Niantic.ARDK.AR
       UInt64 anchorsCount
     )
     {
-      ARLog._Debug("Got native did update anchors");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1260,8 +1235,6 @@ namespace Niantic.ARDK.AR
 
             return;
           }
-
-          ARLog._Debug("Surfacing anchor updates");
 
           foreach (var anchor in anchors)
           {
@@ -1293,8 +1266,6 @@ namespace Niantic.ARDK.AR
       UInt64 anchorsCount
     )
     {
-      ARLog._Debug("Got native did remove anchors");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1368,8 +1339,6 @@ namespace Niantic.ARDK.AR
       ArrayOfMergeInfo* anchorsPtrs
     )
     {
-      ARLog._Debug("Got native did merge anchors");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       var parentCount = anchorsPtrs->arraySize;
       MergeInfo* mergeInfoArray = anchorsPtrs->array;
@@ -1487,8 +1456,6 @@ namespace Niantic.ARDK.AR
       UInt64 mapsCount
     )
     {
-      ARLog._Debug("Got native did add maps");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1502,7 +1469,7 @@ namespace Niantic.ARDK.AR
       for (var i = 0; i < (int)mapsCount; i++)
       {
         var nativeHandle = Marshal.ReadIntPtr(mapPtrs, i * IntPtr.Size);
-        maps[i] = _NativeARMap._FromNativeHandle(nativeHandle, session._worldScale);
+        maps[i] = _NativeARMap._FromNativeHandle(nativeHandle, session.WorldScale);
       }
 
       _CallbackQueue.QueueCallback
@@ -1537,8 +1504,6 @@ namespace Niantic.ARDK.AR
       UInt64 mapsCount
     )
     {
-      ARLog._Debug("Got native did update maps");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1552,7 +1517,7 @@ namespace Niantic.ARDK.AR
       for (var i = 0; i < (int)mapsCount; i++)
       {
         var nativeHandle = Marshal.ReadIntPtr(mapPtrs, i * IntPtr.Size);
-        maps[i] = _NativeARMap._FromNativeHandle(nativeHandle, session._worldScale);
+        maps[i] = _NativeARMap._FromNativeHandle(nativeHandle, session.WorldScale);
       }
 
       _CallbackQueue.QueueCallback
@@ -1627,8 +1592,6 @@ namespace Niantic.ARDK.AR
     [MonoPInvokeCallback(typeof(_ARSession_Camera_Callback))]
     private static void _onCameraDidChangeTrackingStateNative(IntPtr context, IntPtr cameraPtr)
     {
-      ARLog._Debug("Got native did change camera tracking state");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1647,11 +1610,11 @@ namespace Niantic.ARDK.AR
             _NativeARCamera._ReleaseImmediate(cameraPtr);
             return;
           }
-          
+
           // Using a constructor here instead of caching + reusing objects in _NativeARCamera._FromNativeHandle
           //  We are disposing the camera every frame to prevent a crash on exit. Reintroduce caching
           //  in a way that supports disposing.
-          var camera = new _NativeARCamera(cameraPtr, session._worldScale);
+          var camera = new _NativeARCamera(cameraPtr, session.WorldScale);
 
           ARLog._DebugFormat("Surfacing camera tracking state: {0}", false, camera.TrackingState);
           var handler = session._cameraTrackingStateChanged;
@@ -1667,8 +1630,6 @@ namespace Niantic.ARDK.AR
     [MonoPInvokeCallback(typeof(_ARSession_Void_Callback))]
     private static void _onSessionWasInterruptedNative(IntPtr context)
     {
-      ARLog._Debug("Got native session was interrupted");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1695,8 +1656,6 @@ namespace Niantic.ARDK.AR
     [MonoPInvokeCallback(typeof(_ARSession_Void_Callback))]
     private static void _onSessionInterruptionEndedNative(IntPtr context)
     {
-      ARLog._Debug("Got native session interruption ended");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1723,8 +1682,6 @@ namespace Niantic.ARDK.AR
     [MonoPInvokeCallback(typeof(_ARSession_Bool_Callback))]
     private static bool _onSessionShouldAttemptRelocalizationNative(IntPtr context)
     {
-      ARLog._Debug("Got native session should attempt relocalization");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {
@@ -1752,8 +1709,6 @@ namespace Niantic.ARDK.AR
     [MonoPInvokeCallback(typeof(_ARSession_Failed_Callback))]
     private static void _onSessionDidFailWithErrorNative(IntPtr context, UInt64 errorNo)
     {
-      ARLog._Debug("Got native session failed with error");
-
       var session = SafeGCHandle.TryGetInstance<_NativeARSession>(context);
       if (session == null || session.IsDestroyed)
       {

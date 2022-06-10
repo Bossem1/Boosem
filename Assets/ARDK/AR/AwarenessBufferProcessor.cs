@@ -1,3 +1,4 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using System;
 
 using Niantic.ARDK.Utilities;
@@ -98,7 +99,7 @@ namespace Niantic.ARDK.AR.Awareness
     /// @param buffer If provided, the contents of the buffer will be copied to an internal cache.
     /// @param targetResolution The resolution of the target viewport.
     /// @param targetOrientation The orientation of the target viewport.
-    protected void ProcessFrame
+    protected void _ProcessFrame
     (
       IARFrame frame,
       TBuffer buffer,

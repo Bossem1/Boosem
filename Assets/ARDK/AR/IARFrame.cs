@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.ObjectModel;
@@ -135,16 +135,5 @@ namespace Niantic.ARDK.AR
     ///   safe, so this should only be called from the Unity main thread
     /// </summary>
     void ReleaseImageAndTextures();
-
-    /// <summary>
-    /// Get a serialized representation of this ARFrame, with variable compression levels.
-    /// Defaults to a compression factor of 70%.
-    /// </summary>
-    /// <param name="compressionLevel">The quality of the compressed buffers (1 = worst, 100 = best).</param>
-    /// <param name="includeImageBuffers">If false, image buffers will not be serialized.</param>
-    /// <param name="includeAwarenessBuffers">If false, awareness buffers will not be serialized.</param>
-    /// <param name="includeFeaturePoints">If true, raw feature points will be serialized.</param>
-    [Obsolete("This method is deprecated. Please use the ARFrameFactory to serialise the frame.")]
-    IARFrame Serialize(bool includeImageBuffers = true, bool includeAwarenessBuffers = true, int compressionLevel = 70, bool includeFeaturePoints = false);
   }
 }

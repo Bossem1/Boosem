@@ -1,5 +1,6 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,19 +15,23 @@ using Niantic.ARDK.Utilities;
 using Niantic.ARDK.Utilities.Logging;
 
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Niantic.ARDK.Extensions
 {
   [DisallowMultipleComponent]
-  public sealed class ARSemanticSegmentationManager: 
+  public sealed class ARSemanticSegmentationManager:
     ARRenderFeatureProvider
   {
+    [FormerlySerializedAs("_arCamera")]
     [SerializeField]
     [_Autofill]
-    private Camera _arCamera;
-    
+    [Tooltip("The scene camera used to render AR content.")]
+    private Camera _camera;
+
     [SerializeField]
     [Range(0, 60)]
+    [Tooltip("How many times the semantic segmentation routine should target running per second.")]
     private uint _keyFrameFrequency = 20;
 
     [SerializeField]
@@ -35,20 +40,114 @@ namespace Niantic.ARDK.Extensions
 
     [SerializeField]
     [HideInInspector]
-    [Tooltip("Whether the depth buffer should synchronize with the camera pose.")]
+    [Tooltip("Whether the semantics buffer should synchronize with the camera pose.")]
     private InterpolationMode _interpolation = InterpolationMode.Smooth;
-    
+
     [SerializeField]
     [HideInInspector]
     [Range(0.0f, 1.0f)]
-    [Tooltip("Sets whether to prefer closer or distant objects in the semantics buffer to align with color pixels more.")]
+    [Tooltip
+      (
+        "Sets whether to align semantics pixels with closer (0.1) or distant (1.0) pixels " +
+        "in the color image (aka the back-projection distance)."
+      )
+    ]
     private float _interpolationPreference = AwarenessParameters.DefaultBackProjectionDistance;
+
+    /// Returns a reference to the scene camera used to render AR content, if present.
+    public Camera Camera
+    {
+      get => _camera;
+      set
+      {
+        if (Initialized)
+          throw new InvalidOperationException("Cannot set this property after this component is initialized.");
+
+        _camera = value;
+      }
+    }
+
+    /// The value specifying the how many times the semantic segmentation routine
+    /// should target running per second.
+    public uint KeyFrameFrequency
+    {
+      get => _keyFrameFrequency;
+      set
+      {
+        if (value != _keyFrameFrequency)
+        {
+          _keyFrameFrequency = value;
+          RaiseConfigurationChanged();
+        }
+      }
+    }
+
+    /// The value specifying whether the semantics buffer should synchronize with the camera pose.
+    public InterpolationMode Interpolation
+    {
+      get => _interpolation;
+      set
+      {
+        if (Initialized)
+          throw new InvalidOperationException("Cannot set this property after this component is initialized.");
+
+        _interpolation = value;
+      }
+    }
+
+    /// The value specifying whether to align semantics pixels with closer (0.1)
+    /// or distant (1.0) pixels in the color image (aka the back-projection distance).
+    public float InterpolationPreference
+    {
+      get => _interpolationPreference;
+      set
+      {
+        if (Initialized)
+          throw new InvalidOperationException("Cannot set this property after this component is initialized.");
+
+        if (value < 0f && value > 1f)
+        {
+          throw new ArgumentOutOfRangeException
+          (
+            nameof(value),
+            "InterpolationPreference value must be between 0 and 1."
+          );
+        }
+
+        _interpolationPreference = value;
+      }
+    }
+
+    /// Sets the depth suppression channels. If there is an existing set of channels, calling
+    /// this method will override them.
+    public void SetDepthSuppressionChannels(params string[] channelNames)
+    {
+      if (GetComponent<ARDepthManager>() == null)
+      {
+        throw new InvalidOperationException
+        (
+          "An AR Depth Manager component is required to add depth suppression channels."
+        );
+      }
+
+      if (_depthSuppressionChannels != null && _depthSuppressionChannels.Length > 0)
+        ARLog._Debug("Overriding existing depth suppression channels.");
+
+      _depthSuppressionChannels = channelNames;
+    }
+
+    /// Returns a reference to the depth suppression mask texture, if present.
+    /// If the suppression feature is disabled, this returns null.
+    public Texture DepthSuppressionTexture
+    {
+      get => _suppressionTexture;
+    }
 
     public ISemanticBufferProcessor SemanticBufferProcessor
     {
       get => _GetOrCreateProcessor();
     }
-    
+
     /// Event for when the first semantics buffer is received.
     public event ArdkEventHandler<ContextAwarenessArgs<ISemanticBuffer>> SemanticBufferInitialized;
 
@@ -61,26 +160,14 @@ namespace Niantic.ARDK.Extensions
     {
       if (_semanticBufferProcessor == null)
       {
-        _semanticBufferProcessor = new SemanticBufferProcessor(_arCamera)
+        _semanticBufferProcessor = new SemanticBufferProcessor(_camera)
         {
-          InterpolationMode = _interpolation, 
+          InterpolationMode = _interpolation,
           InterpolationPreference = _interpolationPreference
         };
       }
 
       return _semanticBufferProcessor;
-    }
-    
-    /// Returns a reference to the depth suppression mask texture, if present.
-    /// If the suppression feature is disabled, this returns null.
-    public Texture DepthSuppressionTexture
-    {
-      get => _suppressionTexture;
-    }
-    
-    internal Camera _ARCamera
-    {
-      get { return _arCamera; }
     }
 
     private Texture2D _suppressionTexture;
@@ -88,20 +175,21 @@ namespace Niantic.ARDK.Extensions
 
     protected override void InitializeImpl()
     {
-      if (_arCamera == null)
+      if (_camera == null)
       {
-        var warning = "The Camera field is not set on the ARSemanticSegmentationManager " +
-                      "before use, grabbing Unity's Camera.main";
+        var warning =
+          "The Camera field was not set on the ARSemanticSegmentationManager before use. " +
+          "Will default to use Unity's Camera.main";
 
         ARLog._Warn(warning);
-        _arCamera = Camera.main;
+        _camera = Camera.main;
       }
 
       _GetOrCreateProcessor();
 
       base.InitializeImpl();
     }
-    
+
     protected override void DeinitializeImpl()
     {
       // Release the semantics processor
@@ -112,7 +200,7 @@ namespace Niantic.ARDK.Extensions
 
       base.DeinitializeImpl();
     }
-    
+
     protected override void EnableFeaturesImpl()
     {
       base.EnableFeaturesImpl();
@@ -123,7 +211,7 @@ namespace Niantic.ARDK.Extensions
     protected override void DisableFeaturesImpl()
     {
       base.DisableFeaturesImpl();
-      
+
       if (_suppressionTexture != null)
         Destroy(_suppressionTexture);
 
@@ -177,7 +265,7 @@ namespace Niantic.ARDK.Extensions
 
     protected override void OnRenderTargetChanged(RenderTarget? target)
     {
-      _GetOrCreateProcessor().AssignViewport(target ?? _arCamera);
+      _GetOrCreateProcessor().AssignViewport(target ?? _camera);
     }
 
     /// Called when it is time to copy the current render state to the main rendering material.

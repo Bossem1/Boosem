@@ -1,6 +1,7 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
+using System.Text.RegularExpressions;
 
 using Niantic.ARDK.Utilities.Logging;
 using Niantic.ARDK.VirtualStudio.Remote;
@@ -51,7 +52,8 @@ namespace Niantic.ARDK.VirtualStudio.Editor
             (int)_RemoteConnection.ConnectionMethod.Internet
           );
 
-        if (!string.IsNullOrEmpty(pin) || connectionMethod == _RemoteConnection.ConnectionMethod.USB)
+        var pinExistsAndIsValid = (!string.IsNullOrEmpty(pin) && Regex.IsMatch(pin, @"^[a-zA-Z]{6}$"));
+        if (pinExistsAndIsValid || connectionMethod == _RemoteConnection.ConnectionMethod.USB)
         {
           _RemoteConnection.InitIfNone(connectionMethod);
           _RemoteConnection.Connect(pin);
@@ -100,6 +102,12 @@ namespace Niantic.ARDK.VirtualStudio.Editor
       }
 
       var newPin = EditorGUILayout.TextField("PIN:", _pin);
+      var newPinIsValid = Regex.IsMatch(newPin, @"^[a-zA-Z]{6}$");
+      if (!newPinIsValid)
+      {
+        EditorGUILayout.HelpBox("Pin must be a string of 6 letters ", MessageType.Warning);
+      }
+
       if (newPin != _pin)
       {
         _pin = newPin;

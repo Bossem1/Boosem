@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Linq;
@@ -19,9 +19,7 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
     _SerializableAwarenessBufferBase<UInt32>,
     ISemanticBuffer
   {
-    private static bool _hasWarnedAboutRotateToScreenOrientation;
     private static bool _hasWarnedAboutInterpolation;
-    private static bool _hasWarnedAboutFitToDisplay;
     private bool[] _hasChannelCache;
 
     internal _SerializableSemanticBuffer
@@ -151,61 +149,6 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
     }
 
     /// <inheritdoc />
-    public bool DoesChannelExistAt
-    (
-      Vector2 point,
-      int viewportWidth,
-      int viewportHeight,
-      int channelIndex
-    )
-    {
-      var sourceWidth = (int)Width;
-      var sourceHeight = (int)Height;
-      var srcRatio = sourceWidth * 1f / sourceHeight;
-      var viewRatio = viewportWidth * 1f / viewportHeight;
-      int croppedWidth, xOffset;
-
-      if (srcRatio > viewRatio)
-      {
-        // Source image is wider than view, crop the width
-        croppedWidth = Mathf.RoundToInt(sourceHeight * viewRatio);
-        xOffset = Mathf.RoundToInt((sourceWidth - croppedWidth) / 2.0f);
-      }
-      else
-      {
-        // Source image is slimmer than view, pad the width
-        xOffset = Mathf.RoundToInt((sourceWidth - (int)(sourceHeight * viewRatio)) / 2.0f);
-        croppedWidth = sourceWidth - 2 * xOffset;
-      }
-
-      // Sample the buffer. Note that we're inverting viewportPoint's y coordinate to align with the view's coordinate system.
-      var x = xOffset +
-        Mathf.Clamp((int)Mathf.Floor(point.x * (croppedWidth - 1)), 0, croppedWidth - 1);
-
-      var y = Mathf.Clamp
-        ((int)Mathf.Floor((1.0f - point.y) * (sourceHeight - 1)), 0, sourceHeight - 1);
-
-      return x >= 0 &&
-        x < sourceWidth &&
-        y >= 0 &&
-        y < sourceHeight &&
-        DoesChannelExistAt(x, y, channelIndex);
-    }
-
-    /// <inheritdoc />
-    public bool DoesChannelExistAt
-    (
-      Vector2 point,
-      int viewportWidth,
-      int viewportHeight,
-      string channelName
-    )
-    {
-      var index = GetChannelIndex(channelName);
-      return index != -1 && DoesChannelExistAt(point, viewportWidth, viewportHeight, index);
-    }
-
-    /// <inheritdoc />
     public bool DoesChannelExist(int channelIndex)
     {
       _ComputeHasChannelCache();
@@ -217,156 +160,7 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
       var index = Array.IndexOf(ChannelNames, channelName);
       return index != -1 && DoesChannelExist(index);
     }
-
-    public ISemanticBuffer RotateToScreenOrientation()
-    {
-      var newData =
-        _AwarenessBufferHelper.RotateToScreenOrientation
-        (
-          Data,
-          (int) Width,
-          (int) Height,
-          out int newWidth,
-          out int newHeight
-        );
-
-      return new _SerializableSemanticBuffer
-      (
-        (uint)newWidth,
-        (uint)newHeight,
-        false,
-        ViewMatrix,
-        newData,
-        ChannelNames,
-        Intrinsics
-      );
-    }
-
-    public ISemanticBuffer Interpolate
-    (
-      IARCamera arCamera,
-      int viewportWidth,
-      int viewportHeight,
-      float backProjectionDistance = AwarenessParameters.DefaultBackProjectionDistance
-    )
-    {
-      if (!_hasWarnedAboutInterpolation)
-      {
-        ARLog._Warn
-        (
-          "ISemanticBuffer.Interpolate is not supported in the Unity Editor. " +
-          "No interpolation will be performed."
-        );
-
-        _hasWarnedAboutInterpolation = true;
-      }
-
-      if (!IsRotatedToScreenOrientation)
-      {
-        var rotated =
-          _AwarenessBufferHelper.RotateToScreenOrientation
-          (
-            Data,
-            (int)Width,
-            (int)Height,
-            out int rotatedWidth,
-            out int rotatedHeight
-          );
-
-        return new _SerializableSemanticBuffer
-        (
-          (uint)rotatedWidth,
-          (uint)rotatedHeight,
-          false,
-          ViewMatrix,
-          rotated,
-          ChannelNames,
-          Intrinsics
-        )
-        {
-          IsRotatedToScreenOrientation = true
-        };
-      }
-
-      return new _SerializableSemanticBuffer
-      (
-        Width,
-        Height,
-        false,
-        ViewMatrix,
-        new NativeArray<UInt32>(Data, Allocator.Persistent),
-        ChannelNames,
-        Intrinsics
-      )
-      {
-        IsRotatedToScreenOrientation = true
-      };
-    }
-
-    public ISemanticBuffer FitToViewport
-    (
-      int viewportWidth,
-      int viewportHeight
-    )
-    {
-      NativeArray<UInt32> fit;
-      int fitWidth, fitHeight;
-      if (!IsRotatedToScreenOrientation)
-      {
-        var rotated =
-          _AwarenessBufferHelper.RotateToScreenOrientation
-          (
-            Data,
-            (int)Width,
-            (int)Height,
-            out int rotatedWidth,
-            out int rotatedHeight
-          );
-
-        fit =
-          _AwarenessBufferHelper._FitToViewport
-          (
-            rotated,
-            rotatedWidth,
-            rotatedHeight,
-            viewportWidth,
-            viewportHeight,
-            out fitWidth,
-            out fitHeight
-          );
-
-        rotated.Dispose();
-      }
-      else
-      {
-        fit =
-          _AwarenessBufferHelper._FitToViewport
-          (
-            Data,
-            (int) Width,
-            (int) Height,
-            viewportWidth,
-            viewportHeight,
-            out fitWidth,
-            out fitHeight
-          );
-      }
-
-      return new _SerializableSemanticBuffer
-      (
-        (uint)fitWidth,
-        (uint)fitHeight,
-        false,
-        ViewMatrix,
-        fit,
-        ChannelNames,
-        Intrinsics
-      )
-      {
-        IsRotatedToScreenOrientation = true
-      };
-    }
-
+    
     public UInt32 Sample(Vector2 uv)
     {
       var w = (int)Width;

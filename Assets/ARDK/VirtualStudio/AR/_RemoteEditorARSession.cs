@@ -1,39 +1,29 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 using Niantic.ARDK.AR;
 using Niantic.ARDK.AR.Anchors;
 using Niantic.ARDK.AR.ARSessionEventArgs;
 using Niantic.ARDK.AR.Awareness;
 using Niantic.ARDK.AR.Configuration;
-using Niantic.ARDK.AR.Awareness.Depth;
 using Niantic.ARDK.AR.Awareness.Depth.Generators;
 using Niantic.ARDK.AR.Frame;
-using Niantic.ARDK.AR.Localization;
 using Niantic.ARDK.AR.Mesh;
-using Niantic.ARDK.AR.PointCloud;
-using Niantic.ARDK.AR.SLAM;
-using Niantic.ARDK.Extensions.Meshing;
 using Niantic.ARDK.LocationService;
 using Niantic.ARDK.Networking;
 using Niantic.ARDK.Utilities;
-using Niantic.ARDK.Utilities.Collections;
 using Niantic.ARDK.Utilities.Logging;
 using Niantic.ARDK.VirtualStudio.Remote;
 using Niantic.ARDK.VirtualStudio.Remote.Data;
 
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Niantic.ARDK.VirtualStudio.AR
 {
   internal sealed class _RemoteEditorARSession:
-    _IARSession,
-    ILocalizableARSession
+    _IARSession
   {
     private DepthPointCloudGenerator _depthPointCloudGen;
 
@@ -138,15 +128,6 @@ namespace Niantic.ARDK.VirtualStudio.AR
         depthPointCloudGen.Dispose();
       }
     }
-    
-    private ILocalizer _localizer;
-    /// @note Currently use a mock localizer for remote. Real localization will not be run on device
-    /// @note This is an experimental feature, and may be changed or removed in a future release.
-    ///   This feature is currently not functional or supported.
-    public ILocalizer Localizer
-    {
-      get => _localizer ?? (_localizer = new _MockLocalizer(this));
-    }
 
     public Guid StageIdentifier { get; }
 
@@ -234,14 +215,13 @@ namespace Niantic.ARDK.VirtualStudio.AR
       _EasyConnection.Send(new ARSessionPauseMessage(), TransportType.ReliableOrdered);
 
       var handler = Paused;
-      if (handler != null)
-        handler(new ARSessionPausedArgs());
+      handler?.Invoke(new ARSessionPausedArgs());
     }
 
     public IARAnchor AddAnchor(Matrix4x4 transform)
     {
       var identifier = Guid.NewGuid();
-      var anchor = new _SerializableARBaseAnchor(transform, identifier);
+      var anchor = new _SerializableARBasicAnchor(transform, identifier);
 
       _editorAnchors.Add(identifier, anchor);
 
@@ -313,8 +293,7 @@ namespace Niantic.ARDK.VirtualStudio.AR
       if (!(Configuration is IARWorldTrackingConfiguration worldConfig))
         return;
 
-      var pointCloudsEnabled = worldConfig.DepthPointCloudSettings.IsEnabled;
-      if (!pointCloudsEnabled)
+      if (!worldConfig.IsDepthPointCloudEnabled)
         return;
 
       var depthBuffer = frame.Depth;
@@ -324,18 +303,14 @@ namespace Niantic.ARDK.VirtualStudio.AR
       // Create a generator if needed
       if (_depthPointCloudGen == null)
       {
-        _depthPointCloudGen =
-          new DepthPointCloudGenerator
-          (
-            worldConfig.DepthPointCloudSettings
-          );
+        _depthPointCloudGen = new DepthPointCloudGenerator();
       }
 
       // Generate the point cloud
       var pointCloud = _depthPointCloudGen.GeneratePointCloud(frame.Depth, frame.Camera);
 
-      var frameBase = (_ARFrameBase)frame;
-      frameBase.DepthPointCloud = pointCloud;
+      var arFrame = (_IARFrame)frame;
+      arFrame.DepthPointCloud = pointCloud;
     }
 
     private void HandleAddedAnchor(ARSessionAddedCustomAnchorMessage message)
@@ -555,8 +530,7 @@ namespace Niantic.ARDK.VirtualStudio.AR
     private void HandleSessionWasInterrupted(ARSessionWasInterruptedMessage message)
     {
       var handler = SessionInterrupted;
-      if (handler != null)
-        handler(new ARSessionInterruptedArgs());
+      handler?.Invoke(new ARSessionInterruptedArgs());
     }
 
     private void HandleSessionInterruptionEnded(ARSessionInterruptionEndedMessage message)
@@ -586,10 +560,7 @@ namespace Niantic.ARDK.VirtualStudio.AR
         if (State == ARSessionState.Running)
           value(new ARSessionRanArgs());
       }
-      remove
-      {
-        _onDidRun -= value;
-      }
+      remove => _onDidRun -= value;
     }
 
     public event ArdkEventHandler<ARSessionPausedArgs> Paused;
@@ -608,17 +579,16 @@ namespace Niantic.ARDK.VirtualStudio.AR
     public event ArdkEventHandler<MapsArgs> MapsAdded;
     public event ArdkEventHandler<MapsArgs> MapsUpdated;
 
-    RuntimeEnvironment IARSession.RuntimeEnvironment
-    {
-      get { return RuntimeEnvironment.Remote; }
-    }
+    RuntimeEnvironment IARSession.RuntimeEnvironment { get => RuntimeEnvironment.Remote; }
+
+    public bool IsPlayback { get => false; }
 
     public IARMesh Mesh
     {
-      get { return _meshDataParser; }
+      get => _meshDataParser;
     }
 
-    private _MeshDataParser _meshDataParser = new _MeshDataParser();
+    private readonly _MeshDataParser _meshDataParser = new _MeshDataParser();
 
     void IARSession.SetupLocationService(ILocationService locationService)
     {

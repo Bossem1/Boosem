@@ -5,6 +5,7 @@ using Niantic.ARDK.AR;
 using Niantic.ARDK.Utilities;
 using Niantic.ARDK.AR.ARSessionEventArgs;
 using Niantic.ARDK.AR.HitTest;
+using Niantic.ARDK.Utilities.Input.Legacy;
 
 public class Occlusion : MonoBehaviour
 {

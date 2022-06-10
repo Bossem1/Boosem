@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -286,43 +286,6 @@ namespace Niantic.ARDK.AR.Configuration
       }
     }
 
-    public MappingRole MappingRole
-    {
-      get
-      {
-        if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-          return (MappingRole) _NARWorldTrackingConfiguration_GetMappingRole(_NativeHandle);
-
-        #pragma warning disable 0162
-        throw new IncorrectlyUsedNativeClassException();
-        #pragma warning restore 0162
-      }
-      set
-      {
-        if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-          _NARWorldTrackingConfiguration_SetMappingRole(_NativeHandle, Convert.ToUInt32(value));
-      }
-    }
-
-    public MapLayerIdentifier MapLayerIdentifier
-    {
-      get
-      {
-        if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-          return new MapLayerIdentifier
-            (_NARWorldTrackingConfiguration_GetMapLayerIdentifier(_NativeHandle));
-
-        #pragma warning disable 0162
-        throw new IncorrectlyUsedNativeClassException();
-        #pragma warning restore 0162
-      }
-      set
-      {
-        if (NativeAccess.Mode == NativeAccess.ModeType.Native)
-          _NARWorldTrackingConfiguration_SetMapLayerIdentifier(_NativeHandle, value._ToGuid());
-      }
-    }
-
     public uint DepthTargetFrameRate
     {
       get
@@ -377,26 +340,7 @@ namespace Niantic.ARDK.AR.Configuration
       }
     }
 
-    private DepthPointCloudGenerator.Settings _depthPointCloudSettings;
-    public DepthPointCloudGenerator.Settings DepthPointCloudSettings
-    {
-      get
-      {
-        var result = _depthPointCloudSettings;
-
-        if (result == null)
-        {
-          result = new DepthPointCloudGenerator.Settings();
-          _depthPointCloudSettings = result;
-        }
-
-        return result;
-      }
-      set
-      {
-        _depthPointCloudSettings = value;
-      }
-    }
+    public bool IsDepthPointCloudEnabled { get; set; }
 
     public bool IsSemanticSegmentationEnabled
     {
@@ -532,13 +476,11 @@ namespace Niantic.ARDK.AR.Configuration
       worldTarget.PlaneDetection = PlaneDetection;
       worldTarget.IsAutoFocusEnabled = IsAutoFocusEnabled;
       worldTarget.IsSharedExperienceEnabled = IsSharedExperienceEnabled;
-      worldTarget.MappingRole = MappingRole;
-      worldTarget.MapLayerIdentifier = MapLayerIdentifier;
       worldTarget.DetectionImages = DetectionImages;
 
       worldTarget.IsDepthEnabled = IsDepthEnabled;
       worldTarget.DepthTargetFrameRate = DepthTargetFrameRate;
-      worldTarget.DepthPointCloudSettings = DepthPointCloudSettings.Copy();
+      worldTarget.IsDepthPointCloudEnabled = IsDepthPointCloudEnabled;
 
       worldTarget.IsSemanticSegmentationEnabled = IsSemanticSegmentationEnabled;
       worldTarget.SemanticTargetFrameRate = SemanticTargetFrameRate;

@@ -1,3 +1,4 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace Niantic.ARDK.AR.Awareness.Semantics
 
       var orientation = RenderTarget.ScreenOrientation;
 
-      ProcessFrame
+      _ProcessFrame
       (
         frame,
         buffer: frame.Semantics,

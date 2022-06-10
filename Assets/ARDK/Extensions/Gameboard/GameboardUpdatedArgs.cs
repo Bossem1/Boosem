@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System.Collections.Generic;
 using Niantic.ARDK.Utilities;
@@ -11,7 +11,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
     {
         public HashSet<Vector2Int> RemovedNodes { get; }
         public readonly bool PruneOrClear;
-        
+
         public GameboardUpdatedArgs(HashSet<Vector2Int> removedNodes, bool pruneOrClear)
         {
             RemovedNodes = removedNodes;

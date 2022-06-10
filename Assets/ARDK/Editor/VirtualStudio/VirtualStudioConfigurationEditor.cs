@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System.Linq;
 using System.Text;
@@ -29,9 +29,7 @@ namespace Niantic.ARDK.VirtualStudio.Editor
 
     [SerializeField]
     private _MockPlayConfigurationEditor _mockPlayConfigEditor;
-
-    private bool _enabled;
-
+    
     private static GUIStyle _headerStyle;
 
     internal static GUIStyle _HeaderStyle
@@ -83,7 +81,7 @@ namespace Niantic.ARDK.VirtualStudio.Editor
 
     private Vector2 scrollPos = Vector2.zero;
 
-    [MenuItem("ARDK/Virtual Studio")]
+    [MenuItem("Lightship/ARDK/Virtual Studio")]
     public static void Init()
     {
       var window = GetWindow<VirtualStudioConfigurationEditor>(false, "Virtual Studio");

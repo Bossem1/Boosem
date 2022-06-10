@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -7,6 +7,7 @@ using Niantic.ARDK.AR.Awareness;
 using Niantic.ARDK.AR.Awareness.Depth;
 using Niantic.ARDK.Extensions;
 using Niantic.ARDK.Utilities;
+using Niantic.ARDK.Utilities.Input.Legacy;
 
 using UnityEngine;
 using UnityEngine.UI;

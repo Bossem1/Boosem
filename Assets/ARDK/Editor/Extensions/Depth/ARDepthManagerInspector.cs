@@ -1,6 +1,6 @@
-﻿using Niantic.ARDK.AR;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using Niantic.ARDK.AR;
 using Niantic.ARDK.Extensions;
-using Niantic.ARDK.Helpers;
 
 using UnityEditor;
 
@@ -40,12 +40,16 @@ namespace ARDK.Editor.Extensions.Depth
           _textureFilterModeProperty.enumValueIndex != (int)FilterMode.Point
         );
 
-        _textureFilterModeProperty.enumValueIndex = useLinear
-          ? (int)FilterMode.Bilinear
-          : (int)FilterMode.Point;
+        _textureFilterModeProperty.enumValueIndex =
+          useLinear
+            ? (int)FilterMode.Bilinear
+            : (int)FilterMode.Point;
       }
-      // Default to point filtering when using the screen space mesh technique
-      else _textureFilterModeProperty.enumValueIndex = (int)FilterMode.Point;
+      else
+      {
+        // Default to point filtering when using the screen space mesh technique
+        _textureFilterModeProperty.enumValueIndex = (int)FilterMode.Point;
+      }
 
       _interpolationProperty.enumValueIndex = (int)((InterpolationMode)EditorGUILayout.EnumPopup
         ("Interpolation", (InterpolationMode)_interpolationProperty.enumValueIndex));

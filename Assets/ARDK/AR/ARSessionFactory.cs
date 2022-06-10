@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Concurrent;
@@ -28,7 +28,7 @@ namespace Niantic.ARDK.AR
     ///   The identifier used by the C++ library to connect all related components.
     ///
     /// @returns The created session, or throws if it was not possible to create a session.
-    public static IARSession Create(Guid stageIdentifier = default(Guid))
+    public static IARSession Create(Guid stageIdentifier = default)
     {
       return _Create(null, stageIdentifier);
     }
@@ -76,13 +76,6 @@ namespace Niantic.ARDK.AR
           result = new _MockARSession(stageIdentifier, _VirtualStudioManager.Instance);
           break;
 
-        case RuntimeEnvironment.Playback:
-          if (_activeSession != null)
-            throw new InvalidOperationException("There's another session still active.");
-          // Enable playback
-          result = new _NativeARSession(stageIdentifier, true);
-          break;
-
         default:
           throw new InvalidEnumArgumentException(nameof(env), (int)env, env.GetType());
       }
@@ -98,7 +91,7 @@ namespace Niantic.ARDK.AR
     ///
     /// @returns The created session, or throws if it was not possible to create a session.
     /// @note this is an experimental feature
-    public static IARSession CreatePlaybackSession(Guid stageIdentifier = default(Guid))
+    internal static IARSession _CreatePlaybackSession(Guid stageIdentifier = default(Guid))
     {
       if (stageIdentifier == default(Guid))
         stageIdentifier = Guid.NewGuid();

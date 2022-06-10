@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ public class GameboardAgent: MonoBehaviour
     private Path _path = new Path(null, Path.Status.PathInvalid);
     private int _currentWaypoint = 0;
     private Vector3 _destination;
-    
+
     private Coroutine _actorMoveCoroutine;
     private Coroutine _actorJumpCoroutine;
 
@@ -36,7 +36,7 @@ public class GameboardAgent: MonoBehaviour
     void Start()
     {
         _agentConfig = new AgentConfiguration(jumpPenalty, jumpDistance, pathFindingBehaviour);
-        GameboardFactory.GameboardInitialized += OnGameboardCreated; 
+        GameboardFactory.GameboardInitialized += OnGameboardCreated;
     }
 
     private void OnGameboardCreated(GameboardCreatedArgs args)
@@ -63,7 +63,7 @@ public class GameboardAgent: MonoBehaviour
             SetDestination(_destination);
             return;
         }
-        
+
         for (int i = _currentWaypoint; i < _path.Waypoints.Count; i++)
         {
             if (args.RemovedNodes.Contains(_path.Waypoints[i].Coordinates))
@@ -77,7 +77,7 @@ public class GameboardAgent: MonoBehaviour
         {
             case AgentNavigationState.Paused:
                 break;
-            
+
             case AgentNavigationState.Idle:
                 StayOnGameboard();
                 break;
@@ -92,7 +92,7 @@ public class GameboardAgent: MonoBehaviour
         if (_actorMoveCoroutine != null)
             StopCoroutine(_actorMoveCoroutine);
     }
-    
+
     private void OnDestroy()
     {
         GameboardFactory.GameboardInitialized -= OnGameboardCreated;
@@ -106,16 +106,16 @@ public class GameboardAgent: MonoBehaviour
     public void SetDestination(Vector3 destination)
     {
         StopMoving();
-        
+
         if (_gameboard == null)
             return;
 
         _destination = destination;
         _currentWaypoint = 0;
 
-        Vector3 startOnBoard; 
+        Vector3 startOnBoard;
         _gameboard.FindNearestFreePosition(transform.position, out startOnBoard);
-        
+
         bool result = _gameboard.CalculatePath(startOnBoard, destination, _agentConfig, out _path);
 
         if (!result)
@@ -138,29 +138,29 @@ public class GameboardAgent: MonoBehaviour
         List<Waypoint> pathToGameboard = new List<Waypoint>();
         Vector3 nearestPosition;
         _gameboard.FindNearestFreePosition(transform.position, out nearestPosition);
-        
+
         _destination = nearestPosition;
         _currentWaypoint = 0;
 
         pathToGameboard.Add(new Waypoint
         (
-            transform.position, 
-            Waypoint.MovementType.Walk, 
+            transform.position,
+            Waypoint.MovementType.Walk,
             Utils.PositionToTile(transform.position, _gameboard.Settings.TileSize)
         ));
-        
+
         pathToGameboard.Add(new Waypoint
         (
-            nearestPosition, 
+            nearestPosition,
             Waypoint.MovementType.SurfaceEntry,
             Utils.PositionToTile(nearestPosition, _gameboard.Settings.TileSize)
         ));
-        
+
         _path = new Path(pathToGameboard, Path.Status.PathComplete);
         _actorMoveCoroutine = StartCoroutine(Move(this.transform, _path.Waypoints));
         State = AgentNavigationState.HasPath;
     }
-    
+
     private IEnumerator Move(Transform actor, IList<Waypoint> path)
     {
         var startPosition = actor.position;
@@ -170,36 +170,48 @@ public class GameboardAgent: MonoBehaviour
 
         while (destIdx < path.Count)
         {
-            interval += Time.deltaTime * walkingSpeed;
-            actor.position = Vector3.Lerp(startPosition, path[destIdx].WorldPosition, interval);
+            //do i need to jump or walk to the target point
+            if (path[destIdx].Type == Waypoint.MovementType.SurfaceEntry)
+            {
+                yield return new WaitForSeconds(0.5f);
+
+                _actorJumpCoroutine = StartCoroutine
+                (
+                    Jump(actor, actor.position, path[destIdx].WorldPosition)
+                );
+
+                yield return _actorJumpCoroutine;
+
+                _actorJumpCoroutine = null;
+                startPosition = actor.position;
+                startRotation = actor.rotation;
+
+            }
+            else
+            {
+                //move on step towards target waypoint
+                interval += Time.deltaTime * walkingSpeed;
+                actor.position = Vector3.Lerp(startPosition, path[destIdx].WorldPosition, interval);
+            }
+
             //face the direction we are moving
-            Vector3 lookRotationTarget = (path[destIdx].WorldPosition - transform.position).normalized;
+            Vector3 lookRotationTarget = (path[destIdx].WorldPosition - transform.position);
+
+            //ignore up/down we dont want the creature leaning forward/backward.
+            lookRotationTarget.y = 0.0f;
+            lookRotationTarget = lookRotationTarget.normalized;
+
+            //check for bad rotation
             if (lookRotationTarget != Vector3.zero)
                 transform.rotation = Quaternion.Lerp(startRotation, Quaternion.LookRotation(lookRotationTarget), interval);
+
+            //have we reached our target position, if so go to the next waypoint
             if (Vector3.Distance(actor.position, path[destIdx].WorldPosition) < 0.01f)
             {
                 startPosition = actor.position;
                 startRotation = actor.rotation;
                 interval = 0;
                 destIdx++;
-
-                // Do we need to jump?
-                if (destIdx < path.Count && path[destIdx].Type == Waypoint.MovementType.SurfaceEntry)
-                {
-                    yield return new WaitForSeconds(0.5f);
-
-                    _actorJumpCoroutine = StartCoroutine
-                    (
-                        Jump(actor, actor.position, path[destIdx].WorldPosition)
-                    );
-
-                    yield return _actorJumpCoroutine;
-
-                    _actorJumpCoroutine = null;
-                    startPosition = actor.position;
-                    startRotation = actor.rotation;
-                    destIdx++;
-                }
             }
 
             yield return null;

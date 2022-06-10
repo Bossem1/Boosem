@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
     public List<Surface> Surfaces { get; }
     private int _nextSurfaceId = 0;
     private bool _visualise;
-    
+
     public readonly ModelSettings Settings;
 
     public GameboardModel(ModelSettings settings, bool visualise)
@@ -33,7 +33,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
     {
       _visualise = !_visualise;
     }
-    
+
     public HashSet<Vector2Int> Scan(Vector3 origin, float range)
     {
       // Cache parameters
@@ -79,10 +79,10 @@ namespace Niantic.ARDK.Extensions.Gameboard
           );
 
           var arrayIndex = y * w + x;
-          
+
           if (_visualise)
             Debug.DrawLine(position + Vector3.down, position + 2*Vector3.down, Color.green, 0.5f);
-          
+
           // Raycast for height
           var elevation =
             Physics.Raycast
@@ -93,7 +93,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
               layerMask: Settings.LayerMask
             )
               ? hit.point.y
-              : -100; 
+              : -100;
 
           scanArea[arrayIndex] = new GridNode(coords)
           {
@@ -215,7 +215,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
     {
       if (Surfaces.Count == 0)
         return ;
-      
+
       Surfaces.Clear();
       SpatialTree.Clear();
     }
@@ -226,7 +226,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
         return;
 
       float halfRange = range / 2;
-      
+
       var topRight = keepNodesOrigin +
         Vector3.right * halfRange +
         Vector3.forward * halfRange;
@@ -250,7 +250,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
       // Clean empty surfaces
       Surfaces.RemoveAll(surface => surface.IsEmpty);
     }
-        
+
     /// Invalidates the specified nodes of existing planes.
     private HashSet<Vector2Int> InvalidateNodes(HashSet<GridNode> nodes)
     {
@@ -311,7 +311,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
 
         // Remove planes that were a subset of the candidate
         Surfaces.RemoveAll(surface => surface.IsEmpty);
-            
+
         // Add candidate as a new plane
         Surfaces.Add(candidate);
         return;
@@ -344,7 +344,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
         randomPosition = Vector3.zero;
         return false;
       }
-      
+
       int randomSurface = Random.Range(0, Surfaces.Count-1);
       int randomNode = Random.Range(0, Surfaces[randomSurface].Elements.Count());
 

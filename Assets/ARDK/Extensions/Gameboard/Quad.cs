@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
       {
         get => _elements != null && _elements.Count > 0;
       }
-      
+
       /// Returns the child quadrants of this parent.
       public IEnumerable<Quad> GetChildren()
       {
@@ -158,11 +158,11 @@ namespace Niantic.ARDK.Extensions.Gameboard
 
           return true;
         }
-        
+
         return false;
       }
 
-      /// Returns all points in the area defined by the quad boundaries. 
+      /// Returns all points in the area defined by the quad boundaries.
       public IEnumerable<GridNode> GetElements()
       {
         if (IsLeaf)
@@ -385,7 +385,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
             // Transfer first nearest to second
             min2 = min1;
             secondNearest = firstNearest;
-            
+
             // Assign new first quadrant
             min1 = dist;
             firstNearest = entry;

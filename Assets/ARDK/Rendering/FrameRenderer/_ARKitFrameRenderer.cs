@@ -1,4 +1,5 @@
-﻿using Niantic.ARDK.AR;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using Niantic.ARDK.AR;
 using Niantic.ARDK.Utilities.Logging;
 
 using UnityEngine;
@@ -8,13 +9,13 @@ using Object = UnityEngine.Object;
 
 namespace Niantic.ARDK.Rendering
 {
-  internal sealed class _ARKitFrameRenderer: 
+  internal sealed class _ARKitFrameRenderer:
     ARFrameRenderer
   {
     // Rendering resources
     private CommandBuffer _commandBuffer;
     private Texture2D _textureY, _textureCbCr;
-    
+
     protected override Shader Shader { get; }
 
     public _ARKitFrameRenderer(RenderTarget target)
@@ -50,12 +51,12 @@ namespace Niantic.ARDK.Rendering
         // causes the GPU to hang on iOS. Could be a driver or Unity issue.
         return null;
       }
-      
+
       _commandBuffer = new CommandBuffer
       {
         name = "ARKitFrameRenderer"
       };
-      
+
       _commandBuffer.ClearRenderTarget(true, true, Color.clear);
       _commandBuffer.Blit(null, target.Identifier, renderMaterial);
 
@@ -119,7 +120,7 @@ namespace Niantic.ARDK.Rendering
 
       return true;
     }
-    
+
     protected override void OnRelease()
     {
       _commandBuffer?.Dispose();

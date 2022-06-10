@@ -1,22 +1,16 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
 using Niantic.ARDK.AR.Anchors;
 using Niantic.ARDK.AR.ARSessionEventArgs;
 using Niantic.ARDK.AR.Awareness;
-using Niantic.ARDK.AR.Camera;
 using Niantic.ARDK.AR.Configuration;
-using Niantic.ARDK.AR.Awareness.Depth;
-using Niantic.ARDK.AR.Frame;
 using Niantic.ARDK.AR.Mesh;
-using Niantic.ARDK.AR.SLAM;
-using Niantic.ARDK.Extensions.Meshing;
 using Niantic.ARDK.LocationService;
 using Niantic.ARDK.Utilities;
 
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Niantic.ARDK.AR
 {

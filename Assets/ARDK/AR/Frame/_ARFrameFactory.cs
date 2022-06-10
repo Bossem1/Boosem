@@ -1,13 +1,14 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System.Linq;
 
 using Niantic.ARDK.AR.Anchors;
 using Niantic.ARDK.AR.Awareness;
-using Niantic.ARDK.AR.Camera;
 using Niantic.ARDK.AR.Awareness.Depth;
 using Niantic.ARDK.AR.Awareness.Semantics;
+using Niantic.ARDK.AR.Camera;
 using Niantic.ARDK.AR.Image;
+using Niantic.ARDK.AR.LightEstimate;
 using Niantic.ARDK.AR.PointCloud;
 using Niantic.ARDK.AR.SLAM;
 using Niantic.ARDK.Utilities.Collections;
@@ -33,7 +34,7 @@ namespace Niantic.ARDK.AR.Frame
       if (source is _SerializableARFrame possibleResult)
         return possibleResult;
 
-      var serializedFrame = _SerializeWithoutBuffers(source);
+      var serializedFrame = NewSerializableFrameWithoutBuffers(source);
       
       if (includeImageBuffers)
       {
@@ -58,8 +59,8 @@ namespace Niantic.ARDK.AR.Frame
 
       return serializedFrame;
     }
-    
-    private static _SerializableARFrame _SerializeWithoutBuffers(IARFrame source)
+
+    private static _SerializableARFrame NewSerializableFrameWithoutBuffers(IARFrame source)
     {
       var serializedAnchors =
       (
@@ -84,16 +85,15 @@ namespace Niantic.ARDK.AR.Frame
       return
         new _SerializableARFrame
         (
-          capturedImageBuffer:null,
-          depthBuffer:null,
-          semanticBuffer:null,
+          capturedImageBuffer: null,
+          depthBuffer: null,
+          semanticBuffer: null,
           source.Camera._AsSerializable(),
-          lightEstimate:null,
+          source.LightEstimate._AsSerializable(),
           serializedAnchors.AsNonNullReadOnly<IARAnchor>(),
           serializableMaps,
           source.WorldScale,
-          estimatedDisplayTransform,
-          rawFeaturePoints: null
+          estimatedDisplayTransform
         );
     }
   }

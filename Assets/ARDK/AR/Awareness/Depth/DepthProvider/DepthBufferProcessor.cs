@@ -1,3 +1,4 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using Niantic.ARDK.AR.ARSessionEventArgs;
 using Niantic.ARDK.Rendering;
 
@@ -214,7 +215,7 @@ namespace Niantic.ARDK.AR.Awareness.Depth
 
       var orientation = RenderTarget.ScreenOrientation;
       
-      ProcessFrame
+      _ProcessFrame
       (
         frame,
         buffer: frame.Depth,

@@ -1,11 +1,9 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 using Niantic.ARDK.AR.Anchors;
-using Niantic.ARDK.AR.Awareness;
 using Niantic.ARDK.AR.Awareness.Depth;
 using Niantic.ARDK.AR.Awareness.Semantics;
 using Niantic.ARDK.AR.Camera;
@@ -15,7 +13,6 @@ using Niantic.ARDK.AR.LightEstimate;
 using Niantic.ARDK.AR.PointCloud;
 using Niantic.ARDK.AR.SLAM;
 using Niantic.ARDK.Utilities.Collections;
-using Niantic.ARDK.VirtualStudio.Remote;
 
 using UnityEngine;
 
@@ -23,8 +20,7 @@ namespace Niantic.ARDK.AR.Frame
 {
   [Serializable]
   internal abstract class _SerializableARFrameBase:
-    _ARFrameBase,
-    IARFrame
+    _IARFrame
   {
     protected _SerializableARFrameBase()
     {
@@ -70,6 +66,7 @@ namespace Niantic.ARDK.AR.Frame
     public _SerializableARCamera Camera { get; set; }
     public _SerializableARLightEstimate LightEstimate { get; set; }
     public ReadOnlyCollection<IARAnchor> Anchors { get; set; }
+    public IDepthPointCloud DepthPointCloud { get; set; }
     public ReadOnlyCollection<IARMap> Maps { get; set; }
     public float WorldScale { get; set; }
     public _SerializableARPointCloud RawFeaturePoints { get; set; }
@@ -122,24 +119,6 @@ namespace Niantic.ARDK.AR.Frame
       }
     }
 
-    public IARFrame Serialize
-    (
-      bool includeImageBuffers = true,
-      bool includeAwarenessBuffers = true,
-      int compressionLevel = 70,
-      bool includeFeaturePoints = false
-    )
-    {
-      return _Serialize
-      (
-        this, 
-        includeImageBuffers, 
-        includeAwarenessBuffers, 
-        compressionLevel,
-        includeFeaturePoints
-      );
-    }
-    
     IARPointCloud IARFrame.RawFeaturePoints
     {
       get => RawFeaturePoints;

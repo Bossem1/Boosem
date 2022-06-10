@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -76,7 +76,7 @@ namespace Niantic.ARDK.AR.Frame
     {
       if ((types & ~ARHitTestResultType.ExistingPlaneUsingExtent) != 0)
       {
-        var message =
+        const string message =
           "Only hit tests for ARHitTestResultType.ExistingPlaneUsingExtent " +
           "is supported in Mock or Remote ARSessions.";
 
@@ -193,11 +193,11 @@ namespace Niantic.ARDK.AR.Frame
       out float distance
     )
     {
-      var denom = Vector3.Dot(ray.direction, normal);
-      if (Mathf.Abs(denom) > 0.0001f)
+      var denominator = Vector3.Dot(ray.direction, normal);
+      if (Mathf.Abs(denominator) > 0.0001f)
       {
         var diff = center - ray.origin;
-        float t = Vector3.Dot(diff, normal) / denom;
+        float t = Vector3.Dot(diff, normal) / denominator;
         if (t > 0.0001f)
         {
           hit = ray.origin + (t * ray.direction);

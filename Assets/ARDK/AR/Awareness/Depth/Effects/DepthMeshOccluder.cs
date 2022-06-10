@@ -1,4 +1,5 @@
-﻿using System;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using System;
 
 using Niantic.ARDK.AR.Awareness.Depth.Effects;
 using Niantic.ARDK.Rendering;
@@ -46,9 +47,9 @@ namespace Niantic.ARDK.AR.Depth.Effects
       {
         if (_isEnabled == value)
           return;
-        
+
         _isEnabled = value;
-        
+
         if (_isEnabled)
           DepthMeshBufferHelper.AddCommandBuffer(_targetCamera, _commandBuffer);
         else
@@ -61,12 +62,12 @@ namespace Niantic.ARDK.AR.Depth.Effects
     {
       set => _material.SetTexture(PropertyBindings.DepthSuppressionMask, value);
     }
-    
+
     public Matrix4x4 DepthTransform
     {
       set => _material.SetMatrix(PropertyBindings.DepthTransform, value);
     }
-    
+
     public Matrix4x4 SemanticsTransform
     {
       set => _material.SetMatrix(PropertyBindings.SemanticsTransform, value);
@@ -86,15 +87,15 @@ namespace Niantic.ARDK.AR.Depth.Effects
         _commandBuffer.DrawMesh(_orientation == ScreenOrientation.Portrait ||
           _orientation == ScreenOrientation.PortraitUpsideDown
             ? _portraitMesh
-            : _landscapeMesh, 
+            : _landscapeMesh,
           Matrix4x4.identity, _material);
       }
     }
 
     public DepthMeshOccluder
     (
-      UnityEngine.Camera targetCamera, 
-      Texture depthTexture, 
+      UnityEngine.Camera targetCamera,
+      Texture depthTexture,
       Resolution meshResolution
     )
     {
@@ -103,7 +104,7 @@ namespace Niantic.ARDK.AR.Depth.Effects
         ARLog._Error("No Depth Texture provided. Occlusion Mesh Not Created");
         return;
       }
-      
+
       if (targetCamera == null)
       {
         ARLog._Error("No Target Camera provided. Occlusion Mesh Not Created");
@@ -112,12 +113,12 @@ namespace Niantic.ARDK.AR.Depth.Effects
 
       // Calculate the aspect ratio
       var aspect = (float)meshResolution.width / meshResolution.height;
-      
+
       // Create a landscape version of the mesh using the specified resolution
       _landscapeMesh = aspect > 1.0f
         ? CreateMesh(meshResolution.width, meshResolution.height)
         : CreateMesh(meshResolution.height, meshResolution.width);
-      
+
       // Create a portrait version of the mesh using the specified resolution
       _portraitMesh = aspect < 1.0f
         ? CreateMesh(meshResolution.width, meshResolution.height)
@@ -126,14 +127,14 @@ namespace Niantic.ARDK.AR.Depth.Effects
       _material = new Material(OcclusionShader);
       _material.SetTexture(PropertyBindings.DepthChannel, depthTexture);
       _material.SetFloat(PropertyBindings.DebugColorMask, (int)_colorMask);
-      
+
       // Allocate the command buffer for drawing the mesh
       _commandBuffer = new CommandBuffer();
       _commandBuffer.name = "DepthMeshOccluder";
-      
+
       // Assign target camera
       _targetCamera = targetCamera;
-      
+
       // Activate
       Orientation = Screen.orientation;
       Enabled = true;
@@ -155,10 +156,10 @@ namespace Niantic.ARDK.AR.Depth.Effects
     public void Dispose()
     {
       Enabled = false;
-      
+
       // Release the command buffer
       _commandBuffer?.Dispose();
-      
+
       // Release other resources
       UnityEngine.Object.Destroy(_material);
       UnityEngine.Object.Destroy(_portraitMesh);

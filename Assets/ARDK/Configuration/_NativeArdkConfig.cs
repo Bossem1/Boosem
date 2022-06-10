@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Runtime.InteropServices;
@@ -20,7 +20,18 @@ namespace Niantic.ARDK.Configuration
     {
         ARLog._Debug($"Using config: {nameof(_NativeArdkConfig)}");
     }
-    
+
+    public bool SetUserIdOnLogin(string userId)
+    {
+      if (!_NAR_ARDKGlobalConfigHelper_SetUserId(userId))
+      {
+        ARLog._Warn("Failed to set the user Id");
+        return false;
+      }
+
+      return true;
+    }
+
     public bool SetDbowUrl(string url)
     {
       if (!_NAR_ARDKGlobalConfigHelper_SetDBoWUrl(url))
@@ -88,10 +99,10 @@ namespace Niantic.ARDK.Configuration
       return true;
     }
 
-    public NetworkingErrorCode VerifyApiKeyWithFeature(string feature)
+    public NetworkingErrorCode VerifyApiKeyWithFeature(string feature, bool isAsync)
     {
       var error = 
-        (NetworkingErrorCode) _NAR_ARDKGlobalConfigHelper_ValidateApiKeyWithFeature(feature);
+        (NetworkingErrorCode) _NAR_ARDKGlobalConfigHelper_ValidateApiKeyWithFeature(feature, isAsync);
 
       return error;
     }
@@ -107,10 +118,12 @@ namespace Niantic.ARDK.Configuration
       return true;
     }
 
-    internal string GetApiKey()
+    // get the last good jwt token
+    internal string GetJwtToken()
     {
       var stringBuilder = new StringBuilder(512);
-      _NAR_ARDKGlobalConfigHelper_GetApiKey(stringBuilder, (ulong)stringBuilder.Capacity);
+
+      _NAR_ARDKGlobalConfigHelper_GetJwtToken(stringBuilder, (ulong)stringBuilder.Capacity);
 
       var result = stringBuilder.ToString();
       return result;
@@ -135,22 +148,14 @@ namespace Niantic.ARDK.Configuration
     // Set Api Key
     [DllImport(_ARDKLibrary.libraryName)]
     private static extern bool _NAR_ARDKGlobalConfigHelper_SetApiKey(string key);
-
-    // Get Api Key
-    [DllImport(_ARDKLibrary.libraryName)]
-    private static extern void _NAR_ARDKGlobalConfigHelper_GetApiKey
-    (
-      StringBuilder outKey,
-      ulong maxKeySize
-    );
-
+    
     // Set Auth URL
     [DllImport(_ARDKLibrary.libraryName)]
     private static extern bool _NAR_ARDKGlobalConfigHelper_SetAuthURL(string key);
     
     // Attempt to validate the specified feature, with a previously set Api Key. 
     [DllImport(_ARDKLibrary.libraryName)]
-    private static extern Int32 _NAR_ARDKGlobalConfigHelper_ValidateApiKeyWithFeature(string feature);
+    private static extern Int32 _NAR_ARDKGlobalConfigHelper_ValidateApiKeyWithFeature(string feature, bool isAsync);
 
     // Get Auth URL
     [DllImport(_ARDKLibrary.libraryName)]
@@ -159,6 +164,17 @@ namespace Niantic.ARDK.Configuration
       StringBuilder outKey,
       ulong maxKeySize
     );
+    
+    // Get last known jwt token
+    [DllImport(_ARDKLibrary.libraryName)]
+    private static extern void _NAR_ARDKGlobalConfigHelper_GetJwtToken
+    (
+      StringBuilder outToken,
+      ulong maxTokenSize
+    );
 
+
+    [DllImport(_ARDKLibrary.libraryName)]
+    private static extern bool _NAR_ARDKGlobalConfigHelper_SetUserId(string userId);
   }
 }

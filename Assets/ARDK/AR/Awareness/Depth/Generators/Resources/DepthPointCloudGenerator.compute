@@ -16,15 +16,9 @@ StructuredBuffer<float> Depth;
 // helper method to get the index into the Depth buffer from the thread index
 int DepthBufferIndexFromId(in uint3 id) 
 {
-    // Check to see if this worker thread is padding
-    if(DepthBufferWidth <= id.x ) {
-        return -1;
-    }
-    if(DepthBufferHeight <= id.y ) {
-        return -1;
-    }
-    
-    return id.x + id.y * DepthBufferWidth;
+    // return -1 if this worker thread is padding, else return the depth buffer index
+    return (DepthBufferWidth <= id.x || DepthBufferHeight <= id.y) ?
+        -1 : id.x + id.y * DepthBufferWidth;
 }
 
 float3 UnProject(in float2 id, in float depth) 

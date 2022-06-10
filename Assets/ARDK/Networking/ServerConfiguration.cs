@@ -1,5 +1,5 @@
 #define AUTH_REQUIRED
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using System;
 
 namespace Niantic.ARDK.Networking

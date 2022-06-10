@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
 #define AR_NATIVE_ONLY

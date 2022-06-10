@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections;
@@ -21,8 +21,6 @@ namespace Niantic.ARDK.Extensions.Depth
   public class DepthPointCloudManager: ARSessionListener
   {
     private const int MAX_SIMULTANEOUS_DRAW = 1023;
-
-    private IARSession _session;
 
     private bool _drawPointCloud;
     private Vector3[] _pointCloud;
@@ -60,11 +58,7 @@ namespace Niantic.ARDK.Extensions.Depth
 
       if (properties.ARConfiguration is IARWorldTrackingConfiguration worldConfig)
       {
-        if (worldConfig.DepthPointCloudSettings == null)
-          worldConfig.DepthPointCloudSettings = new DepthPointCloudGenerator.Settings();
-
-        var pointCloudSettings = worldConfig.DepthPointCloudSettings;
-        pointCloudSettings.IsEnabled = true;
+        worldConfig.IsDepthPointCloudEnabled = true;
       }
     }
 

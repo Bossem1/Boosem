@@ -1,6 +1,6 @@
-﻿using Niantic.ARDK.AR;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using Niantic.ARDK.AR;
 using Niantic.ARDK.Extensions;
-using Niantic.ARDK.Helpers;
 
 using UnityEditor;
 
@@ -37,7 +37,7 @@ namespace ARDK.Editor.Extensions.Semantics
 
         _suppressionChannelsProperty.arraySize = EditorGUILayout.IntField
         (
-          "Number Of Channels",
+          "Number of Channels",
           _suppressionChannelsProperty.arraySize
         );
 

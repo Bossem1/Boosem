@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -14,15 +14,15 @@ namespace Niantic.ARDK.AR.Anchors
 
     internal static _SerializableAnchorsByType ClassifyAsSerializableAnchors(IEnumerable<IARAnchor> anchors)
     {
-      var baseAnchors = new List<_SerializableARAnchor>();
+      var basicAnchors = new List<_SerializableARAnchor>();
       var planeAnchors = new List<_SerializableARPlaneAnchor>();
       var imageAnchors = new List<_SerializableARImageAnchor>();
       foreach (var anchor in anchors)
       {
         switch (anchor.AnchorType)
         {
-          case AnchorType.Base:
-            baseAnchors.Add(anchor._AsSerializableBase());
+          case AnchorType.Basic:
+            basicAnchors.Add(anchor._AsSerializableBasic());
             break;
 
           case AnchorType.Plane:
@@ -40,7 +40,7 @@ namespace Niantic.ARDK.AR.Anchors
 
       return new _SerializableAnchorsByType
       (
-        baseAnchors, 
+        basicAnchors, 
         planeAnchors, 
         imageAnchors
       );

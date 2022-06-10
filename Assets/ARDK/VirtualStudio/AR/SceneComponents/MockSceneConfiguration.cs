@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -23,13 +23,10 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
 #if UNITY_EDITOR
     private void OnEnable()
     {
-      var layerName = _MockFrameBufferProvider.MOCK_LAYER_NAME;
+      const string layerName = _MockFrameBufferProvider.MOCK_LAYER_NAME;
       var mockLayer = LayerMask.NameToLayer(layerName);
-      if (mockLayer < 0)
-      {
-        if (!_MockFrameBufferProvider.CreateLayer(layerName, out mockLayer))
-          return;
-      }
+      if (mockLayer < 0 && !_MockFrameBufferProvider.CreateLayer(layerName, out mockLayer))
+        return;
 
       var noLayerCount = 0;
       foreach (var descendant in gameObject.GetComponentsInChildren<Transform>())
@@ -61,25 +58,25 @@ namespace Niantic.ARDK.VirtualStudio.AR.Mock
     [MenuItem("GameObject/3D Object/ARDK/MockScene", false, 0)]
     private static void CreateRoot(MenuCommand menuCommand)
     {
-      var go = new GameObject("MockSceneRoot");
-      var mockScene = go.AddComponent<MockSceneConfiguration>();
+      var mockSceneRoot = new GameObject("MockSceneRoot");
+      var mockScene = mockSceneRoot.AddComponent<MockSceneConfiguration>();
       mockScene._SetLayerForDescendants();
 
       // Ensure it gets re-parented if this was a context click (otherwise does nothing)
-      GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+      GameObjectUtility.SetParentAndAlign(mockSceneRoot, menuCommand.context as GameObject);
 
       // Register the creation in the undo system
-      Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
+      Undo.RegisterCreatedObjectUndo(mockSceneRoot, "Create " + mockSceneRoot.name);
 
-      Selection.activeObject = go;
+      Selection.activeObject = mockSceneRoot;
     }
 
     // Sets the layer of this component's GameObject and all its descendants
     // to _MockFrameBufferProvider.MOCK_LAYER_NAME.
     // It will add that layer to the TagManager.asset if it does not already exist.
-    internal void _SetLayerForDescendants()
+    private void _SetLayerForDescendants()
     {
-      var layerName = _MockFrameBufferProvider.MOCK_LAYER_NAME;
+      const string layerName = _MockFrameBufferProvider.MOCK_LAYER_NAME;
       var layerIndex = LayerMask.NameToLayer(layerName);
       if (layerIndex < 0)
       {

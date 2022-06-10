@@ -1,9 +1,9 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using Niantic.ARDK.Utilities;
 
-namespace Niantic.ARDK.Extensions.Gameboard 
+namespace Niantic.ARDK.Extensions.Gameboard
 {
     /// Class used to create Gameboard instances and passes instance to subscribers of
     /// GameboardInitialized. If a Gameboard was created and still alive, a second one can not be
@@ -11,10 +11,10 @@ namespace Niantic.ARDK.Extensions.Gameboard
     public static class GameboardFactory
     {
         private static ArdkEventHandler<GameboardCreatedArgs> _gameboardInitialized;
-        
+
         private static object _activeGameboardLock = new object();
         private static IGameboard _activeGameboard;
-        
+
         /// Create a Gameboard and notify subscribers of GameboardInitialized about it.
         /// @param settings Settings for the created Gameboard instance.
         /// @params visualise If the Gameboard visualisation is activated at start time.
@@ -22,11 +22,11 @@ namespace Niantic.ARDK.Extensions.Gameboard
         public static IGameboard Create(ModelSettings settings, bool visualise)
         {
             IGameboard result = new Gameboard(settings, visualise);
-            
+
             _InvokeGameboardInitialized(result);
             return result;
         }
-        
+
         /// Event invoked when a new Gameboard is created and initialized.
         public static event ArdkEventHandler<GameboardCreatedArgs> GameboardInitialized
         {

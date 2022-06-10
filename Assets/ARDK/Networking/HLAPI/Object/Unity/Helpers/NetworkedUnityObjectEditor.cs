@@ -1,16 +1,11 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
-#if UNITY_EDITOR && UNITY_2018_3_OR_NEWER
-using System;
-using System.Diagnostics;
+#if UNITY_EDITOR
+
 using System.Linq;
-using System.Timers;
-using Niantic.ARDK.Networking.HLAPI.Routing;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 namespace Niantic.ARDK.Networking.HLAPI.Object.Unity.Helpers {
   /// <summary>

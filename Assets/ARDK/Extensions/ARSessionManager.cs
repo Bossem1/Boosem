@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -9,6 +9,7 @@ using Niantic.ARDK.Networking;
 using Niantic.ARDK.Networking.MultipeerNetworkingEventArgs;
 using Niantic.ARDK.Utilities;
 using Niantic.ARDK.Utilities.Logging;
+using Niantic.ARDK.Utilities.Permissions;
 
 using UnityEngine;
 
@@ -31,7 +32,8 @@ namespace Niantic.ARDK.Extensions
   ///   Call Deinitialize() to dispose the ARSession
   ///
   /// @note
-  ///   Because the CapabilityChecker's method for checking device support is async, the above
+  ///   Because the CapabilityChecker's method for checking device support and the
+  ///   PermissionRequester's method to get camera permissions are async, the above
   ///   events (i.e. initialization of an ARSession) may not happen on the exact frame as
   ///   the method (OnAwake or Initialize) is invoked.
   [DisallowMultipleComponent]
@@ -82,6 +84,12 @@ namespace Niantic.ARDK.Extensions
       {
         return _arSession;
       }
+    }
+
+    public ARSessionRunOptions RunOptions
+    {
+      get => _runOptions;
+      set => _runOptions = value;
     }
 
     public bool IsLightEstimationEnabled
@@ -140,7 +148,7 @@ namespace Niantic.ARDK.Extensions
     protected override void InitializeImpl()
     {
       base.InitializeImpl();
-      
+
       _prevLightEstimationEnabled = _isLightEstimationEnabled;
       _prevAutoFocusEnabled = _isAutoFocusEnabled;
       _prevWorldAlignment = _worldAlignment;

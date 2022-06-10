@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
   internal sealed class Visualiser
   {
     private IGameboard _gameboard;
-    private GameboardModel _model;        
+    private GameboardModel _model;
 
     private List<GameObject> _pathDebugObjects;
     private List<GameObject> _unusedPathDebugObjects;
@@ -25,12 +25,12 @@ namespace Niantic.ARDK.Extensions.Gameboard
     {
       _model = model;
       _gameboard = gameboard;
-      
+
       if (active)
         CreateNewDebugObjects();
 
       _active = active;
-            
+
       if (active)
         _gameboard.GameboardUpdated += OnGameboardSurfaceUpdate;
     }
@@ -39,12 +39,12 @@ namespace Niantic.ARDK.Extensions.Gameboard
     {
       if (_pathDebugObjects == null)
         return;
-      
+
       foreach (var obj in _pathDebugObjects)
         GameObject.Destroy(obj);
 
       _pathDebugObjects.Clear();
-      
+
       foreach (var obj in _unusedPathDebugObjects)
         GameObject.Destroy(obj);
 
@@ -54,7 +54,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
         GameObject.Destroy(_meshFilter.gameObject);
       GameObject.Destroy(_visualRoot);
     }
-    
+
     public void SetActive(bool active)
     {
       _active = active;
@@ -68,7 +68,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
         UpdateDebugMesh(_model.Surfaces, _meshFilter.mesh);
       }
       else
-      {   
+      {
         _gameboard.GameboardUpdated -= OnGameboardSurfaceUpdate;
         _meshFilter.mesh.Clear();
       }
@@ -86,7 +86,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
         _meshFilter.mesh.Clear();
         return;
       }
-            
+
       UpdateDebugMesh(_model.Surfaces, _meshFilter.mesh);
     }
 
@@ -103,7 +103,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
       _lineRenderer.widthCurve = new AnimationCurve(new Keyframe(0, 0.1f));
       _lineRenderer.material.color = Color.black;
       _lineRenderer.positionCount = 0;
-            
+
       GameObject debugMeshGameObject = new GameObject();
       debugMeshGameObject.transform.SetParent(_visualRoot.transform, false);
       debugMeshGameObject.name = "GameboardDebug";
@@ -115,7 +115,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
     }
 
     #region TilesDrawing
-    
+
     public void UpdateDebugMesh(List<Surface> surfaces, Mesh mesh)
     {
       float offset = 0.002f;
@@ -150,7 +150,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
           vIndex += 4;
         }
       }
-      
+
       mesh.Clear();
       if (vertices.Count >= 4)
       {
@@ -159,11 +159,11 @@ namespace Niantic.ARDK.Extensions.Gameboard
         mesh.UploadMeshData(markNoLongerReadable: false);
       }
     }
-        
+
     #endregion
-    
+
     #region PathDrawing
-        
+
     private void DrawLine(List<Waypoint> path)
     {
       _lineRenderer.positionCount = path.Count;
@@ -211,9 +211,9 @@ namespace Niantic.ARDK.Extensions.Gameboard
         }
 
         _lineRenderer.positionCount = 0;
-        return;        
+        return;
       }
-      
+
       DrawLine(path.Waypoints);
 
       for (int index = 0; index < path.Waypoints.Count; index++)
@@ -225,13 +225,13 @@ namespace Niantic.ARDK.Extensions.Gameboard
         else
         {
           if (_unusedPathDebugObjects.Count > 0)
-          { 
+          {
             GameObject waypoint = _unusedPathDebugObjects[0];
             MoveSphereFromCache(waypoint, path.Waypoints[index].WorldPosition);
           }
           else
           {
-            GameObject waypointDebugSphere = CreateSphere(path.Waypoints[index].WorldPosition); 
+            GameObject waypointDebugSphere = CreateSphere(path.Waypoints[index].WorldPosition);
             _pathDebugObjects.Add(waypointDebugSphere);
           }
         }
@@ -247,7 +247,7 @@ namespace Niantic.ARDK.Extensions.Gameboard
       }
     }
 
-        
+
     #endregion
   }
 }

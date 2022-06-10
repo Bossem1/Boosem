@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -99,7 +99,7 @@ namespace Niantic.ARDK.AR.Configuration
 
     /// Initializes a new instance of the ARWorldTrackingConfiguration class.
     /// @note this is an experimental feature
-    public static IARWorldTrackingConfiguration CreatePlaybackConfig()
+    internal static IARWorldTrackingConfiguration _CreatePlaybackConfig()
     {
         if (NativeAccess.Mode == NativeAccess.ModeType.Native)
             // Enable playback

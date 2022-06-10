@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using UnityEngine;
 
 namespace Niantic.ARDK.Configuration.Authentication
 {

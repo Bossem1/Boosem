@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -38,9 +38,7 @@ namespace Niantic.ARDKExamples.PongHLAPI
     // Flags for whether the game has started and if the local player is the host
     private bool _gameStart;
     private bool _isHost;
-
-    private IMultipeerNetworking _networking;
-
+    
     // Store the start location of the ball
     private void Start()
     {

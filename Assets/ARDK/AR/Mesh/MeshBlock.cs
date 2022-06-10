@@ -1,3 +1,4 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using Unity.Collections;
 
 using UnityEngine;

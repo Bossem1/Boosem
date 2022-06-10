@@ -1,10 +1,11 @@
-﻿// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System.Collections;
 using System.Collections.Generic;
 
 using Niantic.ARDK.Extensions.Gameboard;
 using Niantic.ARDK.Utilities;
+using Niantic.ARDK.Utilities.Input.Legacy;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -45,11 +46,9 @@ namespace Niantic.ARDKExamples
         private IGameboard _gameboard;
         private GameObject _agentGameObject;
         private GameboardAgent _agent;
-        private float _lastScan;
         private bool _isReplacing;
         private bool _arIsRunning;
         private bool _gameboardIsRunning;
-        private Path _lastPath;
 
         /// Inform about started ARSession.
         public void ARSessionStarted()
@@ -70,7 +69,7 @@ namespace Niantic.ARDKExamples
 
             _isReplacing = false;
             _arIsRunning = false;
-            
+
             _gameboard.Clear();
         }
 
@@ -112,7 +111,7 @@ namespace Niantic.ARDKExamples
         {
             if (!_gameboardIsRunning)
                 return;
-            
+
             if (_isReplacing)
             {
                 HandlePlacement();
@@ -128,21 +127,21 @@ namespace Niantic.ARDKExamples
         private void HandleTouch()
         {
             //if there is a touch call our function
-            if (PlatformAgnosticInput.touchCount <= 0) 
+            if (PlatformAgnosticInput.touchCount <= 0)
                 return;
-        
+
             var touch = PlatformAgnosticInput.GetTouch(0);
-        
+
             //if there is no touch or touch selects UI element
-            if (PlatformAgnosticInput.touchCount <= 0 || EventSystem.current.currentSelectedGameObject != null)  
-                return; 
-        
+            if (PlatformAgnosticInput.touchCount <= 0 || EventSystem.current.currentSelectedGameObject != null)
+                return;
+
             if (touch.phase == TouchPhase.Began)
             {
                 TouchBegan(touch);
             }
         }
-        
+
         private void TouchBegan(Touch touch)
         {
             if (!_arIsRunning || _agent == null || _arCamera == null)
@@ -150,7 +149,7 @@ namespace Niantic.ARDKExamples
 
             //as we are using meshing we can use a standard ray cast
             Ray ray = _arCamera.ScreenPointToRay(touch.position);
-        
+
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
@@ -164,7 +163,7 @@ namespace Niantic.ARDKExamples
         {
             // Use this technique to place an object to a user-defined position.
           // Otherwise, use FindRandomPosition() to try to place the object automatically.
-          
+
           // Get a ray pointing in the user's look direction
           var cameraTransform = _arCamera.transform;
           var ray = new Ray(cameraTransform.position, cameraTransform.forward);
@@ -187,7 +186,7 @@ namespace Niantic.ARDKExamples
         private void ReplaceButton_OnClick()
         {
             _destinationMarker.SetActive(false);
-            
+
             if (_agentGameObject == null)
             {
                 _agentGameObject = Instantiate(_agentPrefab);
@@ -204,7 +203,7 @@ namespace Niantic.ARDKExamples
             if (_isReplacing)
             {
                 // invalidates path by path to itself for path debug reset
-                _agent.SetDestination(_agentGameObject.transform.position); 
+                _agent.SetDestination(_agentGameObject.transform.position);
                 _agentGameObject.SetActive(false);
             }
             else

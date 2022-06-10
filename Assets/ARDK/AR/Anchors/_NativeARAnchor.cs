@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ namespace Niantic.ARDK.AR.Anchors
 
       GC.AddMemoryPressure(MemoryPressure);
     }
-
+    
     ~_NativeARAnchor()
     {
       _ReleaseImmediate(_nativeHandle);

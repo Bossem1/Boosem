@@ -1,4 +1,5 @@
-﻿using Niantic.ARDK.Helpers;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using Niantic.ARDK.Extensions;
 
 using UnityEditor;
 

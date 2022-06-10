@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_WIN
 #define UNITY_STANDALONE_DESKTOP
@@ -27,8 +27,7 @@ namespace Niantic.ARDK.AR.Anchors
     {
       if (NativeAccess.Mode == NativeAccess.ModeType.Native)
       {
-        var nativeTransform =
-          _Convert.Matrix4x4ToInternalArray(NARConversions.FromUnityToNAR(transform));
+        var nativeTransform = _Convert.Matrix4x4ToInternalArray(NARConversions.FromUnityToNAR(transform));
 
         var nativeHandle = _NARAnchor_Init(nativeTransform);
         if (nativeHandle == IntPtr.Zero)
@@ -50,18 +49,17 @@ namespace Niantic.ARDK.AR.Anchors
 
         ARLog._DebugFormat
         (
-          "Creating new _SerializableARBaseAnchor with identifier: {0}",
+          "Creating new _SerializableARBasicAnchor with identifier: {0}",
           false,
           identifier
         );
 
-        return new _SerializableARBaseAnchor(transform, identifier);
+        return new _SerializableARBasicAnchor(transform, identifier);
       }
 #pragma warning restore 0162
     }
 
-    private static _WeakValueDictionary<IntPtr, _NativeARAnchor> _allAnchors =
-      new _WeakValueDictionary<IntPtr, _NativeARAnchor>();
+    private static _WeakValueDictionary<IntPtr, _NativeARAnchor> _allAnchors = new _WeakValueDictionary<IntPtr, _NativeARAnchor>();
 
     internal static _NativeARAnchor _FromNativeHandle(IntPtr nativeHandle)
     {
@@ -106,11 +104,10 @@ namespace Niantic.ARDK.AR.Anchors
       else
         anchorType = _testOnly_DefaultAnchorType;
       #pragma warning restore 0162
-
-
+      
       switch (anchorType)
       {
-        case AnchorType.Base: return new _NativeARBaseAnchor(nativeHandle);
+        case AnchorType.Basic: return new _NativeARBasicAnchor(nativeHandle);
         case AnchorType.Image: return new _NativeARImageAnchor(nativeHandle);
         case AnchorType.Plane: return new _NativeARPlaneAnchor(nativeHandle);
       }

@@ -1,6 +1,8 @@
-﻿using Niantic.ARDK.AR;
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
+using System;
+
+using Niantic.ARDK.AR;
 using Niantic.ARDK.AR.ARSessionEventArgs;
-using Niantic.ARDK.Extensions;
 using Niantic.ARDK.Internals.EditorUtilities;
 using Niantic.ARDK.Rendering;
 using Niantic.ARDK.Utilities;
@@ -9,10 +11,10 @@ using Niantic.ARDK.VirtualStudio.AR.Mock;
 
 using UnityEngine;
 
-namespace Niantic.ARDK.Helpers
+namespace Niantic.ARDK.Extensions
 {
   [DisallowMultipleComponent]
-  public sealed class ARRenderingManager:
+  public class ARRenderingManager:
     UnityLifecycleDriver
   {
     [SerializeField]
@@ -25,12 +27,6 @@ namespace Niantic.ARDK.Helpers
 
     [SerializeField]
     private RenderTexture _targetTexture = null;
-
-    [SerializeField]
-    private float _nearClippingPlane = 0.1f;
-
-    [SerializeField]
-    private float _farClippingPlane = 100.0f;
 
     /// Event for when the underlying frame renderer initialized.
     public event ArdkEventHandler<FrameRenderedArgs> RendererInitialized;
@@ -57,6 +53,18 @@ namespace Niantic.ARDK.Helpers
     private bool _isCPUTextureDirty = true;
     private bool _isFrameDirty = true;
     private bool _releaseTargetTexture = false;
+
+    public Camera Camera
+    {
+      get => _camera;
+      set
+      {
+        if (Initialized)
+          throw new InvalidOperationException("Cannot set this property after this component is initialized.");
+
+        _camera = value;
+      }
+    }
 
     /// Returns the renderer instance used by this manager
     public IARFrameRenderer Renderer
@@ -154,9 +162,6 @@ namespace Niantic.ARDK.Helpers
 
       if (_camera != null)
       {
-        // Copy clipping plane distances from the camera if available
-        _nearClippingPlane = _camera.nearClipPlane;
-        _farClippingPlane = _camera.farClipPlane;
 
 #if UNITY_EDITOR
         // Attempt to disable the layer all mock objects are on so "real" objects aren't doubly rendered
@@ -248,9 +253,6 @@ namespace Niantic.ARDK.Helpers
       _session.Ran += OnSessionRan;
       _session.Paused += OnSessionPaused;
       _session.Deinitialized += OnSessionDeinitialized;
-
-      if (_camera == null)
-        return;
     }
 
     private void OnSessionRan(ARSessionRanArgs args)
@@ -335,13 +337,13 @@ namespace Niantic.ARDK.Helpers
         ? new RenderTarget(_targetTexture)
         : new RenderTarget(_camera);
 
-      var result = ARFrameRendererFactory.Create
-      (
-        renderTarget,
-        environment,
-        _nearClippingPlane,
-        _farClippingPlane
-      );
+      ARFrameRenderer result;
+      var nearClippingPlane = _camera.nearClipPlane;
+      var farClippingPlane = _camera.farClipPlane;
+      if (((_IARSession) _session).IsPlayback)
+        result = ARFrameRendererFactory._CreatePlayback(renderTarget, nearClippingPlane, farClippingPlane);
+      else
+        result = ARFrameRendererFactory.Create(renderTarget, environment, nearClippingPlane, farClippingPlane);
 
       if (result != null)
         result.IsOrientationLocked = false;

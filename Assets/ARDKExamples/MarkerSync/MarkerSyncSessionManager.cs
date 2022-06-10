@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 
@@ -8,7 +8,6 @@ using Niantic.ARDK.AR.Configuration;
 using Niantic.ARDK.AR.Networking;
 using Niantic.ARDK.VirtualStudio;
 using Niantic.ARDK.Extensions.MarkerSync;
-using Niantic.ARDK.Networking;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -143,6 +142,9 @@ namespace Niantic.ARDKExamples.MarkerSync
       _startupUI.SetActive(false);
 
       ARSession = ARSessionFactory.Create();
+
+      if (ARSession == null)
+        Debug.LogError("Failed to initialize ARSession.");
     }
 
     public void InitializeARNetworking()

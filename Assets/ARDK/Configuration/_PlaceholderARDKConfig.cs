@@ -1,3 +1,4 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using System;
 
 using Niantic.ARDK.Networking;
@@ -8,18 +9,26 @@ namespace Niantic.ARDK.Configuration
   // <summary>
   // Temporary ardk config class while proper support for other Operating Systems and architecture is being added.
   // </summary>
-  internal sealed class _PlaceholderArkdConfig :
+  internal sealed class _PlaceholderArdkConfig :
     _IArdkConfig
   {
     private string _dbowUrl;
     private string _contextAwarenessUrl;
-    private string _apiKey;
     private string _authenticationUrl;
+    internal static string _userId;
+    internal static string _apiKey;
 
-    public _PlaceholderArkdConfig()
+    public _PlaceholderArdkConfig()
     {
-      ARLog._Debug($"Using config: {nameof(_PlaceholderArkdConfig)}");
+      ARLog._Debug($"Using config: {nameof(_PlaceholderArdkConfig)}");
     }
+
+    public bool SetUserIdOnLogin(string userId)
+    {
+      _userId = userId;
+      return true;
+    }
+
     public bool SetDbowUrl(string url)
     {
       if (string.IsNullOrWhiteSpace(url))
@@ -71,7 +80,7 @@ namespace Niantic.ARDK.Configuration
       return true;
     }
 
-    public NetworkingErrorCode VerifyApiKeyWithFeature(string feature)
+    public NetworkingErrorCode VerifyApiKeyWithFeature(string feature, bool isAsync)
     {
       return NetworkingErrorCode.Ok;
     }

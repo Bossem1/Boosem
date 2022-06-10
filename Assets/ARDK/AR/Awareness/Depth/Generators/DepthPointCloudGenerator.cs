@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.ObjectModel;
@@ -45,49 +45,6 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
 
 #endregion
 
-    [Serializable]
-    public sealed class Settings
-    {
-      public bool IsEnabled;
-
-      /// This is a fixup scale value that pulls points downward larger amounts as they go further
-      /// from the camera's position. At the present it is necessary to compensate for the fact that
-      /// current models believe the floor to be a large bowl, with you standing in the centermost,
-      /// deepest part.
-      [Obsolete]
-      public float VerticalOffsetPerMeter = -0.025f;
-
-      /// If true, the cloud will be fit to the specified target pixel width and height
-      [Obsolete]
-      public bool FitToViewport;
-
-      /// The pixel width of the target display that this generator should create points for
-      [Obsolete]
-      public int TargetWidth;
-
-      /// The pixel height of the target display that this generator should create points for
-      [Obsolete]
-      public int TargetHeight;
-
-      /// If true, the depth cloud will be interpolated to match the current ARFrame
-      [Obsolete]
-      public bool Interpolate;
-
-      /// Value passed into IDepthBuffer.Interpolation calls. See IDepthBuffer documentation
-      [Obsolete]
-      public float BackProjectionDistance = AwarenessParameters.DefaultBackProjectionDistance;
-
-      public Settings Copy()
-      {
-        return
-          new Settings
-          {
-            IsEnabled = IsEnabled,
-          };
-      }
-    }
-
-    private Settings _settings;
     private int _kernel;
 
     private uint _kernelThreadsX;
@@ -109,7 +66,7 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
     /// Constructs a new generator.
     /// @param settings User-controlled settings specific to this generator. Cached.
     /// @param depthBuffer Depth buffer used to initialize the generator. Not cached.
-    public DepthPointCloudGenerator(Settings settings)
+    public DepthPointCloudGenerator()
     {
       if (!SystemInfo.supportsComputeShaders)
       {
@@ -127,7 +84,6 @@ namespace Niantic.ARDK.AR.Awareness.Depth.Generators
         return;
       }
 
-      _settings = settings;
       _kernel = _pointCloudShader.FindKernel(KERNEL_NAME);
 
       _pointCloudShader.GetKernelThreadGroupSizes(

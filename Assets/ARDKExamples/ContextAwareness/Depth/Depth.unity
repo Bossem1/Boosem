@@ -631,26 +631,6 @@ Camera:
     type: 3}
   m_PrefabInstance: {fileID: 299608887}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &299608890 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7315055104982771470, guid: e91d6d15f11cc4ad29bb1a41ae9aa381,
-    type: 3}
-  m_PrefabInstance: {fileID: 299608887}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &299608892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299608890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc55fb6abf44947afb14b8206bf60b15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _permissions: 00000000
-  _requestOnUpdate: 0
 --- !u!1 &425632593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,7 +1589,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Show Depths
+  m_Text: Show Depth
 --- !u!222 &1469552065
 CanvasRenderer:
   m_ObjectHideFlags: 0

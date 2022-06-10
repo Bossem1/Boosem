@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ using Niantic.ARDK.AR.Configuration;
 using Niantic.ARDK.AR.Awareness.Depth;
 using Niantic.ARDK.AR.Awareness.Depth.Generators;
 using Niantic.ARDK.AR.Frame;
-using Niantic.ARDK.AR.Localization;
 using Niantic.ARDK.AR.Mesh;
 using Niantic.ARDK.AR.Networking;
 using Niantic.ARDK.AR.SLAM;
@@ -22,6 +21,7 @@ using Niantic.ARDK.LocationService;
 using Niantic.ARDK.Utilities;
 using Niantic.ARDK.Utilities.Collections;
 using Niantic.ARDK.Utilities.Logging;
+using Niantic.ARDK.VirtualStudio.AR.Camera.Input;
 using Niantic.ARDK.VirtualStudio.AR.Mock;
 
 using UnityEngine;
@@ -30,8 +30,7 @@ using UnityEngine.Rendering;
 namespace Niantic.ARDK.VirtualStudio.AR
 {
   internal sealed class _MockARSession:
-    _IMockARSession,
-    ILocalizableARSession
+    _IMockARSession
   {
     private bool _isWorldTracking;
     private bool _isSharedExperience;
@@ -58,19 +57,10 @@ namespace Niantic.ARDK.VirtualStudio.AR
 
     private GameObject _camerasRoot;
     private _MockFrameBufferProvider _frameProvider;
-    private _MockCameraController _cameraController;
 
 #if DEBUG
     private System.Diagnostics.StackTrace _stackTrace = new System.Diagnostics.StackTrace(true);
 #endif
-
-    private ILocalizer _localizer;
-    /// @note This is an experimental feature, and may be changed or removed in a future release.
-    ///   This feature is currently not functional or supported.
-    public ILocalizer Localizer
-    {
-      get => _localizer ?? (_localizer = new _MockLocalizer(this));
-    }
 
     public ARSessionChangesCollector ARSessionChangesCollector { get; }
 
@@ -120,10 +110,7 @@ namespace Niantic.ARDK.VirtualStudio.AR
         else
           GameObject.Destroy(_camerasRoot);
       }
-
-      _cameraController?.Dispose();
-      _cameraController = null;
-
+      
       _frameProvider?.Dispose();
       _frameProvider = null;
 
@@ -191,7 +178,7 @@ namespace Niantic.ARDK.VirtualStudio.AR
         _camerasRoot.name = "ARDK_MockDeviceCamera_Root";
 
         _frameProvider = new _MockFrameBufferProvider(this, _camerasRoot.transform);
-        _cameraController = new _MockCameraController(_camerasRoot.transform);
+        _CameraInputSystemProvider.AttachController(_camerasRoot);
       }
 
       State = ARSessionState.Running;
@@ -356,11 +343,11 @@ namespace Niantic.ARDK.VirtualStudio.AR
     private DepthPointCloudGenerator _depthPointCloudGen;
     private void _UpdateGenerators(_SerializableARFrame frame)
     {
-      if (!(Configuration is IARWorldTrackingConfiguration worldConfig) ||
-        !worldConfig.DepthPointCloudSettings.IsEnabled)
-      {
+      if (!(Configuration is IARWorldTrackingConfiguration worldConfig))
         return;
-      }
+
+      if (!worldConfig.IsDepthPointCloudEnabled)
+        return;
 
       var depthBuffer = frame.DepthBuffer;
       if (depthBuffer == null || !depthBuffer.IsKeyframe)
@@ -369,11 +356,7 @@ namespace Niantic.ARDK.VirtualStudio.AR
       // Create a generator if needed
       if (_depthPointCloudGen == null)
       {
-        _depthPointCloudGen =
-          new DepthPointCloudGenerator
-          (
-            worldConfig.DepthPointCloudSettings
-          );
+        _depthPointCloudGen = new DepthPointCloudGenerator();
 
         ARLog._Debug("Created new depth point cloud generator");
       }
@@ -644,8 +627,10 @@ namespace Niantic.ARDK.VirtualStudio.AR
       get { return RuntimeEnvironment.Mock; }
     }
 
+    public bool IsPlayback { get { return false; } }
+
     internal bool _HasSetupLocationService = false;
-    void IARSession.SetupLocationService(ILocationService wrapper)
+    void IARSession.SetupLocationService(ILocationService locationService)
     {
       _HasSetupLocationService = true;
     }

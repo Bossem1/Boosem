@@ -1,3 +1,4 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,24 +13,8 @@ namespace Niantic.ARDK.Rendering
   public static class ARFrameRendererFactory
   {
     // Recommended near and far clipping settings for AR rendering
-    private const float NEAR_CLIPPING = 0.1f;
-    private const float FAR_CLIPPING = 100f;
-
-    /// Create an ARFrameRenderer appropriate for the current device.
-    ///
-    /// On a mobile device, the attempted order will be LiveDevice, Remote, and finally Mock.
-    /// In the Unity Editor, the attempted order will be Remote, then Mock.
-    ///
-    /// @returns The created renderer, or throws if it was not possible to create a renderer.
-    public static ARFrameRenderer Create
-    (
-      RenderTarget target,
-      float nearClipping = NEAR_CLIPPING,
-      float farClipping = FAR_CLIPPING
-    )
-    {
-      return _Create(target, null, nearClipping, farClipping);
-    }
+    private const float DefaultNearClipping = 0.1f;
+    private const float DefaultFarClipping = 100f;
 
     private static ARFrameRenderer _Create
     (
@@ -66,15 +51,15 @@ namespace Niantic.ARDK.Rendering
     (
       RenderTarget target,
       RuntimeEnvironment env,
-      float nearClipping = NEAR_CLIPPING,
-      float farClipping = FAR_CLIPPING
+      float nearClipping = DefaultNearClipping,
+      float farClipping = DefaultFarClipping
     )
     {
       ARFrameRenderer result;
       switch (env)
       {
         case RuntimeEnvironment.Default:
-          return Create(target, nearClipping, farClipping);
+          return _Create(target, null, nearClipping, farClipping);
 
         case RuntimeEnvironment.LiveDevice:
 #pragma warning disable CS0162
@@ -90,10 +75,6 @@ namespace Niantic.ARDK.Rendering
 #endif
           break;
 #pragma warning restore CS0162
-
-        case RuntimeEnvironment.Playback:
-            result = new _ARPlaybackFrameRenderer(target,nearClipping, farClipping);
-          break;
 
         case RuntimeEnvironment.Remote:
           if (!_RemoteConnection.IsEnabled)
@@ -113,30 +94,14 @@ namespace Niantic.ARDK.Rendering
       return result;
     }
 
-    [Obsolete("This method is deprecated, use Create without a resolution specified")]
-    public static ARFrameRenderer Create
+    internal static ARFrameRenderer _CreatePlayback
     (
       RenderTarget target,
-      Resolution resolution,
-      float nearClipping = NEAR_CLIPPING,
-      float farClipping = FAR_CLIPPING
+      float nearClipping = DefaultNearClipping,
+      float farClipping = DefaultFarClipping
     )
     {
-      return _Create(target, null, nearClipping, farClipping);
+      return new _ARPlaybackFrameRenderer(target,nearClipping, farClipping);
     }
-
-    [Obsolete("This method is deprecated, use Create without a resolution specified")]
-    public static ARFrameRenderer Create
-    (
-      RenderTarget target,
-      Resolution resolution,
-      RuntimeEnvironment env,
-      float nearClipping = NEAR_CLIPPING,
-      float farClipping = FAR_CLIPPING
-    )
-    {
-      return Create(target, env, nearClipping, farClipping);
-    }
-
   }
 }

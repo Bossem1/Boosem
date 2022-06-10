@@ -1,4 +1,4 @@
-// Copyright 2021 Niantic, Inc. All Rights Reserved.
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 
 using UnityEngine;
 
@@ -15,9 +15,6 @@ namespace Niantic.ARDK.Utilities.Logging
 
     private UnityARLogHandler()
     {
-      Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
-      Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.Full);
-      Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.Full);
     }
 
     /// <inheritdoc />

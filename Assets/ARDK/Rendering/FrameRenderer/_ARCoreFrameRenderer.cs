@@ -1,3 +1,4 @@
+// Copyright 2022 Niantic, Inc. All Rights Reserved.
 using System;
 
 using Niantic.ARDK.AR;
@@ -5,6 +6,9 @@ using Niantic.ARDK.Utilities.Logging;
 
 using UnityEngine;
 using UnityEngine.Rendering;
+
+using System.Runtime.InteropServices;
+using AOT;
 
 using Object = UnityEngine.Object;
 
@@ -81,6 +85,7 @@ namespace Niantic.ARDK.Rendering
         name = "ARCoreFrameRenderer"
       };
       
+      AddResetOpenGLState(_commandBuffer);
       _commandBuffer.ClearRenderTarget(true, true, Color.clear);
       _commandBuffer.Blit(null, Target.Identifier, renderMaterial);
 
@@ -154,5 +159,16 @@ namespace Niantic.ARDK.Rendering
       if (_blitMaterial != null)
         Object.Destroy(_blitMaterial);
     }
+    
+    // Does nothing but returning from an IssuePluginEvent has the effect of Unity resetting all 
+    // the OpenGL states to known values
+    [MonoPInvokeCallback(typeof(Action<int>))]
+    static void ResetGlState(int eventId) {}
+    static Action<int> s_ResetGlStateDelegate = ResetGlState;
+    static readonly IntPtr s_ResetGlStateFuncPtr = Marshal.GetFunctionPointerForDelegate(s_ResetGlStateDelegate);
+    private static void AddResetOpenGLState(CommandBuffer commandBuffer)
+    {
+      commandBuffer.IssuePluginEvent(s_ResetGlStateFuncPtr, 0);
+    } 
   }
 }
