@@ -5,7 +5,7 @@ public class TriggerAudioSound : MonoBehaviour
      public AudioObject clipToPlay;
 
 
-     public void SheepleConversation()
+     public void SheepleStatement()
      {
           Vocals.instance.Say(clipToPlay);
      }

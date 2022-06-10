@@ -2,8 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Niantic.ARDK.AR;
+using Niantic.ARDK.AR.ARSessionEventArgs;
+using Niantic.ARDK.Utilities;
+
+using Niantic.ARDK.AR.Configuration;
+
+using Niantic.ARDK.AR.Mesh;
+
 public class PlayerAnimation : MonoBehaviour
 {
+    IARSession _ARsession;
+
     Animator anim;
     public float speed;
     Vector3 pos;
@@ -16,10 +26,20 @@ public class PlayerAnimation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ARSessionFactory.SessionInitialized += OnSessionInitialized;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
         
+    }
+
+    private void OnSessionInitialized(AnyARSessionInitializedArgs args)
+    {
+        //Now that we've initiated our session, we don't need to do this again so we can remove the callback
+        ARSessionFactory.SessionInitialized -= OnSessionInitialized;
+
+        //Here we're saving our AR Session to our '_ARsession' variable, along with any arguments our session contains
+        _ARsession = args.Session;
     }
 
     // Update is called once per frame

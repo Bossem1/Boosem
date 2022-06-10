@@ -30,6 +30,8 @@ public class HornManager : MonoBehaviour
         yield return new WaitForSeconds(12);
         Vocals.instance.Say(clipToPlay);
         // audioSource.PlayOneShot(audioClip);
+        yield return new WaitForSeconds(5);
         helloButton.gameObject.SetActive(true);
     }
+
 }

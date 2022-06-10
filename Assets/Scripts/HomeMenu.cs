@@ -17,7 +17,13 @@ public class HomeMenu : MonoBehaviour
     public void PlayableDemo()
     {
         circleTransition.OpenBlankScreen();
-        StartCoroutine(DelayedSceneChange());
+        StartCoroutine(DelayedSceneChange()); 
+    }
+
+    public void PlayGame()
+    {
+        circleTransition.OpenBlankScreen();
+        StartCoroutine(DelayedSceneChange1());   
     }
 
     public void LoadHomeMenu()
@@ -29,5 +35,11 @@ public class HomeMenu : MonoBehaviour
     {
        yield return new WaitForSecondsRealtime(1);
        SceneManager.LoadScene("Playable Demo");
+    }
+
+    IEnumerator DelayedSceneChange1()
+    {
+       yield return new WaitForSecondsRealtime(1);
+       SceneManager.LoadScene("Gameplay");
     }
 }
