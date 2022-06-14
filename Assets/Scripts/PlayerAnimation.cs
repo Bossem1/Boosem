@@ -85,6 +85,10 @@ public class PlayerAnimation : MonoBehaviour
     {
         anim.SetBool("isKicking", true);
     }
+    public void Greet()
+    {
+        anim.SetBool("isGreeting", true);
+    }
     public void Stop()
     {
         transform.Translate(0,0,0);
@@ -94,12 +98,14 @@ public class PlayerAnimation : MonoBehaviour
         anim.SetBool("isRunning", false);
         anim.SetBool("isKicking", false);
         anim.SetBool("isWalking", false);
+        anim.SetBool("isGreeting", false);
     }
 
     private IEnumerator StopWalkAnimation()
     {
         yield return new WaitForSeconds(10);
         transform.Rotate(0f, 90f, 0f);
+        Greet();
         // transform.rotation = Camera.main.transform.rotation;
         isMoving = false;
         anim.SetBool("isWalking", false);
