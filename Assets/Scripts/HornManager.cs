@@ -27,10 +27,10 @@ public class HornManager : MonoBehaviour
 
     private IEnumerator PlayAfterSeconds()
     {
-        yield return new WaitForSeconds(12);
+        yield return new WaitForSeconds(11);
         Vocals.instance.Say(clipToPlay);
         // audioSource.PlayOneShot(audioClip);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
         helloButton.gameObject.SetActive(true);
     }
 
