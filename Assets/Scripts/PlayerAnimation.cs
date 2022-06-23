@@ -101,30 +101,21 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void Jump()
     {
-        anim.SetBool("isJumping", true);
+        anim.Play("jump", -1, 0f);
         isMovingRunning = false;
-        anim.SetBool("isKicking", false);
         isMoving = false;
-        anim.SetBool("isGreeting", false);
-        anim.SetBool("isDancing", false);
     }
     public void Kick()
     {
-        anim.SetBool("isKicking", true);
-        anim.SetBool("isJumping", false);
+        anim.Play("kick", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
-        anim.SetBool("isGreeting", false);
-        anim.SetBool("isDancing", false);
     }
     public void Dance()
     {
-        anim.SetBool("isDancing", true);
-        anim.SetBool("isKicking", false);
-        anim.SetBool("isJumping", false);
+        anim.Play("dance", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
-        anim.SetBool("isGreeting", false);
     }
     public void Greet()
     {

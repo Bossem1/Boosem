@@ -40,6 +40,6 @@ public class HomeMenu : MonoBehaviour
     IEnumerator DelayedSceneChange1()
     {
        yield return new WaitForSecondsRealtime(1);
-       SceneManager.LoadScene("Gameplay");
+       SceneManager.LoadScene("Training");
     }
 }
