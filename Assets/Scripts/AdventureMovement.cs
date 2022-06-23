@@ -121,4 +121,12 @@ public class AdventureMovement : MonoBehaviour
         isMovingRunning = false;
         isMoving = false;
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("treasure_box"))
+        {
+           isMovingRunning = false;
+        }
+    }
 }

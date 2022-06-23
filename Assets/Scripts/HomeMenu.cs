@@ -17,13 +17,13 @@ public class HomeMenu : MonoBehaviour
     public void PlayableDemo()
     {
         circleTransition.OpenBlankScreen();
-        StartCoroutine(DelayedSceneChange()); 
+        StartCoroutine(DelayedPlayableChange()); 
     }
 
     public void PlayGame()
     {
         circleTransition.OpenBlankScreen();
-        StartCoroutine(DelayedSceneChange1());   
+        StartCoroutine(DelayedTrainingChange());   
     }
 
     public void LoadHomeMenu()
@@ -31,15 +31,27 @@ public class HomeMenu : MonoBehaviour
         SceneManager.LoadScene("Home Menu");
     }
 
-    IEnumerator DelayedSceneChange()
+    public void LoadAdventure()
+    {
+        circleTransition.OpenBlankScreen();
+        StartCoroutine(DelayedAdventureChange());
+    }
+
+    IEnumerator DelayedPlayableChange()
     {
        yield return new WaitForSecondsRealtime(1);
        SceneManager.LoadScene("Playable Demo");
     }
 
-    IEnumerator DelayedSceneChange1()
+    IEnumerator DelayedTrainingChange()
     {
        yield return new WaitForSecondsRealtime(1);
        SceneManager.LoadScene("Training");
+    }
+
+    IEnumerator DelayedAdventureChange()
+    {
+       yield return new WaitForSecondsRealtime(1);
+       SceneManager.LoadScene("Adventures");
     }
 }
