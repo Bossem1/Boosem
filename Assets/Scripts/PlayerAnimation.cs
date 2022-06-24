@@ -15,9 +15,10 @@ public class PlayerAnimation : MonoBehaviour
     IARSession _ARsession;
 
     Animator anim;
-    public float speed;
     Vector3 pos;
     Rigidbody rb;
+
+    private float speed = 1f;
    
     float vertical;
     bool isMoving = false;
@@ -30,7 +31,6 @@ public class PlayerAnimation : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
-        
     }
 
     private void OnSessionInitialized(AnyARSessionInitializedArgs args)
@@ -45,18 +45,30 @@ public class PlayerAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
-        vertical = Input.GetAxis("Vertical");
-        pos = new Vector3(0, 0, speed * Time.deltaTime);
+        pos = new Vector3(0, 0, speed * Time.deltaTime);  // move forward
+        
         if (isMoving == true)
         {
             transform.Translate(pos);
+            transform.Rotate(0,Time.deltaTime * 45, 0); // turn a little
             anim.SetBool("isWalking", true);
         }
+        else 
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("Idle", true);
+        }
+
         if (isMovingRunning == true)
         {
             transform.Translate(pos);
+            transform.Rotate(0,Time.deltaTime* 45, 0);
             anim.SetBool("isRunning", true);
+        }
+        else
+        {
+            anim.SetBool("isRunning", false);
+            anim.SetBool("Idle", true);
         }
 
 
@@ -68,38 +80,60 @@ public class PlayerAnimation : MonoBehaviour
       
 
     }
+
     public void Walk()
     {
         isMoving = true;
-        StartCoroutine(StopWalkAnimation());
+        anim.SetBool("isJumping", false);
+        isMovingRunning = false;
+        anim.SetBool("isKicking", false);
+        anim.SetBool("isGreeting", false);
+        anim.SetBool("isDancing", false);
     }
     public void Run()
     {
-        isMovingRunning = true;
+         isMovingRunning = true;
+         isMoving = false;
+         anim.SetBool("isJumping", false);
+         anim.SetBool("isKicking", false);
+         anim.SetBool("isGreeting", false);
+         anim.SetBool("isDancing", false);
     }
     public void Jump()
     {
-        anim.SetBool("isJumping", true);
+        anim.Play("jump", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
     }
     public void Kick()
     {
-        anim.SetBool("isKicking", true);
+        anim.Play("kick", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
+    }
+    public void Dance()
+    {
+        anim.Play("dance", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
     }
     public void Greet()
     {
         anim.SetBool("isGreeting", true);
+        anim.SetBool("isDancing", false);
     }
-    public void Stop()
-    {
-        transform.Translate(0,0,0);
-        isMoving = false;
-        isMovingRunning = false;
-        anim.SetBool("isJumping", false);
-        anim.SetBool("isRunning", false);
-        anim.SetBool("isKicking", false);
-        anim.SetBool("isWalking", false);
-        anim.SetBool("isGreeting", false);
-    }
+    // public void Stop()
+    // {
+    //     transform.Translate(0,0,0);
+    //     isMoving = false;
+    //     isMovingRunning = false;
+    //     anim.SetBool("isJumping", false);
+    //     anim.SetBool("isRunning", false);
+    //     anim.SetBool("isKicking", false);
+    //     anim.SetBool("isWalking", false);
+    //     anim.SetBool("isGreeting", false);
+    //     anim.SetBool("isDancing",  false);
+    // }
 
     private IEnumerator StopWalkAnimation()
     {
