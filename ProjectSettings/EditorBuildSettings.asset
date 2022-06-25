@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Gameplay/Training.unity
-    guid: 8c58adca3d17aac4395db90565a57f68
+    path: Assets/Scenes/AR GamePlay/Adventure.unity
+    guid: d6c8a193b1af5764ca5eaffacefd708d
   - enabled: 1
-    path: Assets/Scenes/Gameplay/Home Menu.unity
+    path: Assets/Scenes/AR GamePlay/Home Menu.unity
     guid: 4ec456f56110d234990ffd9c5bf50fc2
   - enabled: 1
-    path: Assets/Scenes/Gameplay/Playable Demo.unity
-    guid: ae9130b4a7d639a4f84c2fbbd8dba125
+    path: Assets/Scenes/AR GamePlay/Training.unity
+    guid: e6dfb4066b5f1664e9b08b328a71b22a
   - enabled: 1
-    path: Assets/Scenes/Gameplay/Adventures.unity
-    guid: 47a0309b7af7d20498e783ded88e7b2b
+    path: Assets/Scenes/AR GamePlay/PlayableDemo.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

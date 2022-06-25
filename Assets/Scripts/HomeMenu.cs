@@ -20,7 +20,7 @@ public class HomeMenu : MonoBehaviour
         StartCoroutine(DelayedPlayableChange()); 
     }
 
-    public void PlayGame()
+    public void LoadTraining()
     {
         circleTransition.OpenBlankScreen();
         StartCoroutine(DelayedTrainingChange());   
@@ -40,7 +40,7 @@ public class HomeMenu : MonoBehaviour
     IEnumerator DelayedPlayableChange()
     {
        yield return new WaitForSecondsRealtime(1);
-       SceneManager.LoadScene("Playable Demo");
+       SceneManager.LoadScene("PlayableDemo");
     }
 
     IEnumerator DelayedTrainingChange()
@@ -52,6 +52,6 @@ public class HomeMenu : MonoBehaviour
     IEnumerator DelayedAdventureChange()
     {
        yield return new WaitForSecondsRealtime(1);
-       SceneManager.LoadScene("Adventures");
+       SceneManager.LoadScene("Adventure");
     }
 }
