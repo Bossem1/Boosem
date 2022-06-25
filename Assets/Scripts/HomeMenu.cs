@@ -52,6 +52,6 @@ public class HomeMenu : MonoBehaviour
     IEnumerator DelayedAdventureChange()
     {
        yield return new WaitForSecondsRealtime(1);
-       SceneManager.LoadScene("Adventures");
+       SceneManager.LoadScene("Adventure");
     }
 }
