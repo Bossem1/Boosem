@@ -17,13 +17,13 @@ TagManager:
   - 
   - 
   - ARDK_MockWorld
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - sky
+  - ground
+  - artificial_ground
+  - water
+  - building
+  - foliage
+  - grass
   - 
   - 
   - 

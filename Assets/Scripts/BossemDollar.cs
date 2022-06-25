@@ -13,12 +13,11 @@ public class BossemDollar : MonoBehaviour
     public static BossemDollar instance;
     public GameObject testsnack;
     public GameObject givesnack;
+    public GameObject bossemDollarButton;
 
     public int initialCoins;
 
-
-    
-    
+    SheepleConversation sheepleConversation;
 
     private void Awake()
     {
@@ -32,6 +31,8 @@ public class BossemDollar : MonoBehaviour
         initialCoins = PlayerPrefs.GetInt("NumberOfCoins");
         
         BossemStart();   
+
+        sheepleConversation = GameObject.Find("HomeButton").GetComponent<SheepleConversation>();
 
 
     }
@@ -60,6 +61,8 @@ public class BossemDollar : MonoBehaviour
 
             givesnack.SetActive(false);
             testsnack.SetActive(true);
+            bossemDollarButton.gameObject.SetActive(true);
+            sheepleConversation.BuySnakRequest();
             initialCoins = 0;
             
             return;
@@ -68,7 +71,7 @@ public class BossemDollar : MonoBehaviour
         else if(initialCoins >= coins)
         {
             initialCoins -= bossem.BossemDollarRemove;
-            
+            sheepleConversation.ThankYou();
             SaveCoinScore(initialCoins);
             UpdateCoinUI(initialCoins);
         }

@@ -83,7 +83,7 @@ public class PlayableDemoMovements : MonoBehaviour
 
     private IEnumerator StopWalkAnimation()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5);
         transform.Rotate(0f, 90f, 0f);
         Greet();
         // transform.rotation = Camera.main.transform.rotation;
