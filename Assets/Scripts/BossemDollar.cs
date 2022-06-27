@@ -60,7 +60,7 @@ public class BossemDollar : MonoBehaviour
         {
 
             givesnack.SetActive(false);
-            testsnack.SetActive(true);
+            
             bossemDollarButton.gameObject.SetActive(true);
             sheepleConversation.BuySnakRequest();
             initialCoins = 0;

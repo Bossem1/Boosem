@@ -38,11 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-<<<<<<< HEAD:Assets/Scenes/Gameplay/Home Menu.unity
   m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
-=======
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
->>>>>>> e45ba5e5d705ff4e84048f897ae3392c2026bc91:Assets/Scenes/AR GamePlay/Home Menu.unity
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1493,21 +1489,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
-<<<<<<< HEAD:Assets/Scenes/Gameplay/Home Menu.unity
-=======
---- !u!114 &1471991687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1471991681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a73d71dc22e0f44db6abc56889ddd5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
->>>>>>> e45ba5e5d705ff4e84048f897ae3392c2026bc91:Assets/Scenes/AR GamePlay/Home Menu.unity
 --- !u!1 &1506079740
 GameObject:
   m_ObjectHideFlags: 0
