@@ -99,8 +99,10 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void Greet()
     {
-        anim.SetBool("isGreeting", true);
-        anim.SetBool("isDancing", false);
+        // anim.SetBool("isGreeting", true);
+        anim.Play("hello", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
     }
     // public void Stop()
     // {
@@ -114,15 +116,5 @@ public class PlayerAnimation : MonoBehaviour
     //     anim.SetBool("isGreeting", false);
     //     anim.SetBool("isDancing",  false);
     // }
-
-    private IEnumerator StopWalkAnimation()
-    {
-        yield return new WaitForSeconds(10);
-        transform.Rotate(0f, 90f, 0f);
-        Greet();
-        // transform.rotation = Camera.main.transform.rotation;
-        isMoving = false;
-        anim.SetBool("isWalking", false);
-    }
     
 }
