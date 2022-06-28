@@ -14,6 +14,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private bool canMove;
 	private bool isMovingAround;
+    private bool hasbeenclicked = false;
 	private float countDown;
    
     float vertical;
@@ -67,6 +68,11 @@ public class PlayerAnimation : MonoBehaviour
 			isMovingAround = false;
 			countDown = moveDelay;
 		}
+        if (hasbeenclicked = true)
+        {
+            
+            Debug.Log("ture");
+        }
 
 
     }
@@ -76,48 +82,55 @@ public class PlayerAnimation : MonoBehaviour
         if(canMove) {
 			canMove = false;
 			isMovingAround = true;
+            
             transform.Rotate(0f, 90f, 0f);
             isMoving = true;
             StartCoroutine(StopAnimation());
         }
         anim.SetBool("isJumping", false);
         isMovingRunning = false;
+        hasbeenclicked = true;
         anim.SetBool("isKicking", false);
         anim.SetBool("isGreeting", false);
         anim.SetBool("isDancing", false);
     }
     public void Run()
     {
-         if(canMove) {
+        if(canMove) {
 			canMove = false;
 			isMovingAround = true;
+            
             transform.Rotate(0f, 90f, 0f);
             isMovingRunning = true;
             StartCoroutine(StopAnimation());
         }
-         isMoving = false;
-         anim.SetBool("isJumping", false);
-         anim.SetBool("isKicking", false);
-         anim.SetBool("isGreeting", false);
-         anim.SetBool("isDancing", false);
+        isMoving = false;
+        hasbeenclicked = true;
+        anim.SetBool("isJumping", false);
+        anim.SetBool("isKicking", false);
+        anim.SetBool("isGreeting", false);
+        anim.SetBool("isDancing", false);
     }
     public void Jump()
     {
         anim.Play("jump", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
+        hasbeenclicked = true;
     }
     public void Kick()
     {
         anim.Play("kick", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
+        hasbeenclicked = true;
     }
     public void Dance()
     {
         anim.Play("dance", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
+        hasbeenclicked = true;
     }
     public void Greet()
     {
@@ -125,6 +138,7 @@ public class PlayerAnimation : MonoBehaviour
         anim.Play("hello", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
+        hasbeenclicked = true;
     }
    
     private IEnumerator StopAnimation()
