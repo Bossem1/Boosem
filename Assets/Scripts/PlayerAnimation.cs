@@ -9,6 +9,12 @@ public class PlayerAnimation : MonoBehaviour
     Rigidbody rb;
 
     private float speed = 0.3f;
+
+    public float moveDelay = 9f;
+
+    private bool canMove;
+	private bool isMovingAround;
+	private float countDown;
    
     float vertical;
     bool isMoving = false;
@@ -51,19 +57,29 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool("Idle", true);
         }
 
-
-    }
-    private void FixedUpdate()
-    {
         
-      //  rb.velocity = new Vector3(0, rb.velocity.y, vertical * speed * Time.fixedDeltaTime);
-      
+        if (isMovingAround && countDown > 0)
+           {
+			countDown -= Time.deltaTime;
+           }
+		else{
+			canMove = true;
+			isMovingAround = false;
+			countDown = moveDelay;
+		}
+
 
     }
 
     public void Walk()
     {
-        isMoving = true;
+        if(canMove) {
+			canMove = false;
+			isMovingAround = true;
+            transform.Rotate(0f, 90f, 0f);
+            isMoving = true;
+            StartCoroutine(StopAnimation());
+        }
         anim.SetBool("isJumping", false);
         isMovingRunning = false;
         anim.SetBool("isKicking", false);
@@ -72,7 +88,13 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void Run()
     {
-         isMovingRunning = true;
+         if(canMove) {
+			canMove = false;
+			isMovingAround = true;
+            transform.Rotate(0f, 90f, 0f);
+            isMovingRunning = true;
+            StartCoroutine(StopAnimation());
+        }
          isMoving = false;
          anim.SetBool("isJumping", false);
          anim.SetBool("isKicking", false);
@@ -104,17 +126,13 @@ public class PlayerAnimation : MonoBehaviour
         isMovingRunning = false;
         isMoving = false;
     }
-    // public void Stop()
-    // {
-    //     transform.Translate(0,0,0);
-    //     isMoving = false;
-    //     isMovingRunning = false;
-    //     anim.SetBool("isJumping", false);
-    //     anim.SetBool("isRunning", false);
-    //     anim.SetBool("isKicking", false);
-    //     anim.SetBool("isWalking", false);
-    //     anim.SetBool("isGreeting", false);
-    //     anim.SetBool("isDancing",  false);
-    // }
+   
+    private IEnumerator StopAnimation()
+    {
+        yield return new WaitForSeconds(8);
+        isMoving = false;
+        isMovingRunning = false;
+        transform.Rotate(0f, -90f, 0f);
+    }
     
 }
