@@ -60,20 +60,18 @@ public class BossemDollar : MonoBehaviour
         {
 
             givesnack.SetActive(false);
-            
-            bossemDollarButton.gameObject.SetActive(true);
             sheepleConversation.BuySnakRequest();
+            bossemDollarButton.SetActive(true);
             initialCoins = 0;
-            
             return;
             
         }
         else if(initialCoins >= coins)
         {
             initialCoins -= bossem.BossemDollarRemove;
-            sheepleConversation.ThankYou();
             SaveCoinScore(initialCoins);
             UpdateCoinUI(initialCoins);
+            sheepleConversation.ThankYou();
         }
     }
     

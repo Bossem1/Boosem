@@ -29,7 +29,7 @@ public class SheepleConversation : MonoBehaviour
 
     private IEnumerator PlayAudio()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
         Vocals.instance.Say(thankYouClip);
     }
     public void SheepleRequest(){
@@ -38,7 +38,7 @@ public class SheepleConversation : MonoBehaviour
 
     private IEnumerator PlayAudioSound()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
         Vocals.instance.Say(snakRequestClip);
         // audioSource.PlayOneShot(audioClip);
         helloButton.gameObject.SetActive(false);
