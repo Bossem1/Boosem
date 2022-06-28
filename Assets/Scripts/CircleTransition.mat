@@ -67,7 +67,11 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+<<<<<<< HEAD
     - _Radius: 0.5101743
+=======
+    - _Radius: 0.51260185
+>>>>>>> 5f68b56b90dda64560f279d140fef52d07f69481
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
