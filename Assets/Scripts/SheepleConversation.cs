@@ -8,8 +8,10 @@ public class SheepleConversation : MonoBehaviour
     public AudioObject snakRequestClip;
     public AudioObject thankYouClip;
     public AudioObject buySnakClip;
+    public AudioObject comeOnClip;
     public GameObject helloButton;
     public GameObject snakButton;
+    public GameObject proceedButton;
     public TextMeshProUGUI snakText;
 
     public void SheepleStatement()
@@ -22,9 +24,23 @@ public class SheepleConversation : MonoBehaviour
         StartCoroutine(PlayAudio());
     }
 
+    public void OnTrainingCompleted()
+    {
+        StartCoroutine(PlayTrainAudio());
+        
+    }
+
     public void BuySnakRequest()
     {
         Vocals.instance.Say(buySnakClip);
+    }
+
+    private IEnumerator PlayTrainAudio()
+    {
+        yield return new WaitForSeconds(9);
+        proceedButton.gameObject.SetActive(true);
+        Vocals.instance.Say(comeOnClip);
+        
     }
 
     private IEnumerator PlayAudio()
