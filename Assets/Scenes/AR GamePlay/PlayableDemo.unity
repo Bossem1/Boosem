@@ -663,8 +663,6 @@ MonoBehaviour:
   thankYouClip: {fileID: 11400000, guid: 061938f530bdfbf49bff14db478dde31, type: 2}
   buySnakClip: {fileID: 11400000, guid: 8e0ca97dcbfda284bb892dff9c4f6846, type: 2}
   comeOnClip: {fileID: 0}
-  helloButton: {fileID: 476434221}
-  snakButton: {fileID: 635591681}
   proceedButton: {fileID: 0}
   snakText: {fileID: 838636176}
 --- !u!114 &476434223
@@ -1410,6 +1408,25 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3969567655493721752}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &635591691
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635591681}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd0e3e2878e8d0c4fbc8c249e325fe55, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &641552996
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,6 +2047,7 @@ GameObject:
   - component: {fileID: 858278327}
   - component: {fileID: 858278326}
   - component: {fileID: 858278325}
+  - component: {fileID: 858278329}
   - component: {fileID: 858278324}
   - component: {fileID: 858278328}
   m_Layer: 5
@@ -2055,7 +2073,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -54, y: -50}
+  m_AnchoredPosition: {x: -57, y: -50}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &858278324
@@ -2183,6 +2201,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 858278329}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &858278326
 MonoBehaviour:
@@ -2318,6 +2348,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &858278329
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858278322}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 06305c5c1f410c040a05e49723d93188, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &881070598
 GameObject:
   m_ObjectHideFlags: 0
@@ -2652,6 +2701,7 @@ GameObject:
   - component: {fileID: 1019015782}
   - component: {fileID: 1019015781}
   - component: {fileID: 1019015779}
+  - component: {fileID: 1019015780}
   m_Layer: 5
   m_Name: AndButton
   m_TagString: Untagged
@@ -2774,6 +2824,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &1019015780
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019015777}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 256241d6b798fc54ea58d84c880bec21, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1019015781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2829,6 +2898,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1019015780}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1019015782
 MonoBehaviour:
@@ -3445,6 +3526,7 @@ GameObject:
   - component: {fileID: 1340015542}
   - component: {fileID: 1340015541}
   - component: {fileID: 1340015540}
+  - component: {fileID: 1340015545}
   - component: {fileID: 1340015543}
   - component: {fileID: 1340015539}
   - component: {fileID: 1340015544}
@@ -3554,6 +3636,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1340015545}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1340015541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3608,8 +3702,6 @@ MonoBehaviour:
   thankYouClip: {fileID: 11400000, guid: 061938f530bdfbf49bff14db478dde31, type: 2}
   buySnakClip: {fileID: 11400000, guid: 8e0ca97dcbfda284bb892dff9c4f6846, type: 2}
   comeOnClip: {fileID: 0}
-  helloButton: {fileID: 476434221}
-  snakButton: {fileID: 635591681}
   proceedButton: {fileID: 0}
   snakText: {fileID: 838636176}
 --- !u!82 &1340015544
@@ -3708,6 +3800,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &1340015545
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340015537}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 38b0a0b4fa7bd2a409e32f27c3db1019, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1371791123
 GameObject:
   m_ObjectHideFlags: 0
@@ -3722,6 +3833,7 @@ GameObject:
   - component: {fileID: 1371791125}
   - component: {fileID: 1371791129}
   - component: {fileID: 1371791128}
+  - component: {fileID: 1371791130}
   m_Layer: 5
   m_Name: BossemDollarSignButton
   m_TagString: Untagged
@@ -3827,6 +3939,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1371791130}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1371791126
 MonoBehaviour:
@@ -4008,6 +4132,25 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &1371791130
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371791123}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d840d39cae3b3f14fab3a25891e14774, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1456687547
 GameObject:
   m_ObjectHideFlags: 0
@@ -6210,6 +6353,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3145921917869185969}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &3145921917869185935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6594,6 +6749,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3145921918508481429}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &3145921918508481427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6924,6 +7091,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3145921918823539019}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &3145921918823539017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7172,6 +7351,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3145921918977675545}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &3145921918977675543
 MonoBehaviour:
@@ -7557,6 +7748,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3145921919328369010}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!82 &3145921919328368976
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7856,8 +8059,8 @@ GameObject:
   - component: {fileID: 3145921919892505072}
   - component: {fileID: 3145921919892505039}
   - component: {fileID: 3145921919892505038}
-  - component: {fileID: 3145921919892505040}
   - component: {fileID: 3145921919892505041}
+  - component: {fileID: 3145921919892505040}
   - component: {fileID: 3145921919892505042}
   m_Layer: 5
   m_Name: HelloButton
@@ -7941,18 +8144,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 3145921919892505040}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 635591683}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
@@ -7981,6 +8172,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: SheepleConversation, Assembly-CSharp
         m_MethodName: SheepleRequest
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 3145921919892505041}
+        m_TargetAssemblyTypeName: SheepleConversation, Assembly-CSharp
+        m_MethodName: SheepleRequest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 3145921919892505040}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8019,52 +8234,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3145921919892505040
-MonoBehaviour:
+--- !u!95 &3145921919892505040
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3145921919892505036}
   m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9095d60a7219d774cbe3755eb562fb67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scaleSpeed: 0.4
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.016602833
-      value: 0.7984848
-      inSlope: 0.41452765
-      outSlope: 0.41452765
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5031755
-      value: 1.0001826
-      inSlope: 0.0059967637
-      outSlope: 0.0059967637
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9963989
-      value: 0.8016434
-      inSlope: -0.40253413
-      outSlope: -0.40253413
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 944c8c740667ff34ab2354dac806a564, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &3145921919892505041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8081,8 +8269,6 @@ MonoBehaviour:
   thankYouClip: {fileID: 11400000, guid: 061938f530bdfbf49bff14db478dde31, type: 2}
   buySnakClip: {fileID: 11400000, guid: 8e0ca97dcbfda284bb892dff9c4f6846, type: 2}
   comeOnClip: {fileID: 0}
-  helloButton: {fileID: 476434221}
-  snakButton: {fileID: 635591681}
   proceedButton: {fileID: 0}
   snakText: {fileID: 838636176}
 --- !u!82 &3145921919892505042
@@ -8221,12 +8407,17 @@ PrefabInstance:
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
@@ -8245,7 +8436,17 @@ PrefabInstance:
       objectReference: {fileID: 635591682}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 635591691}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
@@ -8260,8 +8461,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: set_enabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: UnityEngine.AudioSource, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: UnityEngine.Behaviour, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
@@ -8275,7 +8486,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
