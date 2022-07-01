@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BossemDollarDB
   m_EditorClassIdentifier: 
   BossemDollarAdd: 10
-  BossemDollarRemove: 5
+  BossemDollarRemove: 1
