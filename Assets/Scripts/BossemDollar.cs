@@ -18,6 +18,7 @@ public class BossemDollar : MonoBehaviour
     public int initialCoins;
 
     SheepleConversation sheepleConversation;
+    ButtonAnimation buttonanimation;
 
     private void Awake()
     {
@@ -33,8 +34,8 @@ public class BossemDollar : MonoBehaviour
         BossemStart();   
 
         sheepleConversation = GameObject.Find("HomeButton").GetComponent<SheepleConversation>();
-
-
+        buttonanimation = GameObject.Find("BossemDollarSignButton").GetComponent<ButtonAnimation>();
+      
     }
    
 
@@ -61,7 +62,7 @@ public class BossemDollar : MonoBehaviour
 
             givesnack.SetActive(false);
             sheepleConversation.BuySnakRequest();
-            bossemDollarButton.SetActive(true);
+            buttonanimation.enabled = true;
             initialCoins = 0;
             return;
             

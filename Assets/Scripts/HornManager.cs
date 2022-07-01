@@ -40,7 +40,7 @@ public class HornManager : MonoBehaviour
         // audioSource.PlayOneShot(audioClip);
         yield return new WaitForSeconds(3);
         buttonanimation.enabled = true;
-        helloButton.gameObject.SetActive(true);
+        // helloButton.gameObject.SetActive(true);
     }
 
 }

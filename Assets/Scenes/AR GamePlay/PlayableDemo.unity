@@ -1763,9 +1763,9 @@ RectTransform:
   m_Father: {fileID: 1579923101}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -65, y: 144.9}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -54, y: -50}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &858278324
@@ -2286,9 +2286,9 @@ RectTransform:
   m_Father: {fileID: 1579923101}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 687, y: 91.9}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -105, y: -105}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1019015781
@@ -2848,7 +2848,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -64.9, y: 30.9}
+  m_AnchoredPosition: {x: -53.89984, y: 31}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1263549409
@@ -2973,9 +2973,9 @@ RectTransform:
   m_Father: {fileID: 1579923101}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 671, y: 19.8}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -121, y: -178}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1340015539
@@ -3116,6 +3116,7 @@ GameObject:
   - component: {fileID: 1371791127}
   - component: {fileID: 1371791126}
   - component: {fileID: 1371791125}
+  - component: {fileID: 1371791129}
   m_Layer: 5
   m_Name: BossemDollarSignButton
   m_TagString: Untagged
@@ -3137,9 +3138,9 @@ RectTransform:
   m_Father: {fileID: 1579923101}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 684.8, y: 148.5}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -104.19995, y: 140.59999}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1371791125
@@ -3186,7 +3187,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1371791129}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -3248,6 +3249,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1371791123}
   m_CullTransparentMesh: 1
+--- !u!114 &1371791129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371791123}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9095d60a7219d774cbe3755eb562fb67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleSpeed: 0.6
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.016602833
+      value: 0.7984848
+      inSlope: 0.41452765
+      outSlope: 0.41452765
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5031755
+      value: 1.0001826
+      inSlope: 0.0059967637
+      outSlope: 0.0059967637
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9963989
+      value: 0.8016434
+      inSlope: -0.40253413
+      outSlope: -0.40253413
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1456687547
 GameObject:
   m_ObjectHideFlags: 0
@@ -6443,8 +6490,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 84.892, y: 3.307}
-  m_SizeDelta: {x: 143.3629, y: 380.723}
+  m_AnchoredPosition: {x: 83, y: -0.0000066757}
+  m_SizeDelta: {x: 190.45, y: 357.3825}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3145921919586642181
 MonoBehaviour:
@@ -6552,6 +6599,7 @@ GameObject:
   - component: {fileID: 3145921919892505039}
   - component: {fileID: 3145921919892505038}
   - component: {fileID: 3145921919892505040}
+  - component: {fileID: 3145921919892505041}
   m_Layer: 5
   m_Name: HelloButton
   m_TagString: Untagged
@@ -6659,6 +6707,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 3145921919892505041}
+        m_TargetAssemblyTypeName: SheepleConversation, Assembly-CSharp
+        m_MethodName: SheepleRequest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &3145921919892505039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6701,7 +6761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9095d60a7219d774cbe3755eb562fb67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleSpeed: 0.6
+  scaleSpeed: 0.4
   animationCurve:
     serializedVersion: 2
     m_Curve:
@@ -6735,6 +6795,26 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3145921919892505041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3145921919892505036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c136f8f6797fb43478591f0547107ac4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snakRequestClip: {fileID: 11400000, guid: 07a1ba49a17265645b6a82dbb01969f4, type: 2}
+  thankYouClip: {fileID: 11400000, guid: 061938f530bdfbf49bff14db478dde31, type: 2}
+  buySnakClip: {fileID: 11400000, guid: 8e0ca97dcbfda284bb892dff9c4f6846, type: 2}
+  comeOnClip: {fileID: 0}
+  helloButton: {fileID: 476434221}
+  snakButton: {fileID: 635591681}
+  proceedButton: {fileID: 0}
+  snakText: {fileID: 838636176}
 --- !u!222 &3145921919892505072
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6789,6 +6869,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656078934683, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 0
       objectReference: {fileID: 0}
@@ -6815,7 +6900,7 @@ PrefabInstance:
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
@@ -6825,7 +6910,7 @@ PrefabInstance:
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
@@ -6875,12 +6960,12 @@ PrefabInstance:
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -64.9
+      value: -53.89984
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -81.7
+      value: 111
       objectReference: {fileID: 0}
     - target: {fileID: 3969567656078934686, guid: e65579dee7d17d443b3de9e93b0a8095,
         type: 3}
