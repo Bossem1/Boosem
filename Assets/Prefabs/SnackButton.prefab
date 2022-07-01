@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3969567656078934685}
   - component: {fileID: 3969567656078934684}
   - component: {fileID: 3969567656078934683}
-  - component: {fileID: 3969567656078934682}
   - component: {fileID: 3969567656078934687}
   m_Layer: 5
   m_Name: SnackButton
@@ -135,7 +134,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 3969567656078934682}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -147,52 +146,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3969567656078934682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3969567656078934681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9095d60a7219d774cbe3755eb562fb67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scaleSpeed: 0.6
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.016602833
-      value: 0.7984848
-      inSlope: 0.41452765
-      outSlope: 0.41452765
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5031755
-      value: 1.0001826
-      inSlope: 0.0059967637
-      outSlope: 0.0059967637
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9963989
-      value: 0.8016434
-      inSlope: -0.40253413
-      outSlope: -0.40253413
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &3969567656078934687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,8 +161,10 @@ MonoBehaviour:
   snakRequestClip: {fileID: 11400000, guid: 07a1ba49a17265645b6a82dbb01969f4, type: 2}
   thankYouClip: {fileID: 11400000, guid: 061938f530bdfbf49bff14db478dde31, type: 2}
   buySnakClip: {fileID: 11400000, guid: 8e0ca97dcbfda284bb892dff9c4f6846, type: 2}
+  comeOnClip: {fileID: 0}
   helloButton: {fileID: 0}
   snakButton: {fileID: 3969567656078934681}
+  proceedButton: {fileID: 0}
   snakText: {fileID: 3969567656279395336}
 --- !u!1 &3969567656279395351
 GameObject:

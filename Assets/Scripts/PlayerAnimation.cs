@@ -120,7 +120,7 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void Kick()
     {
-        anim.Play("kick", -1, 0f);
+        anim.Play("soccer_kick", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
         hasbeenclicked = true;

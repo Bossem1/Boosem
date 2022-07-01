@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class HornManager : MonoBehaviour
 {
+    ButtonAnimation buttonanimation;
+
     private AudioSource audioSource;
     public AudioClip audioClip;
     public GameObject helloButton;
     public AudioObject clipToPlay;
+
+    [SerializeField] GameObject hello;
    
+    public void Awake()
+    {
+        buttonanimation = hello.GetComponent<ButtonAnimation>();
+    }
     // Start is called before the first frame update
     public void Start()
     {
@@ -31,7 +39,8 @@ public class HornManager : MonoBehaviour
         Vocals.instance.Say(clipToPlay);
         // audioSource.PlayOneShot(audioClip);
         yield return new WaitForSeconds(3);
-        helloButton.gameObject.SetActive(true);
+        buttonanimation.enabled = true;
+        // helloButton.gameObject.SetActive(true);
     }
 
 }
