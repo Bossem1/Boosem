@@ -10,6 +10,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private float speed = 0.3f;
 
+    public AudioSource audioSource;
+    public float delay = 4f;
+
     public float moveDelay = 9f;
 
     private bool canMove;
@@ -27,6 +30,7 @@ public class PlayerAnimation : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
+        audioSource.PlayDelayed(delay);
     }
 
     // Update is called once per frame
