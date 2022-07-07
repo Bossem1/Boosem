@@ -8,7 +8,6 @@ public class HornManager : MonoBehaviour
 
     private AudioSource audioSource;
     public AudioClip audioClip;
-    public GameObject helloButton;
     public AudioObject clipToPlay;
 
     [SerializeField] GameObject hello;
@@ -37,10 +36,8 @@ public class HornManager : MonoBehaviour
     {
         yield return new WaitForSeconds(6);
         Vocals.instance.Say(clipToPlay);
-        // audioSource.PlayOneShot(audioClip);
         yield return new WaitForSeconds(3);
         buttonanimation.enabled = true;
-        // helloButton.gameObject.SetActive(true);
     }
 
 }
