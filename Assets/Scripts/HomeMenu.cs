@@ -7,11 +7,9 @@ public class HomeMenu : MonoBehaviour
 { 
     CircleTransition circleTransition;
 
-    void Awake()
+     void Awake()
     {
         circleTransition = GameObject.Find("Circle Transition Canvas").GetComponent<CircleTransition>();
-
-        // GameObject.FindObjectsOfType(typeof(Canvas)).Cast<CircleTransition>().FirstOrDefault((c) => c.name == "Circle Transition Canvas");
     }
     
     public void PlayableDemo()

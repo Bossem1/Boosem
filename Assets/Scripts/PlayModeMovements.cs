@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimation : MonoBehaviour
+public class PlayModeMovements : MonoBehaviour
 {
     Animator anim;
     Vector3 pos;
     Rigidbody rb;
+
+    public float jumpVelocity;
+    public float jumpDelay = 1f;
+
+    private bool canjump;
+	private bool isjumpingUp;
+    private float startCount;
 
     private float speed = 0.3f;
 
@@ -31,6 +38,8 @@ public class PlayerAnimation : MonoBehaviour
         rb = GetComponent<Rigidbody>();
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
         audioSource.PlayDelayed(delay);
+        canjump = true;
+		startCount = jumpDelay;
     }
 
     // Update is called once per frame
@@ -41,7 +50,6 @@ public class PlayerAnimation : MonoBehaviour
         if (isMoving == true)
         {
             transform.Translate(pos);
-            transform.Rotate(0,Time.deltaTime * 45, 0); // turn a little
             anim.SetBool("isWalking", true);
         }
         else 
@@ -53,7 +61,6 @@ public class PlayerAnimation : MonoBehaviour
         if (isMovingRunning == true)
         {
             transform.Translate(pos);
-            transform.Rotate(0,Time.deltaTime* 45, 0);
             anim.SetBool("isRunning", true);
         }
         else
@@ -72,11 +79,24 @@ public class PlayerAnimation : MonoBehaviour
 			isMovingAround = false;
 			countDown = moveDelay;
 		}
+
+        if (isjumpingUp && startCount > 0)
+        {
+			startCount -= Time.deltaTime;
+        }
+		else
+        {
+			canjump = true;
+			isjumpingUp = false;
+			startCount = jumpDelay;
+		}
+
         if (hasbeenclicked = true)
         {
             
             Debug.Log("true");
         }
+
 
 
     }
@@ -86,10 +106,8 @@ public class PlayerAnimation : MonoBehaviour
         if(canMove) {
 			canMove = false;
 			isMovingAround = true;
-            
             transform.Rotate(0f, 90f, 0f);
             isMoving = true;
-            StartCoroutine(StopAnimation());
         }
         anim.SetBool("isJumping", false);
         isMovingRunning = false;
@@ -100,20 +118,17 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void Run()
     {
-        if(canMove) {
+         if(canMove) {
 			canMove = false;
 			isMovingAround = true;
-            
             transform.Rotate(0f, 90f, 0f);
             isMovingRunning = true;
-            StartCoroutine(StopAnimation());
-        }
-        isMoving = false;
-        hasbeenclicked = true;
-        anim.SetBool("isJumping", false);
-        anim.SetBool("isKicking", false);
-        anim.SetBool("isGreeting", false);
-        anim.SetBool("isDancing", false);
+         }
+         isMoving = false;
+         anim.SetBool("isJumping", false);
+         anim.SetBool("isKicking", false);
+         anim.SetBool("isGreeting", false);
+         anim.SetBool("isDancing", false);
     }
     public void Jump()
     {
@@ -144,13 +159,22 @@ public class PlayerAnimation : MonoBehaviour
         isMoving = false;
         hasbeenclicked = true;
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("treasure_box"))
+        {
+           transform.Rotate(0f, 180f, 0f);
+           StartCoroutine(StopAnimation());
+        }
+    }
    
     private IEnumerator StopAnimation()
     {
-        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(4);
         isMoving = false;
         isMovingRunning = false;
-        transform.Rotate(0f, -90f, 0f);
+        transform.Rotate(0f, 90f, 0f);
     }
     
 }

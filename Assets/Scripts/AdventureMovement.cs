@@ -92,10 +92,12 @@ public class AdventureMovement : MonoBehaviour
     {
          isMovingRunning = true;
          isMoving = false;
+         transform.Rotate(0f, 90f, 0f);
          anim.SetBool("isJumping", false);
          anim.SetBool("isKicking", false);
          anim.SetBool("isGreeting", false);
          anim.SetBool("isDancing", false);
+         StartCoroutine(StopAnimation());
     }
     public void Jump()
     {
@@ -104,7 +106,7 @@ public class AdventureMovement : MonoBehaviour
 			isjumpingUp = true;
             // anim.SetBool("isJumping", true);
             anim.Play("jump", -1, 0f);
-            rb.velocity = (Vector3.up * jumpVelocity) + (Vector3.right * speed);
+            rb.velocity = (Vector3.up * jumpVelocity) + (Vector3.left * speed);
         }
         isMovingRunning = false;
         isMoving = false;
@@ -126,7 +128,16 @@ public class AdventureMovement : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("treasure_box"))
         {
-           isMovingRunning = false;
+           transform.Rotate(0f, 180f, 0f);
+        //    isMovingRunning = false;
         }
+    }
+
+    private IEnumerator StopAnimation()
+    {
+        yield return new WaitForSeconds(6);
+        isMoving = false;
+        isMovingRunning = false;
+        transform.Rotate(0f, 90f, 0f);
     }
 }
