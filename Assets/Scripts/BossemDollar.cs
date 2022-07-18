@@ -34,7 +34,7 @@ public class BossemDollar : MonoBehaviour
         BossemStart();   
 
         sheepleConversation = GameObject.Find("HomeButton").GetComponent<SheepleConversation>();
-        buttonanimation = GameObject.Find("BossemDollarSignButton").GetComponent<ButtonAnimation>();
+        buttonanimation = GameObject.Find("BossemDollar").GetComponent<ButtonAnimation>();
       
     }
    

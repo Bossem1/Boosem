@@ -17,7 +17,6 @@ public class PlayModeMovements : MonoBehaviour
 
     private float speed = 0.3f;
 
-    public AudioSource audioSource;
     public float delay = 4f;
 
     public float moveDelay = 9f;
@@ -37,7 +36,6 @@ public class PlayModeMovements : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
-        audioSource.PlayDelayed(delay);
         canjump = true;
 		startCount = jumpDelay;
     }
@@ -91,11 +89,11 @@ public class PlayModeMovements : MonoBehaviour
 			startCount = jumpDelay;
 		}
 
-        if (hasbeenclicked = true)
-        {
+        // if (hasbeenclicked = true)
+        // {
             
-            Debug.Log("true");
-        }
+        //     Debug.Log("true");
+        // }
 
 
 
@@ -111,7 +109,7 @@ public class PlayModeMovements : MonoBehaviour
         }
         anim.SetBool("isJumping", false);
         isMovingRunning = false;
-        hasbeenclicked = true;
+        // hasbeenclicked = true;
         anim.SetBool("isKicking", false);
         anim.SetBool("isGreeting", false);
         anim.SetBool("isDancing", false);
@@ -135,21 +133,21 @@ public class PlayModeMovements : MonoBehaviour
         anim.Play("jump", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
-        hasbeenclicked = true;
+        // hasbeenclicked = true;
     }
     public void Kick()
     {
         anim.Play("soccer_kick", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
-        hasbeenclicked = true;
+        // hasbeenclicked = true;
     }
     public void Dance()
     {
         anim.Play("dance", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
-        hasbeenclicked = true;
+        // hasbeenclicked = true;
     }
     public void Greet()
     {
@@ -157,7 +155,7 @@ public class PlayModeMovements : MonoBehaviour
         anim.Play("hello", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
-        hasbeenclicked = true;
+        // hasbeenclicked = true;
     }
 
     void OnCollisionEnter(Collision collision)

@@ -24,11 +24,6 @@ public class HomeMenu : MonoBehaviour
         StartCoroutine(DelayedTrainingChange());   
     }
 
-    public void LoadHomeMenu()
-    {
-        SceneManager.LoadScene("Home Menu");
-    }
-
     public void LoadAdventure()
     {
         circleTransition.OpenBlankScreen();
