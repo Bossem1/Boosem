@@ -348,6 +348,52 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3145921919646135911}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &330492516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330492515}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9095d60a7219d774cbe3755eb562fb67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleSpeed: 0.6
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.016602833
+      value: 0.7984848
+      inSlope: 0.41452765
+      outSlope: 0.41452765
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5031755
+      value: 1.0001826
+      inSlope: 0.0059967637
+      outSlope: 0.0059967637
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9963989
+      value: 0.8016434
+      inSlope: -0.40253413
+      outSlope: -0.40253413
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &330492520
 AudioSource:
   m_ObjectHideFlags: 0
