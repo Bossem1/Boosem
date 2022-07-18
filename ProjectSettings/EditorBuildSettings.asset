@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/AR GamePlay/PlayableDemo.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/AR GamePlay/TransitionAdventureScene.unity
+    guid: c82f677525ab6ac48ad096e952833aad
+  - enabled: 1
     path: Assets/Scenes/AR GamePlay/Adventure.unity
     guid: d6c8a193b1af5764ca5eaffacefd708d
   m_configObjects: {}
