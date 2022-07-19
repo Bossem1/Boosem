@@ -12,7 +12,7 @@ public class BossemDollar : MonoBehaviour
  
     public static BossemDollar instance;
     public GameObject testsnack;
-    // public GameObject givesnack;
+    public GameObject proceedButton;
     public GameObject bossemDollarButton;
 
     public int initialCoins;
@@ -52,7 +52,7 @@ public class BossemDollar : MonoBehaviour
 
         //Collects the image specified in the scriptable objects
              
-    }
+    }    
    
     public void BossemRemove(int coins)
     {
@@ -75,12 +75,7 @@ public class BossemDollar : MonoBehaviour
             sheepleConversation.ThankYou();
         }
     }
-    
-
-    
-    
-    
-   
+       
     // 
     public void BossemAdd()
     {
@@ -116,6 +111,32 @@ public class BossemDollar : MonoBehaviour
         return PlayerPrefs.GetInt("initialCoins", 5);
     }
     
-    
+    public void Validation(int coins) 
+    {
+          if(initialCoins <= 0)
+          {
+            StartCoroutine(CheckValidation());
+            initialCoins = 0;
+            return;
+          }
+          else if(initialCoins >= coins)
+          {
+              StartCoroutine(ProceedToNextScene());
+          }
+    }
+
+    private IEnumerator CheckValidation()
+    {
+        yield return new WaitForSeconds(9);
+        sheepleConversation.BuySnakRequest();
+        buttonanimation.enabled = true;
+    }
+
+    private IEnumerator ProceedToNextScene()
+    {
+        yield return new WaitForSeconds(9);
+        proceedButton.SetActive(true);
+              //Load next scene
+    }
     
 }

@@ -1021,12 +1021,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1784097869}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72a0df859b3351540a392206e123eecb, type: 3}
+  m_Script: {fileID: 11500000, guid: 19b3499cb08aa6e4fbab24326aeb474a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
   jumpVelocity: 3
   jumpDelay: 1
+  moveDelay: 9
+  hasbeenclicked: 0
 --- !u!54 &1784097872
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1912,7 +1913,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1784097871}
         m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
         m_MethodName: Run
         m_Mode: 1
@@ -2979,7 +2980,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1784097871}
         m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
         m_MethodName: Kick
         m_Mode: 1
@@ -3568,7 +3569,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1784097871}
         m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
         m_MethodName: Greet
         m_Mode: 1
@@ -4176,7 +4177,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1784097871}
         m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
         m_MethodName: Walk
         m_Mode: 1
@@ -5139,7 +5140,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1784097871}
         m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 1
@@ -5523,7 +5524,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1784097871}
         m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
         m_MethodName: Dance
         m_Mode: 1

@@ -17,13 +17,11 @@ public class PlayModeMovements : MonoBehaviour
 
     private float speed = 0.3f;
 
-    public float delay = 4f;
-
-    public float moveDelay = 9f;
+    public float moveDelay = 7f;
 
     private bool canMove;
 	private bool isMovingAround;
-    private bool hasbeenclicked = false;
+    public bool hasbeenclicked;
 	private float countDown;
    
     float vertical;
@@ -89,12 +87,6 @@ public class PlayModeMovements : MonoBehaviour
 			startCount = jumpDelay;
 		}
 
-        // if (hasbeenclicked = true)
-        // {
-            
-        //     Debug.Log("true");
-        // }
-
 
 
     }
@@ -109,7 +101,6 @@ public class PlayModeMovements : MonoBehaviour
         }
         anim.SetBool("isJumping", false);
         isMovingRunning = false;
-        // hasbeenclicked = true;
         anim.SetBool("isKicking", false);
         anim.SetBool("isGreeting", false);
         anim.SetBool("isDancing", false);
