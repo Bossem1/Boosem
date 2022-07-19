@@ -7,7 +7,7 @@ public class FlashObject : MonoBehaviour
     public int Countdown = 3;
     public float timeVisible    = 0.3f;
     public float timeInvisible  = 0.3f;
-    public float blinkFor       = 5.0f;
+    public float blinkFor       = 2.0f;
     public bool startState      = true;
     public bool endState        = true;
  
