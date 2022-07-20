@@ -20,6 +20,9 @@ public class AdventureMovement : MonoBehaviour
     float vertical;
     bool isMoving = false;
     bool isMovingRunning = false;
+    public GameObject weaponBox;
+    public GameObject showEgg;
+    public GameObject disabbleMyCube;
     //public GameObject target;
     // Start is called before the first frame update
     void Start()
@@ -38,6 +41,21 @@ public class AdventureMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = Vector3.up * jumpVelocity;
+        }
+        if(Input.GetKey("up")){
+            rb.velocity = Vector3.forward * speed;
+        }
+        if(Input.GetKey("down"))
+        {
+            rb.velocity = Vector3.back * speed;
+        }
+        if(Input.GetKey("left"))
+        {
+            rb.velocity = Vector3.left * speed;
+        }
+        if(Input.GetKey("right"))
+        {
+            rb.velocity = Vector3.right * speed;
         }
         
         vertical = Input.GetAxis("Vertical");
@@ -78,6 +96,15 @@ public class AdventureMovement : MonoBehaviour
         
       
 
+    }
+   
+    public void TriggerBox()
+    {
+        Destroy(weaponBox);
+        Destroy(disabbleMyCube);
+        showEgg.SetActive(true);
+        Destroy(showEgg,10);
+        BossemDollar.instance.BossemAddReward(150);
     }
     public void Walk()
     {
@@ -129,8 +156,18 @@ public class AdventureMovement : MonoBehaviour
         if(collision.gameObject.CompareTag("treasure_box"))
         {
            transform.Rotate(0f, 180f, 0f);
+           
+
         //    isMovingRunning = false;
         }
+        if(collision.gameObject.CompareTag("MyCube"))
+        {
+           Debug.Log("It touched");
+           TriggerBox();
+
+        //    isMovingRunning = false;
+        }
+        
     }
 
     private IEnumerator StopAnimation()

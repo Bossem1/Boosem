@@ -85,6 +85,12 @@ public class BossemDollar : MonoBehaviour
         SaveCoinScore(initialCoins);
         UpdateCoinUI(initialCoins);
     }
+    public void BossemAddReward(int amount)
+    {
+        initialCoins += amount;
+        SaveCoinScore(initialCoins);
+        UpdateCoinUI(initialCoins);
+    }
 
    
     //
