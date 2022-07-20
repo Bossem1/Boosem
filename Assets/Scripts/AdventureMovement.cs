@@ -104,7 +104,7 @@ public class AdventureMovement : MonoBehaviour
         Destroy(disabbleMyCube);
         showEgg.SetActive(true);
         Destroy(showEgg,10);
-        BossemDollar.instance.BossemAddReward(150);
+        BossemDollar.instance.BossemAddReward(500);
     }
     public void Walk()
     {

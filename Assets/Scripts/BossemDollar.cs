@@ -88,6 +88,8 @@ public class BossemDollar : MonoBehaviour
     public void BossemAddReward(int amount)
     {
         initialCoins += amount;
+        StartCoroutine(ChangeColorOfTextToRed());
+        StartCoroutine(ChangeColorOfTextToNormal());
         SaveCoinScore(initialCoins);
         UpdateCoinUI(initialCoins);
     }
@@ -143,6 +145,18 @@ public class BossemDollar : MonoBehaviour
         yield return new WaitForSeconds(9);
         proceedButton.SetActive(true);
               //Load next scene
+    }
+    private IEnumerator ChangeColorOfTextToRed()
+    {
+        bossemtext.color = Color.red;
+        yield return new WaitForSeconds(0);
+        
+    }
+    private IEnumerator ChangeColorOfTextToNormal()
+    {
+        yield return new WaitForSeconds(6);
+        bossemtext.color = Color.white;
+        
     }
     
 }
