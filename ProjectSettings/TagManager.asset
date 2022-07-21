@@ -7,7 +7,6 @@ TagManager:
   - BlueGoal
   - RedGoal
   - treasure_box
-  - MyCube
   layers:
   - Default
   - TransparentFX
