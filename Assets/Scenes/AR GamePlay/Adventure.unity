@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -943,7 +943,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
       propertyPath: m_Name
-      value: Idle (2)
+      value: Sheeple
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
@@ -1287,6 +1287,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f356f2da8b3e8724d8dffd88621e4964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1784097875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784097869}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19b3499cb08aa6e4fbab24326aeb474a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpVelocity: 0
+  jumpDelay: 1
+  moveDelay: 7
+  hasbeenclicked: 0
 --- !u!4 &685004865518208396
 Transform:
   m_ObjectHideFlags: 0
