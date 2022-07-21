@@ -105,17 +105,6 @@ public class PlayModeMovements : MonoBehaviour
         anim.SetBool("isGreeting", false);
         anim.SetBool("isDancing", false);
     }
-
-    public void StopAllAnimation()
-    {
-        isMoving = false;
-        anim.SetBool("isJumping", false);
-        isMovingRunning = false;
-        anim.SetBool("isKicking", false);
-        anim.SetBool("isGreeting", false);
-        anim.SetBool("isDancing", false);
-    }
-
     public void Run()
     {
          if(canMove) {
@@ -137,7 +126,6 @@ public class PlayModeMovements : MonoBehaviour
         isMoving = false;
         // hasbeenclicked = true;
     }
-
     public void Kick()
     {
         anim.Play("soccer_kick", -1, 0f);

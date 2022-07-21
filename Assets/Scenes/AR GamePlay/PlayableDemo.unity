@@ -2556,7 +2556,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
       propertyPath: m_Name
-      value: Sheeple
+      value: Idle (2)
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
@@ -2962,7 +2962,7 @@ MonoBehaviour:
   bossem: {fileID: 11400000, guid: 1b4b5efdb77b480498520fc15ab01019, type: 2}
   bossemtext: {fileID: 838636176}
   testsnack: {fileID: 0}
-  proceedButton: {fileID: 0}
+  givesnack: {fileID: 1488959976}
   bossemDollarButton: {fileID: 1371791123}
   initialCoins: 5
 --- !u!4 &1286786320
@@ -4714,22 +4714,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.3
---- !u!114 &1784097872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1784097869}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19b3499cb08aa6e4fbab24326aeb474a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpVelocity: 0
-  jumpDelay: 1
-  moveDelay: 7
-  hasbeenclicked: 0
 --- !u!114 &1784097873
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -169,7 +169,7 @@ MonoBehaviour:
   bossem: {fileID: 11400000, guid: 1b4b5efdb77b480498520fc15ab01019, type: 2}
   bossemtext: {fileID: 313204795}
   testsnack: {fileID: 1220737586}
-  proceedButton: {fileID: 0}
+  givesnack: {fileID: 1220737586}
   bossemDollarButton: {fileID: 330492515}
   initialCoins: 5
 --- !u!1 &91220610
@@ -2044,7 +2044,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
       propertyPath: m_Name
-      value: Sheeple
+      value: Idle (2)
       objectReference: {fileID: 0}
     - target: {fileID: 1092408308860062549, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
@@ -3404,22 +3404,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1784097873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1784097869}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19b3499cb08aa6e4fbab24326aeb474a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpVelocity: 0
-  jumpDelay: 1
-  moveDelay: 7
-  hasbeenclicked: 0
 --- !u!114 &1784097874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4638,11 +4622,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: UnityEngine.AudioSource, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 3145921918993653089, guid: e6c95768057c6304caa1b10b4c097179,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3145921918993653089, guid: e6c95768057c6304caa1b10b4c097179,
         type: 3}
