@@ -19,6 +19,7 @@ public class BossemDollar : MonoBehaviour
 
     SheepleConversation sheepleConversation;
     ButtonAnimation buttonanimation;
+    PlayModeMovements playModeMovements;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class BossemDollar : MonoBehaviour
 
         sheepleConversation = GameObject.Find("HomeButton").GetComponent<SheepleConversation>();
         buttonanimation = GameObject.Find("BossemDollar").GetComponent<ButtonAnimation>();
+        playModeMovements = GameObject.Find("Sheeple").GetComponent<PlayModeMovements>();
       
     }
    
@@ -119,11 +121,26 @@ public class BossemDollar : MonoBehaviour
         return PlayerPrefs.GetInt("initialCoins", 5);
     }
     
-    public void Validation(int coins) 
+    
+    private IEnumerator ChangeColorOfTextToRed()
+    {
+        bossemtext.color = Color.red;
+        yield return new WaitForSeconds(0);
+        
+    }
+    private IEnumerator ChangeColorOfTextToNormal()
+    {
+        yield return new WaitForSeconds(6);
+        bossemtext.color = Color.white;
+        
+    }
+
+   //Validation Checks
+    public void AllValidation(int coins) 
     {
           if(initialCoins <= 0)
           {
-            StartCoroutine(CheckValidation());
+            StartCoroutine(CheckAllValidation());
             initialCoins = 0;
             return;
           }
@@ -133,7 +150,7 @@ public class BossemDollar : MonoBehaviour
           }
     }
 
-    private IEnumerator CheckValidation()
+    private IEnumerator CheckAllValidation()
     {
         yield return new WaitForSeconds(9);
         sheepleConversation.BuySnakRequest();
@@ -146,17 +163,85 @@ public class BossemDollar : MonoBehaviour
         proceedButton.SetActive(true);
               //Load next scene
     }
-    private IEnumerator ChangeColorOfTextToRed()
+
+    public void ValidateWalk(int coins) 
     {
-        bossemtext.color = Color.red;
-        yield return new WaitForSeconds(0);
-        
+          if(initialCoins <= 0)
+          {
+            playModeMovements.StopAllAnimation();
+            sheepleConversation.BuySnakRequest();
+            buttonanimation.enabled = true;
+            initialCoins = 0;
+            return;
+          }
+          else if(initialCoins >= coins)
+          {
+              playModeMovements.Walk();
+          }
     }
-    private IEnumerator ChangeColorOfTextToNormal()
+
+    public void ValidateJump(int coins) 
     {
-        yield return new WaitForSeconds(6);
-        bossemtext.color = Color.white;
-        
+          if(initialCoins <= 0)
+          {
+            playModeMovements.StopAllAnimation();
+            sheepleConversation.BuySnakRequest();
+            buttonanimation.enabled = true;
+            initialCoins = 0;
+            return;
+          }
+          else if(initialCoins >= coins)
+          {
+              playModeMovements.Jump();
+          }
+    }
+
+    public void ValidateRun(int coins) 
+    {
+          if(initialCoins <= 0)
+          {
+            playModeMovements.StopAllAnimation();
+            sheepleConversation.BuySnakRequest();
+            buttonanimation.enabled = true;
+            initialCoins = 0;
+            return;
+          }
+          else if(initialCoins >= coins)
+          {
+              playModeMovements.Run();
+          }
+    }
+
+    public void ValidateKick(int coins) 
+    {
+          if(initialCoins <= 0)
+          {
+            playModeMovements.StopAllAnimation();
+            sheepleConversation.BuySnakRequest();
+            buttonanimation.enabled = true;
+            initialCoins = 0;
+            return;
+          }
+          else if(initialCoins >= coins)
+          {
+              playModeMovements.Kick();
+          }
+    }
+
+    public void ValidateDance(int coins) 
+    {
+          if(initialCoins <= 0)
+          {
+            playModeMovements.StopAllAnimation();
+            sheepleConversation.BuySnakRequest();
+            buttonanimation.enabled = true;
+            initialCoins = 0;
+            return;
+          }
+          else if(initialCoins >= coins)
+          {
+              playModeMovements.Dance();
+          }
     }
     
 }
