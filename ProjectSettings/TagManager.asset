@@ -8,6 +8,8 @@ TagManager:
   - RedGoal
   - treasure_box
   - MyCube
+  - treasure_box_collider
+  - capsule_col
   layers:
   - Default
   - TransparentFX

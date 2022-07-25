@@ -7,6 +7,9 @@ public class AdventureMovement : MonoBehaviour
     Animator anim;
     Vector3 pos;
     Rigidbody rb;
+    Animator m_Animator;
+    //Use to output current speed of the state to the screen
+    float m_CurrentSpeed;
 
     public float speed;
 
@@ -20,17 +23,29 @@ public class AdventureMovement : MonoBehaviour
     float vertical;
     bool isMoving = false;
     bool isMovingRunning = false;
+    public bool isDancing = false;
+    public bool isKicking = false;
+    public bool FinishedDancing = false;
     public GameObject weaponBox;
     public GameObject showEgg;
     public GameObject disabbleMyCube;
+    public static AdventureMovement instance;
     //public GameObject target;
     // Start is called before the first frame update
+    public void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
+        FinishedDancing = false;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         canjump = true;
 		countDown = jumpDelay;
+        m_Animator = gameObject.GetComponent<Animator>();
+        //The current speed of the first Animator state
+        m_CurrentSpeed = m_Animator.GetCurrentAnimatorStateInfo(0).speed;
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
         
     }
@@ -38,25 +53,22 @@ public class AdventureMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if(Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = Vector3.up * jumpVelocity;
         }
+        
         if(Input.GetKey("up")){
             rb.velocity = Vector3.forward * speed;
+            isDancing = false;
         }
         if(Input.GetKey("down"))
         {
             rb.velocity = Vector3.back * speed;
+            isDancing = false;
         }
-        if(Input.GetKey("left"))
-        {
-            rb.velocity = Vector3.left * speed;
-        }
-        if(Input.GetKey("right"))
-        {
-            rb.velocity = Vector3.right * speed;
-        }
+        
         
         vertical = Input.GetAxis("Vertical");
         pos = new Vector3(0, 0, speed * Time.deltaTime);
@@ -97,15 +109,8 @@ public class AdventureMovement : MonoBehaviour
       
 
     }
-   
-    public void TriggerBox()
-    {
-        Destroy(weaponBox);
-        Destroy(disabbleMyCube);
-        showEgg.SetActive(true);
-        Destroy(showEgg,10);
-        BossemDollar.instance.BossemAddReward(500);
-    }
+    
+    
     public void Walk()
     {
         isMoving = true;
@@ -114,6 +119,8 @@ public class AdventureMovement : MonoBehaviour
         anim.SetBool("isKicking", false);
         anim.SetBool("isGreeting", false);
         anim.SetBool("isDancing", false);
+        isKicking = false;
+        isDancing = false;
     }
     public void Run()
     {
@@ -125,6 +132,8 @@ public class AdventureMovement : MonoBehaviour
          anim.SetBool("isGreeting", false);
          anim.SetBool("isDancing", false);
          StartCoroutine(StopAnimation());
+         isKicking = false;
+         isDancing = false;
     }
     public void Jump()
     {
@@ -137,18 +146,45 @@ public class AdventureMovement : MonoBehaviour
         }
         isMovingRunning = false;
         isMoving = false;
+        isKicking = false;
+        isDancing = false;
     }
     public void Kick()
     {
         anim.Play("kick", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
+        isDancing = false;
+        isKicking = true;
     }
     public void Dance()
     {
         anim.Play("dance", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
+        isKicking = false;
+        isDancing = true;
+
+    }
+    public void TriggerBox()
+    {
+        
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("dance"))
+        {
+           
+            if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
+            {
+                anim.Play("jump", -1, 0f);
+                Debug.Log("It jumped");
+
+
+            }
+                
+                
+        }
+            
+            
+            // Avoid any reload.
     }
 
     void OnCollisionEnter(Collision collision)
@@ -160,13 +196,14 @@ public class AdventureMovement : MonoBehaviour
 
         //    isMovingRunning = false;
         }
-        if(collision.gameObject.CompareTag("MyCube"))
+        /*if(collision.gameObject.CompareTag("MyCube"))
         {
-           Debug.Log("It touched");
            TriggerBox();
 
         //    isMovingRunning = false;
-        }
+        }*/
+        
+
         
     }
 
