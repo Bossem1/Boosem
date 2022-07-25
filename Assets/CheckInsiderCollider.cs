@@ -34,7 +34,7 @@ public class CheckInsiderCollider : MonoBehaviour
                 if (isInBox && isDancing){
                     AdventureMovement.instance.TriggerBox();
                     Destroy(this.gameObject.transform.parent.gameObject,15f);
-                    StartCoroutine(TemporarilyDealay(10));
+                    StartCoroutine(TemporarilyDealay(20));
                     Debug.Log("Destroyed");
                 }
                 break;
