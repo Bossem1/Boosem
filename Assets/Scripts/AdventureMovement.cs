@@ -18,6 +18,7 @@ public class AdventureMovement : MonoBehaviour
 
     private bool canjump;
 	private bool isjumpingUp;
+    private float jumpSpeed = 1f;
 	private float countDown;
 
     float vertical;
@@ -131,7 +132,6 @@ public class AdventureMovement : MonoBehaviour
          anim.SetBool("isKicking", false);
          anim.SetBool("isGreeting", false);
          anim.SetBool("isDancing", false);
-         StartCoroutine(StopAnimation());
          isKicking = false;
          isDancing = false;
     }
@@ -142,7 +142,7 @@ public class AdventureMovement : MonoBehaviour
 			isjumpingUp = true;
             // anim.SetBool("isJumping", true);
             anim.Play("jump", -1, 0f);
-            rb.velocity = (Vector3.up * jumpVelocity) + (Vector3.left * speed);
+            rb.velocity = (Vector3.up * jumpVelocity) + (Vector3.left * jumpSpeed);
         }
         isMovingRunning = false;
         isMoving = false;
@@ -191,9 +191,9 @@ public class AdventureMovement : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("treasure_box"))
         {
-           transform.Rotate(0f, 180f, 0f);
+        //    transform.Rotate(0f, -90f, 0f);
            
-
+              StartCoroutine(StopMovement());
         //    isMovingRunning = false;
         }
         /*if(collision.gameObject.CompareTag("MyCube"))
@@ -213,16 +213,20 @@ public class AdventureMovement : MonoBehaviour
 
         }   
               
-        //    isMovingRunning = false;
+        if(collision.gameObject.CompareTag("Jump_failed"))
+        {
+           transform.Rotate(0f, -90f, 0f);
+        //    StartCoroutine(StopAnimation());
+        }
         
         
     }
 
-    private IEnumerator StopAnimation()
+    private IEnumerator StopMovement()
     {
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(1);
         isMoving = false;
         isMovingRunning = false;
-        transform.Rotate(0f, 90f, 0f);
+        // transform.Rotate(0f, 90f, 0f);
     }
 }
