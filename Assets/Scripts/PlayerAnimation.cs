@@ -31,6 +31,7 @@ public class PlayerAnimation : MonoBehaviour
         rb = GetComponent<Rigidbody>();
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
         audioSource.PlayDelayed(delay);
+
     }
 
     // Update is called once per frame

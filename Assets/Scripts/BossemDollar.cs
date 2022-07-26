@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BossemDollar : MonoBehaviour
 {
@@ -159,8 +160,9 @@ public class BossemDollar : MonoBehaviour
 
     private IEnumerator ProceedToNextScene()
     {
-        yield return new WaitForSeconds(9);
+        yield return new WaitForSeconds(11);
         proceedButton.SetActive(true);
+        SceneManager.LoadScene("Adventure");
               //Load next scene
     }
 
@@ -241,6 +243,22 @@ public class BossemDollar : MonoBehaviour
           else if(initialCoins >= coins)
           {
               playModeMovements.Dance();
+          }
+    }
+
+    public void ValidateGreet(int coins) 
+    {
+          if(initialCoins <= 0)
+          {
+            playModeMovements.StopAllAnimation();
+            sheepleConversation.BuySnakRequest();
+            buttonanimation.enabled = true;
+            initialCoins = 0;
+            return;
+          }
+          else if(initialCoins >= coins)
+          {
+              playModeMovements.Greet();
           }
     }
     

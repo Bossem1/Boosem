@@ -339,7 +339,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277003023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.34, y: -0.45, z: 3.56}
+  m_LocalPosition: {x: -0.865, y: -0.45, z: 3.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1062643616}
@@ -896,24 +896,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1045500016}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1062643617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062643611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bb3fbe1e45adf84b9c4648f3e8b7fe0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Countdown: 3
-  timeVisible: 0.3
-  timeInvisible: 0.3
-  blinkFor: 2
-  startState: 1
-  endState: 1
 --- !u!1001 &1125120795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -944,7 +926,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.76
+      value: -6.48
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cc4e27bc6d228ad48b9734967651f89e,
         type: 3}
@@ -1373,6 +1355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b3499cb08aa6e4fbab24326aeb474a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  delay: 4
   jumpVelocity: 0
   jumpDelay: 1
   moveDelay: 7
@@ -2210,23 +2194,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 3145921917860835117}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
-        m_MethodName: Run
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3145921917860835120}
         m_TargetAssemblyTypeName: ButtonAnimationController, Assembly-CSharp
         m_MethodName: RunButtonTouch
@@ -2263,10 +2235,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 3145921918969259444}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
+      - m_Target: {fileID: 1446281264}
+        m_TargetAssemblyTypeName: BossemDollar, Assembly-CSharp
+        m_MethodName: ValidateRun
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3294,18 +3266,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
-        m_MethodName: Kick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3145921918282811257}
         m_TargetAssemblyTypeName: ButtonAnimationController, Assembly-CSharp
         m_MethodName: KickButtonTouch
@@ -3342,10 +3302,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 3145921919860465522}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
+      - m_Target: {fileID: 1446281264}
+        m_TargetAssemblyTypeName: BossemDollar, Assembly-CSharp
+        m_MethodName: ValidateKick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3895,18 +3855,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
-        m_MethodName: Greet
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3145921918792417273}
         m_TargetAssemblyTypeName: ButtonAnimationController, Assembly-CSharp
         m_MethodName: HelloButtonTouch
@@ -3935,6 +3883,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AdventureMovement, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1446281264}
+        m_TargetAssemblyTypeName: BossemDollar, Assembly-CSharp
+        m_MethodName: ValidateGreet
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4510,23 +4470,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 3145921918969259445}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
-        m_MethodName: Walk
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3145921918969259448}
         m_TargetAssemblyTypeName: ButtonAnimationController, Assembly-CSharp
         m_MethodName: WalkButtonTouch
@@ -4565,7 +4513,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1446281264}
         m_TargetAssemblyTypeName: BossemDollar, Assembly-CSharp
-        m_MethodName: Validation
+        m_MethodName: ValidateWalk
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5485,23 +5433,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 3145921919537268137}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
-        m_MethodName: Jump
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3145921919537268141}
         m_TargetAssemblyTypeName: ButtonAnimationController, Assembly-CSharp
         m_MethodName: JumpButtonTouch
@@ -5526,22 +5462,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1784097871}
-        m_TargetAssemblyTypeName: AdventureMovement, Assembly-CSharp
-        m_MethodName: Jump
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 3145921917860835116}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
+      - m_Target: {fileID: 1446281264}
+        m_TargetAssemblyTypeName: BossemDollar, Assembly-CSharp
+        m_MethodName: ValidateJump
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5881,23 +5805,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 3145921919860465523}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayModeMovements, Assembly-CSharp
-        m_MethodName: Dance
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3145921919860465534}
         m_TargetAssemblyTypeName: ButtonAnimationController, Assembly-CSharp
         m_MethodName: DanceButtonTouch
@@ -5934,10 +5846,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 3145921919537268136}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
+      - m_Target: {fileID: 1446281264}
+        m_TargetAssemblyTypeName: BossemDollar, Assembly-CSharp
+        m_MethodName: ValidateDance
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

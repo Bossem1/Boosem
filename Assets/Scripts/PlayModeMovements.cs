@@ -8,6 +8,9 @@ public class PlayModeMovements : MonoBehaviour
     Vector3 pos;
     Rigidbody rb;
 
+    public AudioSource audioSource;
+    public float delay = 4f;
+
     public float jumpVelocity;
     public float jumpDelay = 1f;
 
@@ -33,14 +36,18 @@ public class PlayModeMovements : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+
+        audioSource.PlayDelayed(delay);
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
         canjump = true;
 		startCount = jumpDelay;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         pos = new Vector3(0, 0, speed * Time.deltaTime);  // move forward
         
         if (isMoving == true)

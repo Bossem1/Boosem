@@ -6,10 +6,7 @@ public class ButtonAnimationController : MonoBehaviour
 {
     void Start()
     {
-        // if( PlayerPrefs.GetInt("KickButton") == 1 && PlayerPrefs.GetInt("HelloButton") == 2)
-        // {
-        //     Debug.Log("Thank God");
-        // }
+        
     }
 
     
