@@ -13,13 +13,22 @@ public class AdventureMovement : MonoBehaviour
 
     public float speed;
 
+    public AudioSource audioSource;
+    public float delay = 4f;
+
     public float jumpVelocity;
     public float jumpDelay = 1f;
+
+    private bool canMove;
+	private bool isMovingAround;
+    private float moveDelay = 7f;
 
     private bool canjump;
 	private bool isjumpingUp;
     private float jumpSpeed = 1f;
 	private float countDown;
+
+    private bool OnJumpFailed = false;
 
     float vertical;
     bool isMoving = false;
@@ -48,13 +57,15 @@ public class AdventureMovement : MonoBehaviour
         //The current speed of the first Animator state
         m_CurrentSpeed = m_Animator.GetCurrentAnimatorStateInfo(0).speed;
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
+
+       audioSource.PlayDelayed(delay);
         
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
         if(Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = Vector3.up * jumpVelocity;
@@ -94,6 +105,17 @@ public class AdventureMovement : MonoBehaviour
             anim.SetBool("Idle", true);
         }
 
+         if (isMovingAround && countDown > 0)
+           {
+			countDown -= Time.deltaTime;
+           }
+		else{
+			canMove = true;
+			isMovingAround = false;
+			countDown = moveDelay;
+		}
+
+
         if (isjumpingUp && countDown > 0)
            {
 			countDown -= Time.deltaTime;
@@ -103,6 +125,18 @@ public class AdventureMovement : MonoBehaviour
 			isjumpingUp = false;
 			countDown = jumpDelay;
 		}
+
+         if (OnJumpFailed == true)
+        {
+            transform.Translate(pos);
+            transform.Rotate(0,Time.deltaTime * -45, 0); // turn a little
+            anim.SetBool("isWalking", true);
+        }
+        else 
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("Idle", true);
+        }
     }
     private void FixedUpdate()
     {
@@ -123,24 +157,40 @@ public class AdventureMovement : MonoBehaviour
         isKicking = false;
         isDancing = false;
     }
+
+    // public void Run()
+    // {
+    //      isMovingRunning = true;
+    //      isMoving = false;
+    //      transform.Rotate(0f, 90f, 0f);
+    //      anim.SetBool("isJumping", false);
+    //      anim.SetBool("isKicking", false);
+    //      anim.SetBool("isGreeting", false);
+    //      anim.SetBool("isDancing", false);
+    //      isKicking = false;
+    //      isDancing = false;
+    // }
+
     public void Run()
     {
-         isMovingRunning = true;
+         if(canMove) {
+			canMove = false;
+			isMovingAround = true;
+            transform.Rotate(0f, 90f, 0f);
+            isMovingRunning = true;
+         }
          isMoving = false;
-         transform.Rotate(0f, 90f, 0f);
          anim.SetBool("isJumping", false);
          anim.SetBool("isKicking", false);
          anim.SetBool("isGreeting", false);
          anim.SetBool("isDancing", false);
-         isKicking = false;
-         isDancing = false;
     }
-    public void Jump()
+
+    public void HighJump()
     {
         if(canjump) {
 			canjump = false;
 			isjumpingUp = true;
-            // anim.SetBool("isJumping", true);
             anim.Play("jump", -1, 0f);
             rb.velocity = (Vector3.up * jumpVelocity) + (Vector3.left * jumpSpeed);
         }
@@ -149,6 +199,16 @@ public class AdventureMovement : MonoBehaviour
         isKicking = false;
         isDancing = false;
     }
+
+    public void Jump()
+    {
+        anim.Play("jump", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
+        isKicking = false;
+        isDancing = false;
+    }
+
     public void Kick()
     {
         anim.Play("kick", -1, 0f);
@@ -166,6 +226,16 @@ public class AdventureMovement : MonoBehaviour
         isDancing = true;
 
     }
+
+    public void Greet()
+    {
+        // anim.SetBool("isGreeting", true);
+        anim.Play("hello", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
+        // hasbeenclicked = true;
+    }
+
     public void TriggerBox()
     {
         
@@ -206,11 +276,23 @@ public class AdventureMovement : MonoBehaviour
               
         if(collision.gameObject.CompareTag("Jump_failed"))
         {
-           transform.Rotate(0f, -90f, 0f);
+             StartCoroutine(JumpFailPenalty());
+        //    transform.Rotate(0f, -90f, 0f);
         //    StartCoroutine(StopAnimation());
         }
         
         
+    }
+
+    private IEnumerator JumpFailPenalty()
+    {
+        yield return new WaitForSeconds(5);
+        OnJumpFailed = true;
+        yield return new WaitForSeconds(15);
+        OnJumpFailed = false;
+        Jump();
+        isMovingRunning = false;
+        // transform.Rotate(0f, 90f, 0f);
     }
 
     private IEnumerator StopMovement()
