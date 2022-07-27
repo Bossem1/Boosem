@@ -28,6 +28,8 @@ public class AdventureMovement : MonoBehaviour
     private float jumpSpeed = 1f;
 	private float countDown;
 
+    private bool OnJumpFailed = false;
+
     float vertical;
     bool isMoving = false;
     bool isMovingRunning = false;
@@ -63,7 +65,7 @@ public class AdventureMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
         if(Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = Vector3.up * jumpVelocity;
@@ -123,6 +125,18 @@ public class AdventureMovement : MonoBehaviour
 			isjumpingUp = false;
 			countDown = jumpDelay;
 		}
+
+         if (OnJumpFailed == true)
+        {
+            transform.Translate(pos);
+            transform.Rotate(0,Time.deltaTime * -45, 0); // turn a little
+            anim.SetBool("isWalking", true);
+        }
+        else 
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("Idle", true);
+        }
     }
     private void FixedUpdate()
     {
@@ -271,11 +285,23 @@ public class AdventureMovement : MonoBehaviour
               
         if(collision.gameObject.CompareTag("Jump_failed"))
         {
-           transform.Rotate(0f, -90f, 0f);
+             StartCoroutine(JumpFailPenalty());
+        //    transform.Rotate(0f, -90f, 0f);
         //    StartCoroutine(StopAnimation());
         }
         
         
+    }
+
+    private IEnumerator JumpFailPenalty()
+    {
+        yield return new WaitForSeconds(5);
+        OnJumpFailed = true;
+        yield return new WaitForSeconds(15);
+        OnJumpFailed = false;
+        Jump();
+        isMovingRunning = false;
+        // transform.Rotate(0f, 90f, 0f);
     }
 
     private IEnumerator StopMovement()
