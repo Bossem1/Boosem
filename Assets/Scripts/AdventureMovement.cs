@@ -202,16 +202,7 @@ public class AdventureMovement : MonoBehaviour
 
         //    isMovingRunning = false;
         }*/
-        if(isKicking=true)
-        {
-            if(collision.gameObject.CompareTag("capsule_col"))
-            {
-            
-                showEgg.SetActive(false);
-                Debug.Log("ToUCHING THE EGG");
-            }
-
-        }   
+          
               
         if(collision.gameObject.CompareTag("Jump_failed"))
         {

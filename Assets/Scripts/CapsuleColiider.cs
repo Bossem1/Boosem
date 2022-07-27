@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckInsiderCollider : MonoBehaviour
+public class CapsuleColiider : MonoBehaviour
 {
-    public bool isInBox = false;
-    public static CheckInsiderCollider instance;
+    public bool isOnGround = false;
     public GameObject setEgg;
+    public static CapsuleColiider instance;
+    
 
     public void Awake()
     {
@@ -14,11 +15,11 @@ public class CheckInsiderCollider : MonoBehaviour
     }
     
     private void Update(){
-        CheckForDancingOnBox();
-        AdventureMovement.instance.TriggerBox();
+        CheckForKickingEgg();
+        
     }
     
-    private void CheckForDancingOnBox()
+    private void CheckForKickingEgg()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 0f);
         Collider playerCollider;
@@ -27,16 +28,15 @@ public class CheckInsiderCollider : MonoBehaviour
         {
             Debug.Log(hitCollider.gameObject.tag);
             if(hitCollider.gameObject.tag == "Player"){
-                isInBox = true;
+                Debug.Log("player now");
+                isOnGround = true;
                 playerCollider = hitCollider;
-                bool isDancing = AdventureMovement.instance.isDancing;
+                bool isKicking = AdventureMovement.instance.isKicking;
                 
-                if (isInBox && isDancing){
+                if (isOnGround && isKicking){
                     AdventureMovement.instance.TriggerBox();
-                    Destroy(this.gameObject.transform.parent.gameObject,2);
-                    StartCoroutine(TemporarilyDealay(1));
-
-                    Debug.Log("Destroyed");
+                    Destroy(setEgg,1);
+                    Debug.Log("Destroyed egg");
                 }
                 break;
             }
@@ -44,8 +44,6 @@ public class CheckInsiderCollider : MonoBehaviour
         }
         
     }
-    private IEnumerator TemporarilyDealay(float duration) {
-        yield return new WaitForSeconds(duration);
-        setEgg.SetActive(true);
-    }
+    
 }
+
