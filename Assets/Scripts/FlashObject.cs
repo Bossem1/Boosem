@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FlashObject : MonoBehaviour
 {
-    public int Countdown = 3;
+    public int Countdown = 8;
     public float timeVisible    = 0.3f;
     public float timeInvisible  = 0.3f;
     public float blinkFor       = 2.0f;

@@ -10,6 +10,7 @@ TagManager:
   - MyCube
   - treasure_box_collider
   - capsule_col
+  - Jump_failed
   layers:
   - Default
   - TransparentFX
