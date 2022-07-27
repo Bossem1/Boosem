@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -199,7 +199,6 @@ GameObject:
   - component: {fileID: 200224688}
   - component: {fileID: 200224687}
   - component: {fileID: 200224691}
-  - component: {fileID: 200224692}
   m_Layer: 0
   m_Name: Egg
   m_TagString: capsule_col
@@ -215,7 +214,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 200224686}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
@@ -303,18 +302,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &200224692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200224686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9d0576e6775c904eb3ed49ca5c7fb04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &277003023
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,8 +1278,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.124081, y: 7.8293076, z: 3.4049988}
-  m_Center: {x: 0.19589931, y: 3.7902517, z: 0.4365921}
+  m_Size: {x: 4.124081, y: 7.829308, z: 4.286089}
+  m_Center: {x: 0.19589931, y: 3.790252, z: 0.8771372}
 --- !u!114 &1784097871
 MonoBehaviour:
   m_ObjectHideFlags: 0
