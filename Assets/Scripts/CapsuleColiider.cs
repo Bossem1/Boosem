@@ -35,7 +35,7 @@ public class CapsuleColiider : MonoBehaviour
                 
                 if (isOnGround && isKicking){
                     AdventureMovement.instance.TriggerBox();
-                    Destroy(setEgg,1);
+                    Destroy(setEgg);
                     Debug.Log("Destroyed egg");
                 }
                 break;
