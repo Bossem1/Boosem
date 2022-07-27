@@ -94,8 +94,6 @@ public class PlayModeMovements : MonoBehaviour
 			startCount = jumpDelay;
 		}
 
-
-
     }
 
     public void Walk()
@@ -103,7 +101,7 @@ public class PlayModeMovements : MonoBehaviour
         if(canMove) {
 			canMove = false;
 			isMovingAround = true;
-            transform.Rotate(0f, 90f, 0f);
+            transform.Rotate(0f, 85f, 0f);
             isMoving = true;
         }
         anim.SetBool("isJumping", false);
@@ -128,7 +126,7 @@ public class PlayModeMovements : MonoBehaviour
          if(canMove) {
 			canMove = false;
 			isMovingAround = true;
-            transform.Rotate(0f, 90f, 0f);
+            transform.Rotate(0f, 85f, 0f);
             isMovingRunning = true;
          }
          isMoving = false;
@@ -147,7 +145,7 @@ public class PlayModeMovements : MonoBehaviour
 
     public void Kick()
     {
-        anim.Play("soccer_kick", -1, 0f);
+        anim.Play("kick", -1, 0f);
         isMovingRunning = false;
         isMoving = false;
         // hasbeenclicked = true;

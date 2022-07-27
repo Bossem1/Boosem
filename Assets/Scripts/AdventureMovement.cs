@@ -13,8 +13,15 @@ public class AdventureMovement : MonoBehaviour
 
     public float speed;
 
+    public AudioSource audioSource;
+    public float delay = 4f;
+
     public float jumpVelocity;
     public float jumpDelay = 1f;
+
+    private bool canMove;
+	private bool isMovingAround;
+    private float moveDelay = 7f;
 
     private bool canjump;
 	private bool isjumpingUp;
@@ -48,6 +55,8 @@ public class AdventureMovement : MonoBehaviour
         //The current speed of the first Animator state
         m_CurrentSpeed = m_Animator.GetCurrentAnimatorStateInfo(0).speed;
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
+
+       audioSource.PlayDelayed(delay);
         
     }
 
@@ -94,6 +103,17 @@ public class AdventureMovement : MonoBehaviour
             anim.SetBool("Idle", true);
         }
 
+         if (isMovingAround && countDown > 0)
+           {
+			countDown -= Time.deltaTime;
+           }
+		else{
+			canMove = true;
+			isMovingAround = false;
+			countDown = moveDelay;
+		}
+
+
         if (isjumpingUp && countDown > 0)
            {
 			countDown -= Time.deltaTime;
@@ -123,24 +143,40 @@ public class AdventureMovement : MonoBehaviour
         isKicking = false;
         isDancing = false;
     }
+
+    // public void Run()
+    // {
+    //      isMovingRunning = true;
+    //      isMoving = false;
+    //      transform.Rotate(0f, 90f, 0f);
+    //      anim.SetBool("isJumping", false);
+    //      anim.SetBool("isKicking", false);
+    //      anim.SetBool("isGreeting", false);
+    //      anim.SetBool("isDancing", false);
+    //      isKicking = false;
+    //      isDancing = false;
+    // }
+
     public void Run()
     {
-         isMovingRunning = true;
+         if(canMove) {
+			canMove = false;
+			isMovingAround = true;
+            transform.Rotate(0f, 90f, 0f);
+            isMovingRunning = true;
+         }
          isMoving = false;
-         transform.Rotate(0f, 90f, 0f);
          anim.SetBool("isJumping", false);
          anim.SetBool("isKicking", false);
          anim.SetBool("isGreeting", false);
          anim.SetBool("isDancing", false);
-         isKicking = false;
-         isDancing = false;
     }
-    public void Jump()
+
+    public void HighJump()
     {
         if(canjump) {
 			canjump = false;
 			isjumpingUp = true;
-            // anim.SetBool("isJumping", true);
             anim.Play("jump", -1, 0f);
             rb.velocity = (Vector3.up * jumpVelocity) + (Vector3.left * jumpSpeed);
         }
@@ -149,6 +185,16 @@ public class AdventureMovement : MonoBehaviour
         isKicking = false;
         isDancing = false;
     }
+
+    public void Jump()
+    {
+        anim.Play("jump", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
+        isKicking = false;
+        isDancing = false;
+    }
+
     public void Kick()
     {
         anim.Play("kick", -1, 0f);
@@ -166,6 +212,16 @@ public class AdventureMovement : MonoBehaviour
         isDancing = true;
 
     }
+
+    public void Greet()
+    {
+        // anim.SetBool("isGreeting", true);
+        anim.Play("hello", -1, 0f);
+        isMovingRunning = false;
+        isMoving = false;
+        // hasbeenclicked = true;
+    }
+
     public void TriggerBox()
     {
         
