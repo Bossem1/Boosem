@@ -21,12 +21,14 @@ public class AdventureMovement : MonoBehaviour
 
     private bool canMove;
 	private bool isMovingAround;
-    private float moveDelay = 7f;
+    private float moveDelay = 5f;
 
     private bool canjump;
 	private bool isjumpingUp;
     private float jumpSpeed = 1f;
 	private float countDown;
+
+    private float count;
 
     private bool OnJumpFailed = false;
 
@@ -105,14 +107,14 @@ public class AdventureMovement : MonoBehaviour
             anim.SetBool("Idle", true);
         }
 
-         if (isMovingAround && countDown > 0)
+         if (isMovingAround && count > 0)
            {
-			countDown -= Time.deltaTime;
+			count -= Time.deltaTime;
            }
 		else{
 			canMove = true;
 			isMovingAround = false;
-			countDown = moveDelay;
+			count = moveDelay;
 		}
 
 
@@ -144,8 +146,7 @@ public class AdventureMovement : MonoBehaviour
       
 
     }
-    
-    
+
     public void Walk()
     {
         isMoving = true;
@@ -286,18 +287,18 @@ public class AdventureMovement : MonoBehaviour
 
     private IEnumerator JumpFailPenalty()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
         OnJumpFailed = true;
-        yield return new WaitForSeconds(15);
+        yield return new WaitForSeconds(8);
         OnJumpFailed = false;
-        Jump();
+        Kick();
         isMovingRunning = false;
         // transform.Rotate(0f, 90f, 0f);
     }
 
     private IEnumerator StopMovement()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         isMoving = false;
         isMovingRunning = false;
         // transform.Rotate(0f, 90f, 0f);
