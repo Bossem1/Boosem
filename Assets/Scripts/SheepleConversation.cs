@@ -13,6 +13,11 @@ public class SheepleConversation : MonoBehaviour
     public GameObject proceedButton;
     public TextMeshProUGUI snakText;
 
+    public void Start()
+    {
+        
+    }
+
     public void SheepleStatement()
     {
           Vocals.instance.Say(snakRequestClip);
@@ -32,6 +37,7 @@ public class SheepleConversation : MonoBehaviour
     public void BuySnakRequest()
     {
         Vocals.instance.Say(buySnakClip);
+        Vocals.instance.AskForSnak(); 
     }
 
     private IEnumerator PlayTrainAudio()

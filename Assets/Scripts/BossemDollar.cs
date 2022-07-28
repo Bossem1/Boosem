@@ -24,7 +24,6 @@ public class BossemDollar : MonoBehaviour
     SheepleConversation sheepleConversation;
     ButtonAnimation buttonanimation;
     PlayModeMovements playModeMovements;
-    Vocals vocals;
 
     private void Awake()
     {
@@ -42,7 +41,6 @@ public class BossemDollar : MonoBehaviour
         sheepleConversation = GameObject.Find("HomeButton").GetComponent<SheepleConversation>();
         buttonanimation = GameObject.Find("BossemDollar").GetComponent<ButtonAnimation>();
         playModeMovements = GameObject.Find("Sheeple").GetComponent<PlayModeMovements>();
-        vocals = GameObject.Find("Sheeple").GetComponent<Vocals>();
 
     }
    
@@ -69,8 +67,6 @@ public class BossemDollar : MonoBehaviour
         
         if(initialCoins <= 0)
         {
-
-            vocals.AskForSnak(); 
             // givesnack.SetActive(false);
             sheepleConversation.BuySnakRequest();
             buttonanimation.enabled = true;

@@ -67,7 +67,7 @@ public class PlayableDemoMovements : MonoBehaviour
     }
     public void Greet()
     {
-        anim.SetBool("isGreeting", true);
+        anim.Play("hello", -1, 0f);
     }
     public void Stop()
     {
