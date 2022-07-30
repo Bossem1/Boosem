@@ -7,13 +7,15 @@ public class CapsuleColiider : MonoBehaviour
     public bool isOnGround = false;
     public GameObject setEgg;
     public static CapsuleColiider instance;
+    public ParticleSystem explosion;
+    public ParticleSystem explosion2;
     
 
     public void Awake()
     {
         instance = this;
     }
-    
+
     private void Update(){
         CheckForKickingEgg();
         
@@ -26,16 +28,20 @@ public class CapsuleColiider : MonoBehaviour
 
         foreach(Collider hitCollider in hitColliders)
         {
-            Debug.Log(hitCollider.gameObject.tag);
-            if(hitCollider.gameObject.tag == "Player"){
-                Debug.Log("player now");
+            
+            if(hitCollider.gameObject.GetComponent<AdventureMovement>()){
+                Debug.Log("player on the co now");
                 isOnGround = true;
                 playerCollider = hitCollider;
+
+                Debug.Log("new egg");
                 bool isKicking = AdventureMovement.instance.isKicking;
                 
                 if (isOnGround && isKicking){
-                    AdventureMovement.instance.TriggerBox();
-                    Destroy(setEgg);
+                    
+                    explosion.Play();
+                    explosion2.Play();
+                    Destroy(setEgg,2);
                     Debug.Log("Destroyed egg");
                 }
                 break;

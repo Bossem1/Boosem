@@ -8,6 +8,7 @@ public class CheckInsiderCollider : MonoBehaviour
     public static CheckInsiderCollider instance;
     public GameObject setEgg;
 
+
     public void Awake()
     {
         instance = this;
@@ -15,7 +16,7 @@ public class CheckInsiderCollider : MonoBehaviour
     
     private void Update(){
         CheckForDancingOnBox();
-        AdventureMovement.instance.TriggerBox();
+        
     }
     
     private void CheckForDancingOnBox()
@@ -25,7 +26,7 @@ public class CheckInsiderCollider : MonoBehaviour
 
         foreach(Collider hitCollider in hitColliders)
         {
-            Debug.Log(hitCollider.gameObject.tag);
+            
             if(hitCollider.gameObject.tag == "Player"){
                 isInBox = true;
                 playerCollider = hitCollider;
@@ -33,10 +34,9 @@ public class CheckInsiderCollider : MonoBehaviour
                 
                 if (isInBox && isDancing){
                     AdventureMovement.instance.TriggerBox();
-                    Destroy(this.gameObject.transform.parent.gameObject,2);
-                    StartCoroutine(TemporarilyDealay(1));
-
-                    Debug.Log("Destroyed");
+                    StartCoroutine(PlayAnimation(5));
+                    
+                    
                 }
                 break;
             }
@@ -47,5 +47,9 @@ public class CheckInsiderCollider : MonoBehaviour
     private IEnumerator TemporarilyDealay(float duration) {
         yield return new WaitForSeconds(duration);
         setEgg.SetActive(true);
+    }
+    private IEnumerator PlayAnimation(float duration){
+        yield return new WaitForSeconds(duration);
+        TreasureBox.instance.OpenBoxAnim();
     }
 }
