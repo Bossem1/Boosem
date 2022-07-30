@@ -34,7 +34,7 @@ public class CheckInsiderCollider : MonoBehaviour
                 
                 if (isInBox && isDancing){
                     AdventureMovement.instance.TriggerBox();
-                    StartCoroutine(PlayAnimation(1));
+                    StartCoroutine(PlayAnimation(5));
                     
                     
                 }
