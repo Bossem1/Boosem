@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/AR GamePlay/Play Mode.unity
     guid: 99891d4da1dd5174bbbbf7d98532383e
   - enabled: 1
+    path: Assets/Scenes/AR GamePlay/Proceed To Jump.unity
+    guid: 8e4f3c93fa2d38d48bedf76235628f21
+  - enabled: 1
     path: Assets/Scenes/AR GamePlay/Adventure.unity
     guid: d6c8a193b1af5764ca5eaffacefd708d
   m_configObjects: {}

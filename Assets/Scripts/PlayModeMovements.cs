@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayModeMovements : MonoBehaviour
 {
+    public static PlayModeMovements instance;
+
     Animator anim;
     Vector3 pos;
     Rigidbody rb;
@@ -101,7 +103,7 @@ public class PlayModeMovements : MonoBehaviour
         if(canMove) {
 			canMove = false;
 			isMovingAround = true;
-            transform.Rotate(0f, 85f, 0f);
+            transform.Rotate(0f, 90f, 0f);
             isMoving = true;
         }
         anim.SetBool("isJumping", false);
@@ -174,6 +176,18 @@ public class PlayModeMovements : MonoBehaviour
            StartCoroutine(StopAnimation());
         }
     }
+
+    void OnTriggerEnter(Collider collision)
+    {
+        if(collision.gameObject.CompareTag("snak"))
+        {
+             Destroy(collision.gameObject);
+             Debug.Log("It worked");
+            // this.gameObject.SetActive(false);
+        }
+    }
+
+    
    
     private IEnumerator StopAnimation()
     {

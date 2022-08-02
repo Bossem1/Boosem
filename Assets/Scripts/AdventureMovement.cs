@@ -61,6 +61,8 @@ public class AdventureMovement : MonoBehaviour
        // pos = new Vector3(transform.position.x, transform.position.y, target.transform.position.z);
 
        audioSource.PlayDelayed(delay);
+
+    //    InvokeRepeating("RepeatAction", 10.0f, 15.0f);
         
     }
 
@@ -131,14 +133,10 @@ public class AdventureMovement : MonoBehaviour
          if (OnJumpFailed == true)
         {
             transform.Translate(pos);
-            transform.Rotate(0,Time.deltaTime * -45, 0); // turn a little
+            transform.Rotate(0,Time.deltaTime * 45, 0); // turn a little
             anim.SetBool("isWalking", true);
         }
-        else 
-        {
-            anim.SetBool("isWalking", false);
-            anim.SetBool("Idle", true);
-        }
+       
     }
     private void FixedUpdate()
     {
@@ -159,33 +157,33 @@ public class AdventureMovement : MonoBehaviour
         isDancing = false;
     }
 
-    // public void Run()
-    // {
-    //      isMovingRunning = true;
-    //      isMoving = false;
-    //      transform.Rotate(0f, 90f, 0f);
-    //      anim.SetBool("isJumping", false);
-    //      anim.SetBool("isKicking", false);
-    //      anim.SetBool("isGreeting", false);
-    //      anim.SetBool("isDancing", false);
-    //      isKicking = false;
-    //      isDancing = false;
-    // }
-
     public void Run()
     {
-         if(canMove) {
-			canMove = false;
-			isMovingAround = true;
-            transform.Rotate(0f, 90f, 0f);
-            isMovingRunning = true;
-         }
+         isMovingRunning = true;
          isMoving = false;
+        //  transform.Rotate(0f, 90f, 0f);
          anim.SetBool("isJumping", false);
          anim.SetBool("isKicking", false);
          anim.SetBool("isGreeting", false);
          anim.SetBool("isDancing", false);
+         isKicking = false;
+         isDancing = false;
     }
+
+    // public void Run()
+    // {
+    //      if(canMove) {
+	// 		canMove = false;
+	// 		isMovingAround = true;
+    //         transform.Rotate(0f, 90f, 0f);
+    //         isMovingRunning = true;
+    //      }
+    //      isMoving = false;
+    //      anim.SetBool("isJumping", false);
+    //      anim.SetBool("isKicking", false);
+    //      anim.SetBool("isGreeting", false);
+    //      anim.SetBool("isDancing", false);
+    // }
 
     public void HighJump()
     {
@@ -267,22 +265,31 @@ public class AdventureMovement : MonoBehaviour
               StartCoroutine(StopMovement());
         //    isMovingRunning = false;
         }
+        else
+        {
+            // StartCoroutine(JumpFailPenalty());
+            // transform.Rotate(0f, -90f, 0f);
+            // StartCoroutine(StopMovement());
+        }
         /*if(collision.gameObject.CompareTag("MyCube"))
         {
            TriggerBox();
 
         //    isMovingRunning = false;
-        }*/
-          
-              
+        }*/              
         if(collision.gameObject.CompareTag("Jump_failed"))
         {
              StartCoroutine(JumpFailPenalty());
-        //    transform.Rotate(0f, -90f, 0f);
-        //    StartCoroutine(StopAnimation());
+           transform.Rotate(0f, 180f, 0f);
+           StartCoroutine(StopMovement());
         }
         
         
+    }
+
+    public void RepeatAction()
+    {
+        StartCoroutine(JumpFailPenalty());
     }
 
     private IEnumerator JumpFailPenalty()
@@ -293,7 +300,7 @@ public class AdventureMovement : MonoBehaviour
         OnJumpFailed = false;
         Kick();
         isMovingRunning = false;
-        // transform.Rotate(0f, 90f, 0f);
+        transform.Rotate(0f, 180f, 0f);
     }
 
     private IEnumerator StopMovement()

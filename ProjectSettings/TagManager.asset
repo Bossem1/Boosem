@@ -11,6 +11,8 @@ TagManager:
   - treasure_box_collider
   - capsule_col
   - Jump_failed
+  - snak
+  - Mouth
   layers:
   - Default
   - TransparentFX

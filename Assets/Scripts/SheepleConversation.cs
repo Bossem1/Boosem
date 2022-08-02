@@ -25,6 +25,7 @@ public class SheepleConversation : MonoBehaviour
     
     public void ThankYou()
     {
+        Vocals.instance.CollectSnak(); 
         StartCoroutine(PlayAudio());
     }
 
@@ -50,7 +51,7 @@ public class SheepleConversation : MonoBehaviour
 
     private IEnumerator PlayAudio()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         Vocals.instance.Say(thankYouClip);
     }
     public void SheepleRequest(){
@@ -59,7 +60,9 @@ public class SheepleConversation : MonoBehaviour
 
     private IEnumerator PlayAudioSound()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(6);
+        Vocals.instance.SheepleSnakTalk();
+        yield return new WaitForSeconds(1);
         Vocals.instance.Say(snakRequestClip);
     }
 }

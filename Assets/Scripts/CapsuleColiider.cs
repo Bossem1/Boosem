@@ -43,6 +43,7 @@ public class CapsuleColiider : MonoBehaviour
                     explosion2.Play();
                     Destroy(setEgg,2);
                     Debug.Log("Destroyed egg");
+                    BossemDollar.instance.BossemAddReward(19);
                 }
                 break;
             }

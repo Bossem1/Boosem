@@ -8,7 +8,7 @@ public class Vocals : MonoBehaviour
 
     public static Vocals instance;
 
-     Animator anim;
+    Animator anim;
 
     private void Awake()
     {
@@ -32,9 +32,9 @@ public class Vocals : MonoBehaviour
           SubtitleUI.instance.SetSubtitle(clip.subtitle, clip.clip.length);
     }
 
-    public void Sad()
+    public void SheepleSnakTalk()
     {
-        anim.Play("sad", -1, 0f);
+        anim.Play("snak", -1, 0f);
     } 
 
     public void AskForSnak()
@@ -51,18 +51,19 @@ public class Vocals : MonoBehaviour
         anim.Play("sad", -1, 0f);
     }
 
-    // public void StopAllAnimation()
-    // {
-    //     anim.SetBool("isWalking", false);
-    //     anim.SetBool("isJumping", false);
-    //     anim.SetBool("isRunning", false);
-    //     anim.SetBool("isKicking", false);
-    //     anim.SetBool("isGreeting", false);
-    //     anim.SetBool("isDancing", false);
-    // }
+    public void CollectSnak()
+    {
+        StartCoroutine(PlayCollectSnakAnimation());
+    }
 
-    // public void Walk()
-    // {
-    //     anim.SetBool("isWalking", true);
-    // }
+    private IEnumerator PlayCollectSnakAnimation()
+    {
+        anim.Play("eating", -1, 0f);
+        yield return new WaitForSeconds(5);
+        anim.Play("talk", -1, 0f);
+        yield return new WaitForSeconds(3);
+        anim.Play("happy", -1, 0f);
+    }
+
+
 }

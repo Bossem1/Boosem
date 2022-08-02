@@ -24,6 +24,7 @@ public class BossemDollar : MonoBehaviour
     SheepleConversation sheepleConversation;
     ButtonAnimation buttonanimation;
     PlayModeMovements playModeMovements;
+    Snak snak;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class BossemDollar : MonoBehaviour
         sheepleConversation = GameObject.Find("HomeButton").GetComponent<SheepleConversation>();
         buttonanimation = GameObject.Find("BossemDollar").GetComponent<ButtonAnimation>();
         playModeMovements = GameObject.Find("Sheeple").GetComponent<PlayModeMovements>();
+        snak = GameObject.Find("SnakManager").GetComponent<Snak>();
 
     }
    
@@ -79,6 +81,7 @@ public class BossemDollar : MonoBehaviour
             initialCoins -= bossem.BossemDollarRemove;
             SaveCoinScore(initialCoins);
             UpdateCoinUI(initialCoins);
+            snak.SpawnSnak();
             sheepleConversation.ThankYou();
         }
     }
@@ -166,7 +169,7 @@ public class BossemDollar : MonoBehaviour
     {
         yield return new WaitForSeconds(11);
         // proceedButton.SetActive(true);
-        SceneManager.LoadScene("Adventure");
+        SceneManager.LoadScene("Proceed To Jump");
               //Load next scene
     }
 

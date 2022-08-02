@@ -628,9 +628,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
   delay: 4
-  jumpVelocity: 3
+  jumpVelocity: 0
   jumpDelay: 1
-  moveDelay: 9
+  moveDelay: 7
   hasbeenclicked: 0
 --- !u!114 &290664804
 MonoBehaviour:
@@ -7736,6 +7736,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656279395336, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656279395336, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_margin.x
+      value: -18.328627
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656279395336, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969567656279395338, guid: e65579dee7d17d443b3de9e93b0a8095,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e65579dee7d17d443b3de9e93b0a8095, type: 3}
