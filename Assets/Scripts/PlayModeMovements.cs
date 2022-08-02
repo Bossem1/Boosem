@@ -182,8 +182,6 @@ public class PlayModeMovements : MonoBehaviour
         if(collision.gameObject.CompareTag("snak"))
         {
              Destroy(collision.gameObject);
-             Debug.Log("It worked");
-            // this.gameObject.SetActive(false);
         }
     }
 

@@ -90,4 +90,13 @@ public class PlayableDemoMovements : MonoBehaviour
         isMoving = false;
         anim.SetBool("isWalking", false);
     }
+
+    void OnTriggerEnter(Collider collision)
+    {
+        if(collision.gameObject.CompareTag("snak"))
+        {
+             Destroy(collision.gameObject);
+        }
+    }
+
 }
