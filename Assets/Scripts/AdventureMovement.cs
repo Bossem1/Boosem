@@ -52,7 +52,7 @@ public class AdventureMovement : MonoBehaviour
     {
         FinishedDancing = false;
         anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+        rb = gameObject.GetComponent<Rigidbody>();
         canjump = true;
 		countDown = jumpDelay;
         m_Animator = gameObject.GetComponent<Animator>();
@@ -130,7 +130,7 @@ public class AdventureMovement : MonoBehaviour
 			countDown = jumpDelay;
 		}
 
-         if (OnJumpFailed == true)
+        if (OnJumpFailed == true)
         {
             transform.Translate(pos);
             transform.Rotate(0,Time.deltaTime * 45, 0); // turn a little
